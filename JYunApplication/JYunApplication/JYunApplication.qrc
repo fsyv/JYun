@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/JYunApplication">
+        <file>resource/qss/BasicWidget.qss</file>
+    </qresource>
+</RCC>

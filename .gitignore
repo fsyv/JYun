@@ -50,3 +50,6 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+/JYunApplication/x64
+/JYunApplication/JYunApplication/x64
+/JYunApplication/JYunApplication/GeneratedFiles
