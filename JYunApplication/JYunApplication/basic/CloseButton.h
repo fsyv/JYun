@@ -9,43 +9,27 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 所有界面的基础类
+* @brief : 自定义关闭按钮
 * @author : fsyv
 * @email : fsyv@qq.com
 * @date : 2017/12/28
 **/
 
-#include <QWidget>
-
-class CloseButton;
-
-class BasicWidget : public QWidget {
+class CloseButton : public QLabel {
 	Q_OBJECT
 public:
-	explicit BasicWidget(QWidget *parent = nullptr);
-	virtual ~BasicWidget();
+	explicit CloseButton(QWidget *parent = nullptr);
+	virtual ~CloseButton();
 
-	void setStyleSheetFromFile(QString filename);
-
-protected:
-	//界面的布局
-	virtual void widgetStyle();
-
+private:
 	void mouseMoveEvent(QMouseEvent *e) override;
 	void mousePressEvent(QMouseEvent *e) override;
 	void mouseReleaseEvent(QMouseEvent *e) override;
-	void paintEvent(QPaintEvent *e) override;
-	void resizeEvent(QResizeEvent *e) override;
+	void enterEvent(QEvent *e) override;
+	void leaveEvent(QEvent *e) override;
 
-	void initWidget();
-	void moveWidget(const QPoint &point);
-	void changeWidgetSize();
+	bool m_bFlat;
 
-private slots:
-	void closeWidget();
-
-private:
-	CloseButton *m_pCloseButton;
-	QPoint m_mousePressPoint;
+signals:
+	void click();
 };
-

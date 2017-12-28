@@ -1,5 +1,6 @@
 <RCC>
-    <qresource prefix="/JYunApplication">
+    <qresource prefix="/">
+        <file>resource/button/close.png</file>
         <file>resource/qss/BasicWidget.qss</file>
     </qresource>
 </RCC>

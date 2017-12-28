@@ -47,15 +47,27 @@
     <ClCompile Include="GeneratedFiles\Release\moc_JYunApplication.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BasicWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BasicWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="basic\CloseButton.cpp">
+      <Filter>basic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CloseButton.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CloseButton.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
       <Filter>exception</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="basic\BasicWidget.h">
-      <Filter>basic</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="JYunApplication.qrc">
@@ -64,5 +76,17 @@
     <CustomBuild Include="widget\JYunApplication.h">
       <Filter>widget</Filter>
     </CustomBuild>
+    <CustomBuild Include="basic\BasicWidget.h">
+      <Filter>basic</Filter>
+    </CustomBuild>
+    <CustomBuild Include="basic\CloseButton.h">
+      <Filter>basic</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="logo.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resource\logo\logo.ico" />
   </ItemGroup>
 </Project>

@@ -1,11 +1,10 @@
 #include "stdafx.h"
 #include "Exception.h"
 
-
-Exception::Exception()
+Exception::Exception(const QString & info)
 {
-}
 
+}
 
 Exception::~Exception()
 {
