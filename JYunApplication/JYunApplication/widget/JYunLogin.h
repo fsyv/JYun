@@ -9,45 +9,29 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 所有界面的基础类
+* @brief : 登录界面
 * @author : fsyv
 * @email : fsyv@qq.com
-* @date : 2017/12/28
+* @date : 2017/12/30
 **/
 
-#include <QWidget>
+#include "../basic/BasicWidget.h"
 
-class CloseButton;
-
-class BasicWidget : public QWidget {
-	Q_OBJECT
+class JYunLogin : public BasicWidget{
 public:
-	explicit BasicWidget(QWidget *parent = nullptr);
-	virtual ~BasicWidget();
-
-	void setStyleSheetFromFile(QString filename);
+	explicit JYunLogin();
+	~JYunLogin();
 
 protected:
-	//界面的布局
-	virtual void widgetStyle();
+	void initWidget();
 
-	void mouseMoveEvent(QMouseEvent *e) override;
-	void mousePressEvent(QMouseEvent *e) override;
-	void mouseReleaseEvent(QMouseEvent *e) override;
-	void paintEvent(QPaintEvent *e) override;
 	void resizeEvent(QResizeEvent *e) override;
 
-	void initWidget();
-	void moveWidget(const QPoint &point);
-	void changeWidgetSize(const QSize &size);
-	//圆角界面
-	void paintRoundRect(const int &radius = 5);
-
-private slots:
-	void closeWidget();
-
 private:
-	CloseButton *m_pCloseButton;
-	QPoint m_mousePressPoint;
+	QComboBox *m_pUsernameInput;
+	QLineEdit *m_pUserpassInput;
+	QCheckBox *m_pRememberPass;
+	QCheckBox *m_pAutoLogin;
+	QPushButton *m_pLoginButton;
 };
 

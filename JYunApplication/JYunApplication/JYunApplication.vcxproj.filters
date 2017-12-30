@@ -62,12 +62,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_CloseButton.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="widget\JYunLogin.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
       <Filter>exception</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="widget\JYunLogin.h">
+      <Filter>widget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="JYunApplication.qrc">

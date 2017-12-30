@@ -107,8 +107,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="widget\JYunApplication.cpp" />
+    <ClCompile Include="widget\JYunLogin.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="widget\JYunLogin.h" />
     <CustomBuild Include="basic\BasicWidget.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing BasicWidget.h...</Message>

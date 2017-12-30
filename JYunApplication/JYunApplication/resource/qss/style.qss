@@ -1,0 +1,84 @@
+﻿/*********************BasicWidget**************/
+BasicWidget{ 
+background-color: #1E90FF;
+}
+
+/*********************JYunLoginWidget**********/
+
+QComboBox#login_username{ 
+    background-color: #f0f4f8;
+	
+    border-width: 1px;
+    border-left-width: 1px;
+    border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	border-color: #1E90FF;
+}
+
+QComboBox#login_username:drop-down{ 
+	background-color: #B7B7B7;
+	
+    border-width: 1px;
+    border-left-width: 1px;
+    border-top-right-radius: 3px;
+	border-color: red;
+}
+
+QComboBox::down-arrow {
+    image: url(:/resource/combobox/arrow.png);
+}
+
+QLineEdit#login_userpass{
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+    border-color: #1E90FF;
+}
+
+QCheckBox#login_checkbox{
+    spacing: 5px;
+    color:white;
+}
+
+QCheckBox#login_checkbox:indicator {
+    width: 13px;
+    height: 13px;
+}
+QCheckBox#login_checkbox:indicator:unchecked {
+    image: url(:/resource/checkbox/checkbox_normal.png);
+}
+
+QCheckBox#login_checkbox:indicator:unchecked:hover {
+    image: url(:/resource/checkbox/checkbox_hover.png);
+}
+
+QCheckBox#login_checkbox:indicator:unchecked:pressed {
+    image: url(:/resource/checkbox/checkbox_press.png);
+}
+
+QCheckBox#login_checkbox:indicator:checked {
+    image: url(:/resource/checkbox/checkbox_selected_normal.png);
+}
+
+QCheckBox#login_checkbox:indicator:checked:hover {
+    image: url(:/resource/checkbox/checkbox_selected_hover.png);
+}
+
+QCheckBox#login_checkbox:indicator:checked:pressed {
+    image: url(:/resource/checkbox/checkbox_selected_press.png);
+}
+
+QPushButton#login_button {
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+    color:#0698f5;
+}
+QPushButton#login_button:pressed{
+    background-color: rgb(226, 238, 246);
+}
+
+/******************************end******************************/

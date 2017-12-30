@@ -9,7 +9,7 @@ BasicWidget::BasicWidget(QWidget *parent):
 	m_pCloseButton(nullptr)
 {
 	setWindowFlags(Qt::FramelessWindowHint);
-	setStyleSheetFromFile(":/resource/qss/BasicWidget.qss");
+	setStyleSheetFromFile(":/resource/qss/style.qss");
 
 	//内存不足抛出异常
 	try {
@@ -76,16 +76,6 @@ void BasicWidget::resizeEvent(QResizeEvent * e)
 {
 	initWidget();
 
-	//QPainterPath path;
-
-	//QRectF rect = QRectF(0, 0, width(), height());
-
-	//path.addRoundRect(rect, 50, 50);
-
-	//QPolygon polygon = path.toFillPolygon().toPolygon();//获得这个路径上的所有的点       
-	//QRegion region(polygon);//根据这个点构造这个区域 
-	//setMask(region);
-
 	QWidget::resizeEvent(e);
 }
 
@@ -99,8 +89,22 @@ void BasicWidget::moveWidget(const QPoint &point)
 	move(point - m_mousePressPoint);
 }
 
-void BasicWidget::changeWidgetSize()
+void BasicWidget::changeWidgetSize(const QSize &size)
 {
+	resize(size);
+}
+
+void BasicWidget::paintRoundRect(const int &radius)
+{
+	QPainterPath path;
+
+	QRectF rect = QRectF(0, 0, width(), height());
+
+	path.addRoundRect(rect, radius, radius);
+
+	QPolygon polygon = path.toFillPolygon().toPolygon();//获得这个路径上的所有的点       
+	QRegion region(polygon);//根据这个点构造这个区域 
+	setMask(region);
 }
 
 void BasicWidget::closeWidget()
