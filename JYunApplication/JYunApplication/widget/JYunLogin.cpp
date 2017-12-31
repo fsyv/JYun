@@ -17,6 +17,25 @@ JYunLogin::JYunLogin() :
 
 JYunLogin::~JYunLogin()
 {
+	if(m_pUsernameInput)
+		delete m_pUsernameInput;
+	m_pUsernameInput = nullptr;
+
+	if (m_pUserpassInput)
+		delete m_pUserpassInput;
+	m_pUserpassInput = nullptr;
+
+	if (m_pRememberPass)
+		delete m_pRememberPass;
+	m_pRememberPass = nullptr;
+
+	if (m_pAutoLogin)
+		delete m_pAutoLogin;
+	m_pAutoLogin = nullptr;
+
+	if (m_pLoginButton)
+		delete m_pLoginButton;
+	m_pLoginButton = nullptr;
 }
 
 void JYunLogin::initWidget()
@@ -49,10 +68,6 @@ void JYunLogin::initWidget()
 	m_pLoginButton->setObjectName("login_button");
 	m_pLoginButton->resize(180, 30);
 	m_pLoginButton->move(60, 300);
-
-	//m_pUsernameInput->setStyleSheet("border: 1px solid gray;border-radius: 3px;");
-	//m_pUserpassInput->setStyleSheet("background:#ffffff;color:gray;text-align:center;border-radius:15; font:15px");
-
 }
 
 void JYunLogin::resizeEvent(QResizeEvent * e)

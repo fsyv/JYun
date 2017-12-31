@@ -49,5 +49,6 @@ private slots:
 private:
 	CloseButton *m_pCloseButton;
 	QPoint m_mousePressPoint;
+	bool m_bMousePress;
 };
 

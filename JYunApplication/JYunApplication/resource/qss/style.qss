@@ -81,4 +81,36 @@ QPushButton#login_button:pressed{
     background-color: rgb(226, 238, 246);
 }
 
-/******************************end******************************/
+/*********************JYunApplication**********/
+
+QPushButton#app_setup{
+    background-color: #f0f4f8;
+
+    border-width: 1px;
+    border-radius: 20px;
+	border-color: beige;
+}
+
+QPushButton#app_setup:hover{
+    border-width: 5px;
+    border-radius: 1px;
+	border-color: beige;
+}
+
+QPushButton#app_setup:pressed{
+    background-color: #838B8B;
+}
+
+QPushButton#app_button {
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-radius: 20px;
+    border-color: beige;
+    font: 仿宋 20px;
+    color:#0698f5;
+}
+QPushButton#app_button:pressed{
+    background-color: rgb(226, 238, 246);
+}
+
+/*********************end**********************/

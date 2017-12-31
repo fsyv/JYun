@@ -4,9 +4,10 @@
 #include "exception\Exception.h"
 #include "CloseButton.h"
 
-BasicWidget::BasicWidget(QWidget *parent):
+BasicWidget::BasicWidget(QWidget *parent) :
 	QWidget(parent),
-	m_pCloseButton(nullptr)
+	m_pCloseButton(nullptr),
+	m_bMousePress(false)
 {
 	setWindowFlags(Qt::FramelessWindowHint);
 	setStyleSheetFromFile(":/resource/qss/style.qss");
@@ -46,13 +47,16 @@ void BasicWidget::widgetStyle()
 
 void BasicWidget::mouseMoveEvent(QMouseEvent * e)
 {
-	moveWidget(e->globalPos());
+	if (m_bMousePress)
+		moveWidget(e->globalPos());
 
 	QWidget::mouseMoveEvent(e);
 }
 
 void BasicWidget::mousePressEvent(QMouseEvent * e)
 {
+	m_bMousePress = true;
+
 	setCursor(QCursor(Qt::OpenHandCursor));
 
 	m_mousePressPoint = e->pos();
@@ -62,6 +66,8 @@ void BasicWidget::mousePressEvent(QMouseEvent * e)
 
 void BasicWidget::mouseReleaseEvent(QMouseEvent * e)
 {
+	m_bMousePress = false;
+
 	unsetCursor();
 
 	QWidget::mouseReleaseEvent(e);
@@ -69,7 +75,7 @@ void BasicWidget::mouseReleaseEvent(QMouseEvent * e)
 
 void BasicWidget::paintEvent(QPaintEvent * e)
 {
-
+	QWidget::paintEvent(e);
 }
 
 void BasicWidget::resizeEvent(QResizeEvent * e)

@@ -18,6 +18,7 @@
 #include "../basic/BasicWidget.h"
 
 class JYunLogin : public BasicWidget{
+	Q_OBJECT
 public:
 	explicit JYunLogin();
 	~JYunLogin();

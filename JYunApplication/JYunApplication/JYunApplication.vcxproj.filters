@@ -65,15 +65,18 @@
     <ClCompile Include="widget\JYunLogin.cpp">
       <Filter>widget</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunLogin.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunLogin.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
       <Filter>exception</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="widget\JYunLogin.h">
-      <Filter>widget</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="JYunApplication.qrc">
@@ -87,6 +90,9 @@
     </CustomBuild>
     <CustomBuild Include="basic\CloseButton.h">
       <Filter>basic</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\JYunLogin.h">
+      <Filter>widget</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
