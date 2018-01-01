@@ -15,7 +15,7 @@
 * @date : 2017/12/30
 **/
 
-#include "../basic/BasicWidget.h"
+#include "basic/BasicWidget.h"
 
 class JYunLogin : public BasicWidget{
 	Q_OBJECT

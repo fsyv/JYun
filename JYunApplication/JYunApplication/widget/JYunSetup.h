@@ -9,31 +9,32 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 主界面（功能选择）
+* @brief : 设置界面
 * @author : fsyv
 * @email : fsyv@qq.com
-* @date : 2017/12/31
+* @date : 2017/12/30
 **/
 
 #include "basic/BasicWidget.h"
-
-#include <QWidget>
-
-class JYunApplication : public BasicWidget
+class JYunSetup :
+	public BasicWidget
 {
-	Q_OBJECT
 public:
-	explicit JYunApplication(BasicWidget *parent = Q_NULLPTR);
-	~JYunApplication();
+	explicit JYunSetup();
+	~JYunSetup();
 
 protected:
 	void initWidget();
 
 	void resizeEvent(QResizeEvent *e) override;
-	void setAvatar(const  QPixmap &pixmap);
 
 private:
-	QPushButton *m_pSetupButton;
-	QPushButton *m_pCloudDiskButton;
-	QPushButton *m_pBackupButton;
+
+	QPushButton *m_pChangeAvatarButton;
+	QLineEdit *m_pUsernameLabel;
+	QLineEdit *m_pUsernameLineEdit;
+	QLineEdit *m_pUserpassLabel;
+	QLineEdit *m_pUserpassLineEdit;
+	QPushButton *m_pCommitButton;
 };
+

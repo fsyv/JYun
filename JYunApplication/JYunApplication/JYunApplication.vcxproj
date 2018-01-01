@@ -114,8 +114,10 @@
     </ClCompile>
     <ClCompile Include="widget\JYunApplication.cpp" />
     <ClCompile Include="widget\JYunLogin.cpp" />
+    <ClCompile Include="widget\JYunSetup.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="widget\JYunSetup.h" />
     <CustomBuild Include="widget\JYunLogin.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing JYunLogin.h...</Message>

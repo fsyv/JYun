@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "widget/JYunApplication.h"
 #include "widget/JYunLogin.h"
+#include "widget/JYunSetup.h"
 #include "exception/Exception.h"
 
 #include <QtWidgets/QApplication>
@@ -11,7 +12,7 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 
-	JYunApplication w;
+	JYunSetup w;
 
 	try {
 		w.show();

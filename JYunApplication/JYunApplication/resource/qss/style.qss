@@ -112,5 +112,44 @@ QPushButton#app_button {
 QPushButton#app_button:pressed{
     background-color: rgb(226, 238, 246);
 }
+/*********************JYunSetup****************/
+QPushButton#setup_change{
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-radius: 20px;
+	border-color: beige;
+}
+
+QPushButton#setup_change:pressed{
+    background-color: #838B8B;
+}
+
+QLineEdit#setup_label{
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+    border-color: #1E90FF;
+}
+
+QLineEdit#setup_input{
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+    border-color: #1E90FF;
+}
+
+QPushButton#setup_commit {
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+    color:#0698f5;
+}
+QPushButton#setup_commit:pressed{
+    background-color: rgb(226, 238, 246);
+}
 
 /*********************end**********************/

@@ -71,12 +71,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_JYunLogin.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="widget\JYunSetup.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
       <Filter>exception</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="widget\JYunSetup.h">
+      <Filter>widget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="JYunApplication.qrc">
