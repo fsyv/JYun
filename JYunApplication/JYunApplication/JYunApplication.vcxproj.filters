@@ -74,6 +74,9 @@
     <ClCompile Include="widget\JYunSetup.cpp">
       <Filter>widget</Filter>
     </ClCompile>
+    <ClCompile Include="widget\JYunCloudDisk.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -81,6 +84,9 @@
     </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="widget\JYunSetup.h">
+      <Filter>widget</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\JYunCloudDisk.h">
       <Filter>widget</Filter>
     </ClInclude>
   </ItemGroup>

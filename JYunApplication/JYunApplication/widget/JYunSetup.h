@@ -12,7 +12,7 @@
 * @brief : …Ë÷√ΩÁ√Ê
 * @author : fsyv
 * @email : fsyv@qq.com
-* @date : 2017/12/30
+* @date : 2018/1/1
 **/
 
 #include "basic/BasicWidget.h"
