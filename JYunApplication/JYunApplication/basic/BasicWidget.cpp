@@ -2,7 +2,6 @@
 #include "BasicWidget.h"
 
 #include "exception\Exception.h"
-#include "CloseButton.h"
 
 BasicWidget::BasicWidget(QWidget *parent) :
 	QWidget(parent),
@@ -12,15 +11,8 @@ BasicWidget::BasicWidget(QWidget *parent) :
 	setWindowFlags(Qt::FramelessWindowHint);
 	setStyleSheetFromFile(":/resource/qss/style.qss");
 
-	//内存不足抛出异常
-	try {
-		m_pCloseButton = new CloseButton(this);
-	}
-	catch (const std::bad_alloc &e) {
-		throw Exception(QString("内存不足"));
-	}
-
-	connect(m_pCloseButton, &CloseButton::click, this, &BasicWidget::closeWidget);
+	m_pCloseButton = new QPushButton(this);
+	connect(m_pCloseButton, &QPushButton::clicked, this, &BasicWidget::closeWidget);
 
 	initWidget();
 	//setMouseTracking(true);
@@ -39,6 +31,7 @@ void BasicWidget::setStyleSheetFromFile(QString filename)
 	QFile file(filename);
 	if (file.open(QIODevice::ReadOnly))
 		setStyleSheet(file.readAll());
+	file.close();
 }
 
 void BasicWidget::widgetStyle()
@@ -87,7 +80,12 @@ void BasicWidget::resizeEvent(QResizeEvent * e)
 
 void BasicWidget::initWidget()
 {
+	m_pCloseButton->setObjectName("close");
+	m_pCloseButton->resize(32, 32);
 	m_pCloseButton->move(width() - m_pCloseButton->width(), 0);
+	m_pCloseButton->setIcon(QIcon(":/resource/button/close.png"));
+	m_pCloseButton->setIconSize(m_pCloseButton->size());
+	m_pCloseButton->setToolTip("关闭");
 }
 
 void BasicWidget::moveWidget(const QPoint &point)

@@ -1,6 +1,17 @@
 ﻿/*********************BasicWidget**************/
 BasicWidget{ 
-background-color: #1E90FF;
+    background-color: #1E90FF;
+}
+
+QPushButton#close{
+    background-color: transparent;
+	border-width: 1px;
+    border-radius: 20px;
+	border-color: beige;
+}
+
+QPushButton#close:hover{
+    background-color: red;
 }
 
 /*********************JYunLoginWidget**********/
@@ -150,6 +161,51 @@ QPushButton#setup_commit {
 }
 QPushButton#setup_commit:pressed{
     background-color: rgb(226, 238, 246);
+}
+
+/*********************JYunCloudDisk************/
+/*////////////////////CloudDiskTopWidget//////*/
+CloudDiskTopWidget{
+    background-color:#CFCFCF;
+}
+
+QPushButton#clouddisk_top_upload{
+    background-color: #4F94CD;
+	border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+}
+
+QPushButton#clouddisk_top_upload:hover{
+    background-color: #4876FF;
+}
+
+QPushButton#clouddisk_top_image{
+    background-color: transparent;
+}
+
+QPushButton#clouddisk_top_image:hover{
+    background-color: #757575;
+	border-width: 1px;
+    border-radius: 5px;
+    border-color: beige;
+}
+
+QPushButton#clouddisk_top_download, #clouddisk_top_share{
+    background-color: #f0f4f8;
+	border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+}
+
+QPushButton#clouddisk_top_download:hover, #clouddisk_top_share:hover{
+    background-color: #1874CD;
+}
+
+QPushButton#clouddisk_top_task{
+    background-color: #FFFFFF;
 }
 
 /*********************end**********************/

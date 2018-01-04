@@ -9,32 +9,29 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 设置界面
+* @brief : 网络云盘上方按钮界面
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/1
+* @date : 2018/1/4
 **/
 
-#include "basic/BasicWidget.h"
-class JYunSetup :
-	public BasicWidget
+class CloudDiskTopWidget : public QFrame
 {
+	Q_OBJECT
 public:
-	explicit JYunSetup();
-	~JYunSetup();
+	explicit CloudDiskTopWidget(QWidget *parent = nullptr);
+	~CloudDiskTopWidget();
 
+	void setStyleSheetFromFile(QString filename);
 protected:
 	void initWidget();
 
-	void resizeEvent(QResizeEvent *e) override;
-
 private:
-
-	QPushButton *m_pChangeAvatarButton;
-	QLineEdit *m_pUsernameLabel;
-	QLineEdit *m_pUsernameLineEdit;
-	QLineEdit *m_pUserpassLabel;
-	QLineEdit *m_pUserpassLineEdit;
-	QPushButton *m_pCommitButton;
+	QPushButton *m_pUpload;
+	QPushButton *m_pBackward;
+	QPushButton *m_pForward;
+	QPushButton *m_pRefresh; 
+	QPushButton *m_pDownload;
+	QPushButton *m_pShare;
+	QPushButton *m_pTaskList;
 };
-

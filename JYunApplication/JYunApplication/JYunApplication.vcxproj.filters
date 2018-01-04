@@ -25,6 +25,9 @@
     <Filter Include="widget">
       <UniqueIdentifier>{6b45a533-fe90-4592-bc8b-36fb64b20b16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="widget\clouddisk">
+      <UniqueIdentifier>{430a8f35-a7fe-458b-9ebe-fc271d5aace5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\qrc_JYunApplication.cpp">
@@ -53,15 +56,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_BasicWidget.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="basic\CloseButton.cpp">
-      <Filter>basic</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_CloseButton.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_CloseButton.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="widget\JYunLogin.cpp">
       <Filter>widget</Filter>
     </ClCompile>
@@ -77,6 +71,21 @@
     <ClCompile Include="widget\JYunCloudDisk.cpp">
       <Filter>widget</Filter>
     </ClCompile>
+    <ClCompile Include="widget\clouddisk\CloudDiskTopWidget.cpp">
+      <Filter>widget\clouddisk</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskTopWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CloudDiskTopWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunCloudDisk.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunCloudDisk.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -84,9 +93,6 @@
     </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="widget\JYunSetup.h">
-      <Filter>widget</Filter>
-    </ClInclude>
-    <ClInclude Include="widget\JYunCloudDisk.h">
       <Filter>widget</Filter>
     </ClInclude>
   </ItemGroup>
@@ -100,10 +106,13 @@
     <CustomBuild Include="basic\BasicWidget.h">
       <Filter>basic</Filter>
     </CustomBuild>
-    <CustomBuild Include="basic\CloseButton.h">
-      <Filter>basic</Filter>
-    </CustomBuild>
     <CustomBuild Include="widget\JYunLogin.h">
+      <Filter>widget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\clouddisk\CloudDiskTopWidget.h">
+      <Filter>widget\clouddisk</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\JYunCloudDisk.h">
       <Filter>widget</Filter>
     </CustomBuild>
   </ItemGroup>

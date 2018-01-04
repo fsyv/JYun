@@ -11,13 +11,11 @@
 *******************************************************************************
 * @brief : 所有界面的基础类
 * @author : fsyv
-* @email : fsyv@qq.com
+* @email : fsyv@gmail.com
 * @date : 2017/12/28
 **/
 
 #include <QWidget>
-
-class CloseButton;
 
 class BasicWidget : public QWidget {
 	Q_OBJECT
@@ -43,11 +41,11 @@ protected:
 	//圆角界面
 	void paintRoundRect(const int &radius = 5);
 
-private slots:
+public slots:
 	void closeWidget();
 
 private:
-	CloseButton *m_pCloseButton;
+	QPushButton *m_pCloseButton;
 	QPoint m_mousePressPoint;
 	bool m_bMousePress;
 };

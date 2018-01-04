@@ -9,27 +9,29 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 自定义关闭按钮
+* @brief : 网络云盘主界面
 * @author : fsyv
-* @email : fsyv@qq.com
-* @date : 2017/12/28
+* @email : fsyv@gmail.com
+* @date : 2018/1/1
 **/
 
-class CloseButton : public QLabel {
+#include "basic\BasicWidget.h"
+
+class CloudDiskTopWidget;
+
+class JYunCloudDisk :
+	public BasicWidget
+{
 	Q_OBJECT
 public:
-	explicit CloseButton(QWidget *parent = nullptr);
-	virtual ~CloseButton();
+	explicit JYunCloudDisk();
+	~JYunCloudDisk();
+
+protected:
+	void initWidget();
 
 private:
-	void mouseMoveEvent(QMouseEvent *e) override;
-	void mousePressEvent(QMouseEvent *e) override;
-	void mouseReleaseEvent(QMouseEvent *e) override;
-	void enterEvent(QEvent *e) override;
-	void leaveEvent(QEvent *e) override;
-
-	bool m_bFlat;
-
-signals:
-	void click();
+	QLabel *m_pTitle;
+	CloudDiskTopWidget *m_pTopWidget;
 };
+
