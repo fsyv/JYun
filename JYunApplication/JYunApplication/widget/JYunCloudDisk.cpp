@@ -2,10 +2,12 @@
 #include "JYunCloudDisk.h"
 
 #include "clouddisk\CloudDiskTopWidget.h"
+#include "clouddisk\CloudDiskLeftWidget.h"
 
 JYunCloudDisk::JYunCloudDisk():
 	m_pTitle(nullptr),
-	m_pTopWidget(nullptr)
+	m_pTopWidget(nullptr),
+	m_pLeftWidget(nullptr)
 {
 	changeWidgetSize(QSize(800, 600));
 
@@ -27,4 +29,7 @@ void JYunCloudDisk::initWidget()
 
 	m_pTopWidget = new CloudDiskTopWidget(this);
 	m_pTopWidget->move(0, 60);
+
+	m_pLeftWidget = new CloudDiskLeftWidget(this);
+	m_pLeftWidget->move(0, 110);
 }

@@ -22,7 +22,6 @@ public:
 	explicit CloudDiskTopWidget(QWidget *parent = nullptr);
 	~CloudDiskTopWidget();
 
-	void setStyleSheetFromFile(QString filename);
 protected:
 	void initWidget();
 

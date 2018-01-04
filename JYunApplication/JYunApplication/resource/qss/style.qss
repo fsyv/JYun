@@ -96,7 +96,6 @@ QPushButton#login_button:pressed{
 
 QPushButton#app_setup{
     background-color: #f0f4f8;
-
     border-width: 1px;
     border-radius: 20px;
 	border-color: beige;
@@ -205,6 +204,38 @@ QPushButton#clouddisk_top_download:hover, #clouddisk_top_share:hover{
 }
 
 QPushButton#clouddisk_top_task{
+    background-color: #FFFFFF;
+}
+
+/*////////////////////CloudDiskLeftWidget/////*/
+CloudDiskLeftWidget{
+    background-color:#E8E8E8;
+}
+
+QFrame#clouddisk_left_sort{
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+QPushButton#clouddisk_left_button{
+    background-color: #E8E8E8;
+	border-width: 1px;
+    border-radius: 0px;
+    border-color: beige;
+    font: 仿宋 20px;
+    color:#0698f5;
+}
+
+QPushButton#clouddisk_left_button:hover{
+    background-color: #0698f5;
+    color:#E8E8E8;
+}
+
+QPushButton#clouddisk_left_button:pressed{
+    background-color: #FFFFFF;
+}
+
+QPushButton#clouddisk_left_button:checked{
     background-color: #FFFFFF;
 }
 

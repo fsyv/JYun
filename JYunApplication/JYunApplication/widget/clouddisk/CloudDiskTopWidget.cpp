@@ -47,13 +47,6 @@ CloudDiskTopWidget::~CloudDiskTopWidget()
 	m_pTaskList = nullptr;
 }
 
-void CloudDiskTopWidget::setStyleSheetFromFile(QString filename)
-{
-	QFile file(filename);
-	if (file.open(QIODevice::ReadOnly))
-		setStyleSheet(file.readAll());
-}
-
 void CloudDiskTopWidget::initWidget()
 {
 	m_pUpload = new QPushButton("ÉÏ´«", this);
@@ -99,4 +92,5 @@ void CloudDiskTopWidget::initWidget()
 	m_pTaskList->setObjectName("clouddisk_top_task");
 	m_pTaskList->resize(150, 50);
 	m_pTaskList->move(650, 0);
+	m_pTaskList->setCheckable(true);
 }

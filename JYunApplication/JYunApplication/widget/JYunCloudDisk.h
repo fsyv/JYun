@@ -18,6 +18,7 @@
 #include "basic\BasicWidget.h"
 
 class CloudDiskTopWidget;
+class CloudDiskLeftWidget;
 
 class JYunCloudDisk :
 	public BasicWidget
@@ -33,5 +34,6 @@ protected:
 private:
 	QLabel *m_pTitle;
 	CloudDiskTopWidget *m_pTopWidget;
+	CloudDiskLeftWidget *m_pLeftWidget;
 };
 
