@@ -9,35 +9,19 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 网络云盘主界面
+* @brief : 网络云盘文件展示界面
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/1
+* @date : 2018/1/4
 **/
-
-#include "basic\BasicWidget.h"
-
-class CloudDiskTopWidget;
-class CloudDiskLeftWidget;
-class CloudDiskStatusBar;
-class CloudDiskFileWidget;
-
-class JYunCloudDisk :
-	public BasicWidget
+class CloudDiskFileWidget: public QFrame
 {
 	Q_OBJECT
 public:
-	explicit JYunCloudDisk();
-	~JYunCloudDisk();
+	explicit CloudDiskFileWidget(QWidget *parent = nullptr);
+	~CloudDiskFileWidget();
 
 protected:
 	void initWidget();
-
-private:
-	QLabel *m_pTitle;
-	CloudDiskTopWidget *m_pTopWidget;
-	CloudDiskLeftWidget *m_pLeftWidget;
-	CloudDiskStatusBar *m_pStatusBar;
-	CloudDiskFileWidget *m_pFileWidget;
 };
 

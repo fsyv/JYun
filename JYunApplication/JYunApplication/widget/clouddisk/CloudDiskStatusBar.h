@@ -9,35 +9,22 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : ÍøÂçÔÆÅÌÖ÷½çÃæ
+* @brief : ÍøÂçÔÆÅÌ×´Ì¬À¸
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/1
+* @date : 2018/1/4
 **/
-
-#include "basic\BasicWidget.h"
-
-class CloudDiskTopWidget;
-class CloudDiskLeftWidget;
-class CloudDiskStatusBar;
-class CloudDiskFileWidget;
-
-class JYunCloudDisk :
-	public BasicWidget
+class CloudDiskStatusBar : public QFrame
 {
-	Q_OBJECT
 public:
-	explicit JYunCloudDisk();
-	~JYunCloudDisk();
+	explicit CloudDiskStatusBar(QWidget *parent = nullptr);
+	~CloudDiskStatusBar();
 
 protected:
 	void initWidget();
 
 private:
-	QLabel *m_pTitle;
-	CloudDiskTopWidget *m_pTopWidget;
-	CloudDiskLeftWidget *m_pLeftWidget;
-	CloudDiskStatusBar *m_pStatusBar;
-	CloudDiskFileWidget *m_pFileWidget;
+	QFrame *m_pCheckBoxFrame;
+	QCheckBox *m_pSelectAll;
 };
 

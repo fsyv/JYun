@@ -3,6 +3,8 @@
 
 #include "clouddisk\CloudDiskTopWidget.h"
 #include "clouddisk\CloudDiskLeftWidget.h"
+#include "clouddisk\CloudDiskStatusBar.h"
+#include "clouddisk\CloudDiskFileWidget.h"
 
 JYunCloudDisk::JYunCloudDisk():
 	m_pTitle(nullptr),
@@ -32,4 +34,10 @@ void JYunCloudDisk::initWidget()
 
 	m_pLeftWidget = new CloudDiskLeftWidget(this);
 	m_pLeftWidget->move(0, 110);
+
+	m_pStatusBar = new CloudDiskStatusBar(this);
+	m_pStatusBar->move(100, 110);
+
+	m_pFileWidget = new CloudDiskFileWidget(this);
+	m_pFileWidget->move(100, 150);
 }

@@ -95,6 +95,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_CloudDiskLeftWidget.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="widget\clouddisk\CloudDiskStatusBar.cpp">
+      <Filter>widget\clouddisk</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\clouddisk\CloudDiskFileWidget.cpp">
+      <Filter>widget\clouddisk</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CloudDiskFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -103,6 +115,9 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="widget\JYunSetup.h">
       <Filter>widget</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\clouddisk\CloudDiskStatusBar.h">
+      <Filter>widget\clouddisk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -125,6 +140,9 @@
       <Filter>widget</Filter>
     </CustomBuild>
     <CustomBuild Include="widget\clouddisk\CloudDiskLeftWidget.h">
+      <Filter>widget\clouddisk</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\clouddisk\CloudDiskFileWidget.h">
       <Filter>widget\clouddisk</Filter>
     </CustomBuild>
   </ItemGroup>

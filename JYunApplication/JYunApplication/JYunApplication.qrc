@@ -12,5 +12,8 @@
         <file>resource/clouddisk/button/backward.png</file>
         <file>resource/clouddisk/button/forward.png</file>
         <file>resource/clouddisk/button/refresh.png</file>
+        <file>resource/clouddisk/checkbox/hovel.png</file>
+        <file>resource/clouddisk/checkbox/normal.png</file>
+        <file>resource/clouddisk/checkbox/pressed.png</file>
     </qresource>
 </RCC>

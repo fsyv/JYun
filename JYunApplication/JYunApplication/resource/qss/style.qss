@@ -233,9 +233,55 @@ QPushButton#clouddisk_left_button:hover{
 
 QPushButton#clouddisk_left_button:pressed{
     background-color: #FFFFFF;
+	color:#0698f5;
 }
 
 QPushButton#clouddisk_left_button:checked{
+    background-color: #FFFFFF;
+	color:#0698f5;
+}
+
+/*////////////////////CloudDiskStatusBar//////*/
+QFrame#clouddisk_bar{
+    background-color: #FFFFFF;
+    border-bottom: 1px solid black;
+}
+
+QFrame#clouddisk_bar_frame{
+    background-color: #FFFFFF;
+    border-right: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+QCheckBox#clouddisk_left_checkbox{
+    spacing: 5px;
+    color:white;
+}
+QCheckBox#clouddisk_left_checkbox:indicator {
+    width: 32px;
+    height: 32px;
+}
+QCheckBox#clouddisk_left_checkbox:indicator:unchecked {
+    image: url(:/resource/clouddisk/checkbox/normal.png);
+}
+QCheckBox#clouddisk_left_checkbox:indicator:unchecked:hover {
+    image: url(:/resource/clouddisk/checkbox/hovel.png);
+}
+QCheckBox#clouddisk_left_checkbox:indicator:unchecked:pressed {
+    image: url(:/resource/clouddisk/checkbox/pressed.png);
+}
+QCheckBox#clouddisk_left_checkbox:indicator:checked {
+    image: url(:/resource/clouddisk/checkbox/pressed.png);
+}
+QCheckBox#clouddisk_left_checkbox:indicator:checked:hover {
+    image: url(:/resource/clouddisk/checkbox/pressed.png);
+}
+QCheckBox#clouddisk_left_checkbox:indicator:checked:pressed {
+    image: url(:/resource/clouddisk/checkbox/pressed.png);
+}
+
+/*////////////////////CloudDiskFileWidget/////*/
+CloudDiskFileWidget{
     background-color: #FFFFFF;
 }
 
