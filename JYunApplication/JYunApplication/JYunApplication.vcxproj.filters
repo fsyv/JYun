@@ -31,6 +31,9 @@
     <Filter Include="widget\backup">
       <UniqueIdentifier>{0375e9da-10bd-4f2e-98c2-f77dc3f2b3ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="messagebox">
+      <UniqueIdentifier>{1d262154-d1cb-4b9d-a24c-7eb5e082296a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\qrc_JYunApplication.cpp">
@@ -125,6 +128,21 @@
     <ClCompile Include="widget\backup\BackupFileListWidget.cpp">
       <Filter>widget\backup</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BackupFileListWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BackupFileListWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BackupLeftWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BackupLeftWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="messagebox\JYunMessageBox.cpp">
+      <Filter>messagebox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -137,11 +155,8 @@
     <ClInclude Include="widget\clouddisk\CloudDiskStatusBar.h">
       <Filter>widget\clouddisk</Filter>
     </ClInclude>
-    <ClInclude Include="widget\backup\BackupLeftWidget.h">
-      <Filter>widget\backup</Filter>
-    </ClInclude>
-    <ClInclude Include="widget\backup\BackupFileListWidget.h">
-      <Filter>widget\backup</Filter>
+    <ClInclude Include="messagebox\JYunMessageBox.h">
+      <Filter>messagebox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +186,12 @@
     </CustomBuild>
     <CustomBuild Include="widget\JYunBackup.h">
       <Filter>widget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\backup\BackupFileListWidget.h">
+      <Filter>widget\backup</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\backup\BackupLeftWidget.h">
+      <Filter>widget\backup</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

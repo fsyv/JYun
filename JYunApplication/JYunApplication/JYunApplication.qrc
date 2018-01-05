@@ -15,5 +15,8 @@
         <file>resource/clouddisk/checkbox/hovel.png</file>
         <file>resource/clouddisk/checkbox/normal.png</file>
         <file>resource/clouddisk/checkbox/pressed.png</file>
+        <file>resource/messagebox/failed.png</file>
+        <file>resource/messagebox/prompt.png</file>
+        <file>resource/messagebox/success.png</file>
     </qresource>
 </RCC>
