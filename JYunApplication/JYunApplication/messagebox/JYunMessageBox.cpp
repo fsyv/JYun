@@ -13,6 +13,7 @@ JYunMessageBox::JYunMessageBox(const QString &string, const Type &type):
 
 	initWidget();
 
+	setWindowFlags(Qt::Dialog);
 	setWindowModality(Qt::ApplicationModal);
 }
 
@@ -34,8 +35,8 @@ JYunMessageBox::~JYunMessageBox()
 
 void JYunMessageBox::prompt(const QString & string)
 {
-	JYunMessageBox *w = new JYunMessageBox(string, Type::Prompt);
-	w->show();
+	JYunMessageBox w(string, Type::Prompt);
+	w.show();
 }
 
 void JYunMessageBox::success()
@@ -69,6 +70,7 @@ void JYunMessageBox::initWidget()
 	m_pPushButton->setObjectName("messagebox_button");
 	m_pPushButton->move(90, 130);
 	m_pPushButton->resize(120, 30);
+	connect(m_pPushButton, &QPushButton::clicked, this, &JYunMessageBox::close);
 }
 
 void JYunMessageBox::setPicture()

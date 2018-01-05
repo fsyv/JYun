@@ -326,4 +326,56 @@ BackupFileListWidget{
     background-color: #FFFFFF;
 }
 
+/*********************JYunMessageBox***********/
+QPushButton#messagebox_button {
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+    color:#0698f5;
+}
+QPushButton#messagebox_button:pressed{
+    background-color: rgb(226, 238, 246);
+}
+
+/*********************JYunSerious***********/
+QLineEdit#serious_input_left{
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+    border-color: #1E90FF;
+	color: #121212
+}
+
+QLineEdit#serious_input_right{
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+    border-color: #1E90FF;
+}
+
+QPushButton#serious_commit {
+    background-color: #CD2626;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+}
+QPushButton#serious_commit:pressed{
+    background-color: #B22222;
+}
+
+QPushButton#serious_cancel {
+    background-color: #BEBEBE;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+}
+QPushButton#serious_cancel:pressed{
+    background-color: #B7B7B7;
+}
 /*********************end**********************/

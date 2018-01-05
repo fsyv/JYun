@@ -25,14 +25,14 @@
     <Filter Include="widget">
       <UniqueIdentifier>{6b45a533-fe90-4592-bc8b-36fb64b20b16}</UniqueIdentifier>
     </Filter>
-    <Filter Include="widget\clouddisk">
-      <UniqueIdentifier>{430a8f35-a7fe-458b-9ebe-fc271d5aace5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="widget\backup">
       <UniqueIdentifier>{0375e9da-10bd-4f2e-98c2-f77dc3f2b3ee}</UniqueIdentifier>
     </Filter>
     <Filter Include="messagebox">
       <UniqueIdentifier>{1d262154-d1cb-4b9d-a24c-7eb5e082296a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="widget\backup\clouddisk">
+      <UniqueIdentifier>{430a8f35-a7fe-458b-9ebe-fc271d5aace5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,7 +78,7 @@
       <Filter>widget</Filter>
     </ClCompile>
     <ClCompile Include="widget\clouddisk\CloudDiskTopWidget.cpp">
-      <Filter>widget\clouddisk</Filter>
+      <Filter>widget\backup\clouddisk</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskTopWidget.cpp">
       <Filter>Generated Files</Filter>
@@ -93,7 +93,7 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="widget\clouddisk\CloudDiskLeftWidget.cpp">
-      <Filter>widget\clouddisk</Filter>
+      <Filter>widget\backup\clouddisk</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskLeftWidget.cpp">
       <Filter>Generated Files</Filter>
@@ -102,10 +102,10 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="widget\clouddisk\CloudDiskStatusBar.cpp">
-      <Filter>widget\clouddisk</Filter>
+      <Filter>widget\backup\clouddisk</Filter>
     </ClCompile>
     <ClCompile Include="widget\clouddisk\CloudDiskFileWidget.cpp">
-      <Filter>widget\clouddisk</Filter>
+      <Filter>widget\backup\clouddisk</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskFileWidget.cpp">
       <Filter>Generated Files</Filter>
@@ -143,6 +143,9 @@
     <ClCompile Include="messagebox\JYunMessageBox.cpp">
       <Filter>messagebox</Filter>
     </ClCompile>
+    <ClCompile Include="messagebox\JYunSerious.cpp">
+      <Filter>messagebox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -153,9 +156,12 @@
       <Filter>widget</Filter>
     </ClInclude>
     <ClInclude Include="widget\clouddisk\CloudDiskStatusBar.h">
-      <Filter>widget\clouddisk</Filter>
+      <Filter>widget\backup\clouddisk</Filter>
     </ClInclude>
     <ClInclude Include="messagebox\JYunMessageBox.h">
+      <Filter>messagebox</Filter>
+    </ClInclude>
+    <ClInclude Include="messagebox\JYunSerious.h">
       <Filter>messagebox</Filter>
     </ClInclude>
   </ItemGroup>
@@ -173,16 +179,16 @@
       <Filter>widget</Filter>
     </CustomBuild>
     <CustomBuild Include="widget\clouddisk\CloudDiskTopWidget.h">
-      <Filter>widget\clouddisk</Filter>
+      <Filter>widget\backup\clouddisk</Filter>
     </CustomBuild>
     <CustomBuild Include="widget\JYunCloudDisk.h">
       <Filter>widget</Filter>
     </CustomBuild>
     <CustomBuild Include="widget\clouddisk\CloudDiskLeftWidget.h">
-      <Filter>widget\clouddisk</Filter>
+      <Filter>widget\backup\clouddisk</Filter>
     </CustomBuild>
     <CustomBuild Include="widget\clouddisk\CloudDiskFileWidget.h">
-      <Filter>widget\clouddisk</Filter>
+      <Filter>widget\backup\clouddisk</Filter>
     </CustomBuild>
     <CustomBuild Include="widget\JYunBackup.h">
       <Filter>widget</Filter>

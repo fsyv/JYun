@@ -18,5 +18,6 @@
         <file>resource/messagebox/failed.png</file>
         <file>resource/messagebox/prompt.png</file>
         <file>resource/messagebox/success.png</file>
+        <file>resource/messagebox/sigh.png</file>
     </qresource>
 </RCC>

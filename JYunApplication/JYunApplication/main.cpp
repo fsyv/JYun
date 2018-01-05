@@ -7,6 +7,7 @@
 #include "widget/JYunCloudDisk.h"
 #include "widget/JYunBackup.h"
 #include "messagebox/JYunMessageBox.h"
+#include "messagebox/JYunSerious.h"
 
 #include "exception/Exception.h"
 
@@ -16,14 +17,14 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 
-	JYunMessageBox::prompt("buyao");
+	JYunSerious w;
 
-	//try {
-	//	w.show();
-	//}
-	//catch (Exception e) {
-	//	int b = 0;
-	//}
+	try {
+		w.show();
+	}
+	catch (Exception e) {
+		int b = 0;
+	}
 	
 	return a.exec();
 }
