@@ -17,13 +17,11 @@
 
 #include "basic/BasicWidget.h"
 
-#include <QWidget>
-
 class JYunApplication : public BasicWidget
 {
 	Q_OBJECT
 public:
-	explicit JYunApplication(BasicWidget *parent = Q_NULLPTR);
+	explicit JYunApplication();
 	~JYunApplication();
 
 protected:

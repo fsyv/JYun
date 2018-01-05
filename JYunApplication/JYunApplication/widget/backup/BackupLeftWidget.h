@@ -9,34 +9,32 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 网络云盘主界面
+* @brief : 数据备份左边按钮
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/1
+* @date : 2018/1/4
 **/
 
-#include "basic\BasicWidget.h"
-
-class CloudDiskTopWidget;
-class CloudDiskLeftWidget;
-class CloudDiskStatusBar;
-class CloudDiskFileWidget;
-
-class JYunCloudDisk : public BasicWidget
+class BackupLeftWidget : public QFrame
 {
 	Q_OBJECT
 public:
-	explicit JYunCloudDisk();
-	~JYunCloudDisk();
-
+	explicit BackupLeftWidget(QWidget *parent = nullptr);
+	~BackupLeftWidget();
 protected:
 	void initWidget();
 
 private:
-	QLabel *m_pTitle;
-	CloudDiskTopWidget *m_pTopWidget;
-	CloudDiskLeftWidget *m_pLeftWidget;
-	CloudDiskStatusBar *m_pStatusBar;
-	CloudDiskFileWidget *m_pFileWidget;
+	QPushButton *m_pRootDirectory;
+	QPushButton *m_pDelete;
+	QPushButton *m_pShare;
+
+	QFrame *m_pSortFrame;
+	QPushButton *m_pDocument;
+	QPushButton *m_pPicture;
+	QPushButton *m_pVideo;
+	QPushButton *m_pMusic;
+
+	QPushButton *m_pSetup;
 };
 

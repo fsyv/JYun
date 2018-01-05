@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "JYunApplication.h"
 
-JYunApplication::JYunApplication(BasicWidget *parent)
-	: BasicWidget(parent),
+JYunApplication::JYunApplication(): 
 	m_pSetupButton(nullptr),
 	m_pCloudDiskButton(nullptr),
 	m_pBackupButton(nullptr)

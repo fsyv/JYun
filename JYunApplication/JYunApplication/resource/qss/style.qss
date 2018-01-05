@@ -285,4 +285,45 @@ CloudDiskFileWidget{
     background-color: #FFFFFF;
 }
 
+/*********************JYunBackup***************/
+/*////////////////////BackupLeftWidget////////*/
+
+BackupLeftWidget{
+    background-color:#E8E8E8;
+}
+
+QFrame#backup_left_sort{
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+QPushButton#backup_left_button{
+    background-color: #E8E8E8;
+	border-width: 1px;
+    border-radius: 0px;
+    border-color: beige;
+    font: 仿宋 20px;
+    color:#0698f5;
+}
+
+QPushButton#backup_left_button:hover{
+    background-color: #0698f5;
+    color:#E8E8E8;
+}
+
+QPushButton#backup_left_button:pressed{
+    background-color: #FFFFFF;
+	color:#0698f5;
+}
+
+QPushButton#backup_left_button:checked{
+    background-color: #FFFFFF;
+	color:#0698f5;
+}
+
+/*////////////////////BackupFileListWidget////////*/
+BackupFileListWidget{
+    background-color: #FFFFFF;
+}
+
 /*********************end**********************/

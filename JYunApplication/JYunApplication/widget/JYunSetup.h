@@ -16,8 +16,7 @@
 **/
 
 #include "basic/BasicWidget.h"
-class JYunSetup :
-	public BasicWidget
+class JYunSetup : public BasicWidget
 {
 public:
 	explicit JYunSetup();

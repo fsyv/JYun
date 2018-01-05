@@ -5,6 +5,7 @@
 #include "widget/JYunLogin.h"
 #include "widget/JYunSetup.h"
 #include "widget/JYunCloudDisk.h"
+#include "widget/JYunBackup.h"
 
 #include "exception/Exception.h"
 
@@ -14,7 +15,7 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 
-	JYunCloudDisk w;
+	JYunBackup w;
 
 	try {
 		w.show();
