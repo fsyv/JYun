@@ -31,8 +31,14 @@
     <Filter Include="messagebox">
       <UniqueIdentifier>{1d262154-d1cb-4b9d-a24c-7eb5e082296a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="widget\backup\clouddisk">
+    <Filter Include="widget\clouddisk">
       <UniqueIdentifier>{430a8f35-a7fe-458b-9ebe-fc271d5aace5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="logic">
+      <UniqueIdentifier>{852b4384-6f81-435a-b7c2-abc7409372fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="database">
+      <UniqueIdentifier>{b9b2d0cb-7296-4c48-a242-b5fde3b1153f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,7 +84,7 @@
       <Filter>widget</Filter>
     </ClCompile>
     <ClCompile Include="widget\clouddisk\CloudDiskTopWidget.cpp">
-      <Filter>widget\backup\clouddisk</Filter>
+      <Filter>widget\clouddisk</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskTopWidget.cpp">
       <Filter>Generated Files</Filter>
@@ -93,7 +99,7 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="widget\clouddisk\CloudDiskLeftWidget.cpp">
-      <Filter>widget\backup\clouddisk</Filter>
+      <Filter>widget\clouddisk</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskLeftWidget.cpp">
       <Filter>Generated Files</Filter>
@@ -102,10 +108,10 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="widget\clouddisk\CloudDiskStatusBar.cpp">
-      <Filter>widget\backup\clouddisk</Filter>
+      <Filter>widget\clouddisk</Filter>
     </ClCompile>
     <ClCompile Include="widget\clouddisk\CloudDiskFileWidget.cpp">
-      <Filter>widget\backup\clouddisk</Filter>
+      <Filter>widget\clouddisk</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskFileWidget.cpp">
       <Filter>Generated Files</Filter>
@@ -146,6 +152,15 @@
     <ClCompile Include="messagebox\JYunSerious.cpp">
       <Filter>messagebox</Filter>
     </ClCompile>
+    <ClCompile Include="logic\Security.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="database\Database.cpp">
+      <Filter>database</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\User.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -156,13 +171,19 @@
       <Filter>widget</Filter>
     </ClInclude>
     <ClInclude Include="widget\clouddisk\CloudDiskStatusBar.h">
-      <Filter>widget\backup\clouddisk</Filter>
+      <Filter>widget\clouddisk</Filter>
     </ClInclude>
     <ClInclude Include="messagebox\JYunMessageBox.h">
       <Filter>messagebox</Filter>
     </ClInclude>
     <ClInclude Include="messagebox\JYunSerious.h">
       <Filter>messagebox</Filter>
+    </ClInclude>
+    <ClInclude Include="database\Database.h">
+      <Filter>database</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\User.h">
+      <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -179,16 +200,16 @@
       <Filter>widget</Filter>
     </CustomBuild>
     <CustomBuild Include="widget\clouddisk\CloudDiskTopWidget.h">
-      <Filter>widget\backup\clouddisk</Filter>
+      <Filter>widget\clouddisk</Filter>
     </CustomBuild>
     <CustomBuild Include="widget\JYunCloudDisk.h">
       <Filter>widget</Filter>
     </CustomBuild>
     <CustomBuild Include="widget\clouddisk\CloudDiskLeftWidget.h">
-      <Filter>widget\backup\clouddisk</Filter>
+      <Filter>widget\clouddisk</Filter>
     </CustomBuild>
     <CustomBuild Include="widget\clouddisk\CloudDiskFileWidget.h">
-      <Filter>widget\backup\clouddisk</Filter>
+      <Filter>widget\clouddisk</Filter>
     </CustomBuild>
     <CustomBuild Include="widget\JYunBackup.h">
       <Filter>widget</Filter>
@@ -198,6 +219,9 @@
     </CustomBuild>
     <CustomBuild Include="widget\backup\BackupLeftWidget.h">
       <Filter>widget\backup</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\Security.h">
+      <Filter>logic</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

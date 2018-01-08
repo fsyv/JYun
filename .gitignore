@@ -53,3 +53,5 @@ dkms.conf
 /JYunApplication/x64
 /JYunApplication/JYunApplication/x64
 /JYunApplication/JYunApplication/GeneratedFiles
+/JYunServer/.idea
+/JYunApplication/.vs

@@ -9,3 +9,5 @@
 #include <QIODevice>
 #include <QMouseEvent>
 #include <QPaintEvent>
+#include <QSqlQuery>
+#include <QSqlError>

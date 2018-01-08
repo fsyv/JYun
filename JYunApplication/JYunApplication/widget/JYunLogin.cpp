@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "JYunLogin.h"
 
+#include "database/Database.h"
 
 JYunLogin::JYunLogin() :
 	m_pUsernameInput(nullptr),
@@ -11,7 +12,7 @@ JYunLogin::JYunLogin() :
 {
 	changeWidgetSize(QSize(300, 400));
 	
-	initWidget();
+	init();
 }
 
 
@@ -38,6 +39,19 @@ JYunLogin::~JYunLogin()
 	m_pLoginButton = nullptr;
 }
 
+void JYunLogin::init()
+{
+	initWidget();
+
+	conn();
+
+	initData();
+}
+
+/***************************************************
+*界面初始化
+****************************************************
+*/
 void JYunLogin::initWidget()
 {
 	m_pUsernameInput = new QComboBox(this);
@@ -70,9 +84,79 @@ void JYunLogin::initWidget()
 	m_pLoginButton->move(60, 300);
 }
 
+/***************************************************
+*绑定信号与槽
+****************************************************
+*/
+void JYunLogin::conn()
+{
+	//用户名输入栏事件绑定
+	connect(m_pUsernameInput->lineEdit(), &QLineEdit::textChanged, m_pUserpassInput, &QLineEdit::clear);
+
+	//记住密码按钮事件绑定
+	connect(m_pRememberPass, &QCheckBox::clicked, this, &JYunLogin::rememberPass);
+
+	//自动登录按钮事件绑定
+	connect(m_pAutoLogin, &QCheckBox::clicked, this, &JYunLogin::autoLogin);
+
+	//登录按钮事件绑定
+	connect(m_pLoginButton, &QPushButton::clicked, this, &JYunLogin::login);
+}
+
+/***************************************************
+*初始化数据
+****************************************************
+*/
+void JYunLogin::initData()
+{
+	Database db;
+
+	QStringList users = db.getUserLists();
+	m_pUsernameInput->addItems(users);
+
+	//获取自动登录状态
+	bool autoLogin = db.isAutoLogin();
+	if (autoLogin)
+	{
+		m_pAutoLogin->setDown(true);
+		login(true);
+	}
+}
+
+/***************************************************
+*重写父类resizeEvent
+*绘制圆角矩形
+****************************************************
+*/
 void JYunLogin::resizeEvent(QResizeEvent * e)
 {
 	paintRoundRect();
 
 	BasicWidget::resizeEvent(e);
+}
+
+/***************************************************
+*记住密码按钮响应函数
+****************************************************
+*/
+void JYunLogin::rememberPass(bool checked)
+{
+
+}
+
+/***************************************************
+*自动登录按钮响应函数
+****************************************************
+*/
+void JYunLogin::autoLogin(bool checked)
+{
+}
+
+/***************************************************
+*登录按钮的响应函数
+****************************************************
+*/
+void JYunLogin::login(bool checked)
+{
+
 }

@@ -1,30 +1,56 @@
 #pragma execution_character_set("utf-8")
 
-#include "stdafx.h"
-#include "widget/JYunApplication.h"
-#include "widget/JYunLogin.h"
-#include "widget/JYunSetup.h"
-#include "widget/JYunCloudDisk.h"
-#include "widget/JYunBackup.h"
-#include "messagebox/JYunMessageBox.h"
-#include "messagebox/JYunSerious.h"
+/******************************************************************************
+*                 JJJJJJJ   YY    YY                                          *
+*                   JJJ      YY  YY                                           *
+*                   JJJ       YYYY     u      u    n  nnnn                    *
+*                   JJJ        YY      u     uu    n n   nn                   *
+*             JJJ  JJJ         YY      uu   u u    nn     n                   *
+*               JJJJJ          YY       uuuu  u    n      n                   *
+*******************************************************************************
+* @brief : 
+* @author : fsyv
+* @email : fsyv@gmail.com
+* @date : 2017/12/27
+**/
 
+#include "stdafx.h"
+
+#include "widget/JYunLogin.h"
 #include "exception/Exception.h"
+#include "logic/Security.h"
+#include "messagebox/JYunSerious.h"
 
 #include <QtWidgets/QApplication>
 
+void finish();
+
 int main(int argc, char *argv[])
 {
+	//注册一个清理函数
+	atexit(finish);
+
 	QApplication a(argc, argv);
 
-	JYunSerious w;
-
+	Security security;
+	JYunLogin w;
+	JYunSerious recall;
 	try {
+		security.check();
 		w.show();
 	}
 	catch (Exception e) {
-		int b = 0;
+		recall.show();
 	}
 	
 	return a.exec();
+}
+
+/*********************************************
+* 所有任务结束之后做清理工作
+**********************************************
+*/
+void finish()
+{
+	
 }
