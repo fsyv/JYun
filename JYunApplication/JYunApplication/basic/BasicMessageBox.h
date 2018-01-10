@@ -9,41 +9,36 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 提示框
+* @brief : 提示框的基类
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/5
+* @date : 2018/1/9
 **/
 
-#include "basic\BasicMessageBox.h"
+#include <QDialog>
 
-class JYunMessageBox : public BasicMessageBox
+class BasicMessageBox : public QDialog
 {
+	Q_OBJECT
 public:
-	enum class Type {
-		Prompt = 0,		//提示
-		Success,		//成功
-		Failed			//失败
-	};
-public:
-	JYunMessageBox(const QString &string, const Type &type);
-	~JYunMessageBox();
+	explicit BasicMessageBox(QWidget *parent = nullptr);
+	~BasicMessageBox();
 
-	static void prompt(const QString &string);
-	static void success();
-	static void failed();
+	void setStyleSheetFromFile(QString filename);
 
 protected:
-	void initWidget();
-	void setPicture();
-	//void resizeEvent(QResizeEvent *e) override;
+	void mouseMoveEvent(QMouseEvent *e) override;
+	void mousePressEvent(QMouseEvent *e) override;
+	void mouseReleaseEvent(QMouseEvent *e) override;
+
+	void moveWidget(const QPoint &point);
+	void changeWidgetSize(const QSize &size);
+	//圆角界面
+	void paintRoundRect(const int &radius = 5);
 
 private:
-	QString m_stInfo;
-	Type m_eType;
-
-	QLabel *m_pPicture;
-	QLabel *m_pText;
-	QPushButton *m_pPushButton;
+	QPushButton * m_pCloseButton;
+	QPoint m_mousePressPoint;
+	bool m_bMousePress;
 };
 

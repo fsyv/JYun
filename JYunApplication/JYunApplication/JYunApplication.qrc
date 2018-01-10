@@ -19,5 +19,8 @@
         <file>resource/messagebox/prompt.png</file>
         <file>resource/messagebox/success.png</file>
         <file>resource/messagebox/sigh.png</file>
+        <file>resource/qss/BasicMessageBox.qss</file>
+        <file>resource/messagebox/loading.gif</file>
+        <file>resource/image/transparent.png</file>
     </qresource>
 </RCC>

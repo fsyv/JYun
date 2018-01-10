@@ -26,8 +26,6 @@ public:
 	void setStyleSheetFromFile(QString filename);
 
 protected:
-	//界面的布局
-	virtual void widgetStyle();
 
 	void mouseMoveEvent(QMouseEvent *e) override;
 	void mousePressEvent(QMouseEvent *e) override;

@@ -23,10 +23,21 @@ public:
 	Database();
 	~Database();
 
+	//设置记住密码
+	void setRememberPass(QString username, bool status);
+	//设置自动登录
+	void setAutoLogin(QString username, bool status);
+	//保存用户名密码
+	void setUsernamepass(QString username, QString userpass);
+
 	//从本地数据库获取用户列表
 	QStringList getUserLists();
 	//从本地数据库获取是否自动登录
-	bool isAutoLogin();
+	bool isAutoLogin(QString username);
+	//从本地数据库获取是否记住密码
+	bool isRememberPass(QString username);
+	//从本地数据库通过帐号获取密码
+	QString getPassByUsername(QString username);
 private:
 	QSqlDatabase db;
 };

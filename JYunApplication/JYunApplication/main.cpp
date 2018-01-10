@@ -19,7 +19,10 @@
 #include "widget/JYunLogin.h"
 #include "exception/Exception.h"
 #include "logic/Security.h"
-#include "messagebox/JYunSerious.h"
+#include "widget/JYunSerious.h"
+
+#include "messagebox/JYunMessageBox.h"
+#include "messagebox/LoginMessageBox.h"
 
 #include <QtWidgets/QApplication>
 
@@ -31,6 +34,9 @@ int main(int argc, char *argv[])
 	atexit(finish);
 
 	QApplication a(argc, argv);
+
+	//LoginMessageBox w;
+	//w.show();
 
 	Security security;
 	JYunLogin w;

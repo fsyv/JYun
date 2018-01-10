@@ -326,19 +326,6 @@ BackupFileListWidget{
     background-color: #FFFFFF;
 }
 
-/*********************JYunMessageBox***********/
-QPushButton#messagebox_button {
-    background-color: #f0f4f8;
-    border-width: 1px;
-    border-radius: 15px;
-    border-color: beige;
-    font: 仿宋 20px;
-    color:#0698f5;
-}
-QPushButton#messagebox_button:pressed{
-    background-color: rgb(226, 238, 246);
-}
-
 /*********************JYunSerious***********/
 QLineEdit#serious_input_left{
     background-color: #f0f4f8;

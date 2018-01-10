@@ -34,10 +34,6 @@ void BasicWidget::setStyleSheetFromFile(QString filename)
 	file.close();
 }
 
-void BasicWidget::widgetStyle()
-{
-}
-
 void BasicWidget::mouseMoveEvent(QMouseEvent * e)
 {
 	if (m_bMousePress)

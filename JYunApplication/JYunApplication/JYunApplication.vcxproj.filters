@@ -149,9 +149,6 @@
     <ClCompile Include="messagebox\JYunMessageBox.cpp">
       <Filter>messagebox</Filter>
     </ClCompile>
-    <ClCompile Include="messagebox\JYunSerious.cpp">
-      <Filter>messagebox</Filter>
-    </ClCompile>
     <ClCompile Include="logic\Security.cpp">
       <Filter>logic</Filter>
     </ClCompile>
@@ -160,6 +157,27 @@
     </ClCompile>
     <ClCompile Include="logic\User.cpp">
       <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\JYunSerious.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="basic\BasicMessageBox.cpp">
+      <Filter>basic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BasicMessageBox.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BasicMessageBox.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="messagebox\LoginMessageBox.cpp">
+      <Filter>messagebox</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_LoginMessageBox.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_LoginMessageBox.cpp">
+      <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,14 +194,14 @@
     <ClInclude Include="messagebox\JYunMessageBox.h">
       <Filter>messagebox</Filter>
     </ClInclude>
-    <ClInclude Include="messagebox\JYunSerious.h">
-      <Filter>messagebox</Filter>
-    </ClInclude>
     <ClInclude Include="database\Database.h">
       <Filter>database</Filter>
     </ClInclude>
     <ClInclude Include="logic\User.h">
       <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\JYunSerious.h">
+      <Filter>widget</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +240,12 @@
     </CustomBuild>
     <CustomBuild Include="logic\Security.h">
       <Filter>logic</Filter>
+    </CustomBuild>
+    <CustomBuild Include="basic\BasicMessageBox.h">
+      <Filter>basic</Filter>
+    </CustomBuild>
+    <CustomBuild Include="messagebox\LoginMessageBox.h">
+      <Filter>messagebox</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

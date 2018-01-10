@@ -1,0 +1,43 @@
+﻿/*********************BasicMessageBox**********/
+BasicMessageBox{
+    background-color: #0099CC;
+}
+
+/*********************JYunMessageBox***********/
+QPushButton#messagebox_button {
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+    color:#0698f5;
+}
+QPushButton#messagebox_button:pressed{
+    background-color: rgb(226, 238, 246);
+}
+
+/*********************LoginMessageBox**********/
+LoginMessageBox{
+    border: none;
+    background-color: #1E90FF
+}
+
+QFrame#login_messagebox_frame{
+    background-color: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 #1874CD, stop:1 #1E90FF);
+	border: 1px solid #1E90FF;
+	border-radius:25px;
+}
+
+QPushButton#login_messagebox_button {
+    background-color: #BEBEBE;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+    color:#0698f5;
+}
+QPushButton#login_messagebox_button:pressed{
+    background-color: #B7B7B7;
+}
+
+/*********************end**********************/

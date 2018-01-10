@@ -9,41 +9,44 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 提示框
+* @brief : 登录提示框
 * @author : fsyv
 * @email : fsyv@gmail.com
 * @date : 2018/1/5
 **/
-
 #include "basic\BasicMessageBox.h"
 
-class JYunMessageBox : public BasicMessageBox
+class LoginMessageBox : public BasicMessageBox
 {
+	Q_OBJECT
 public:
-	enum class Type {
-		Prompt = 0,		//提示
-		Success,		//成功
-		Failed			//失败
-	};
-public:
-	JYunMessageBox(const QString &string, const Type &type);
-	~JYunMessageBox();
+	explicit LoginMessageBox();
+	~LoginMessageBox();
 
-	static void prompt(const QString &string);
-	static void success();
-	static void failed();
+	//登录确认等待时间
+	static bool waitForConfirm(int msec);
+	//返回结果
+	bool isLogin();
 
 protected:
+	//屏蔽拖动事件
+	///////////////////////////////////////////////////
+	void mouseMoveEvent(QMouseEvent *e) override;
+	void mousePressEvent(QMouseEvent *e) override;
+	void mouseReleaseEvent(QMouseEvent *e) override;
+	///////////////////////////////////////////////////
+
 	void initWidget();
-	void setPicture();
-	//void resizeEvent(QResizeEvent *e) override;
+	void conn();
+	void startTimer(int msec);
+	void stopTimer();
 
+	void timerEvent(QTimerEvent *e)override;
 private:
-	QString m_stInfo;
-	Type m_eType;
-
+	QFrame *m_pMainFrame;
 	QLabel *m_pPicture;
-	QLabel *m_pText;
-	QPushButton *m_pPushButton;
+	QPushButton *m_pCancel;
+	bool m_bRet;
+	int m_iTimerID;
 };
 

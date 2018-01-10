@@ -11,3 +11,4 @@
 #include <QPaintEvent>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QMovie>

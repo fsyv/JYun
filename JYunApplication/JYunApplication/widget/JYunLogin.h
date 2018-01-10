@@ -31,9 +31,27 @@ protected:
 	void conn();
 	//初始化数据
 	void initData();
+	//设置记住密码按钮状态
+	void setRemberPass(bool status);
+	//设置自动登录按钮就状态
+	void setAutoLogin(bool status);
+	//保存密码
+	void keepUserpass(QString username, QString userpass = QString());
+	//用户配置
+	void userConfig();
+	//登录成功
+	void loginSuccess();
+	//登录失败
+	void loginFailed();
+	//密码输入栏得到焦点
+	void passInputFocusIn();
+	//密码输入栏失去焦点
+	void passInputFocusOut();
 
 	//重写父类resizeEvent
 	void resizeEvent(QResizeEvent *e) override;
+	//重写父类事件过滤器
+	bool eventFilter(QObject *object, QEvent *e) override;
 
 protected slots:
     //记住密码按钮响应函数
@@ -41,7 +59,8 @@ protected slots:
 	//自动登录按钮响应函数
 	void autoLogin(bool checked);
     //登录按钮的响应函数
-    void login(bool checked);
+    void login();
+
 
 private:
 	QComboBox *m_pUsernameInput;
@@ -49,5 +68,10 @@ private:
 	QCheckBox *m_pRememberPass;
 	QCheckBox *m_pAutoLogin;
 	QPushButton *m_pLoginButton;
+
+	//假密码
+	QString m_stFakePass;
+	//真密码
+	QString m_stRealPass;
 };
 

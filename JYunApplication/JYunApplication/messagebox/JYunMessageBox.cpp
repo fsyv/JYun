@@ -13,7 +13,6 @@ JYunMessageBox::JYunMessageBox(const QString &string, const Type &type):
 
 	initWidget();
 
-	setWindowFlags(Qt::Dialog);
 	setWindowModality(Qt::ApplicationModal);
 }
 
@@ -37,18 +36,21 @@ void JYunMessageBox::prompt(const QString & string)
 {
 	JYunMessageBox w(string, Type::Prompt);
 	w.show();
+	w.exec();
 }
 
 void JYunMessageBox::success()
 {
 	JYunMessageBox w("操作成功", Type::Success);
 	w.show();
+	w.exec();
 }
 
 void JYunMessageBox::failed()
 {
 	JYunMessageBox w("操作失败", Type::Failed);
 	w.show();
+	w.exec();
 }
 
 void JYunMessageBox::initWidget()
@@ -64,9 +66,9 @@ void JYunMessageBox::initWidget()
 	m_pText->move(110, 52);
 	m_pText->resize(190, 48);
 	m_pText->setAlignment(Qt::AlignCenter);
-	m_pText->setFont(QFont("方正舒体", 15));
+	m_pText->setFont(QFont("方正舒体", 10));
 
-	m_pPushButton = new QPushButton("确定", this);
+	m_pPushButton = new QPushButton("确  定", this);
 	m_pPushButton->setObjectName("messagebox_button");
 	m_pPushButton->move(90, 130);
 	m_pPushButton->resize(120, 30);
@@ -88,9 +90,9 @@ void JYunMessageBox::setPicture()
 	}
 }
 
-void JYunMessageBox::resizeEvent(QResizeEvent * e)
-{
-	paintRoundRect();
-
-	BasicWidget::resizeEvent(e);
-}
+//void JYunMessageBox::resizeEvent(QResizeEvent * e)
+//{
+//	paintRoundRect();
+//
+//	BasicWidget::resizeEvent(e);
+//}
