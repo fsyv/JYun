@@ -37,12 +37,16 @@ protected:
 	void setAutoLogin(bool status);
 	//保存密码
 	void keepUserpass(QString username, QString userpass = QString());
+	//用过用户名获取用户配置
+	void getUserConfigByUsername(QString username);
 	//用户配置
 	void userConfig();
 	//登录成功
 	void loginSuccess();
 	//登录失败
 	void loginFailed();
+	//用户名输入栏失去焦点
+	void usernameInputFocuOut();
 	//密码输入栏得到焦点
 	void passInputFocusIn();
 	//密码输入栏失去焦点
@@ -54,8 +58,14 @@ protected:
 	bool eventFilter(QObject *object, QEvent *e) override;
 
 protected slots:
-    //记住密码按钮响应函数
-    void rememberPass(bool checked);
+    //用户名输入栏改变响应函数
+    void usernameInputChange();
+	//用户名输入栏回车按下事件响应函数
+	void usernameReturnPressed();
+	//用户名下拉框索引改变响应函数
+	void usernameInputIndexChanged(QString username);
+	//用户密码输入栏回车按下事件响应函数
+	void userpassReturnPressed();
 	//自动登录按钮响应函数
 	void autoLogin(bool checked);
     //登录按钮的响应函数

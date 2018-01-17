@@ -9,18 +9,21 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 安全检测
+* @brief : 工具类，提供公共使用方法
 * @author : fsyv
 * @email : fsyv@gmail.com
 * @date : 2018/1/8
 **/
 
-class Security
+class JYunTools
 {
 public:
-	Security();
-	virtual ~Security();
+	JYunTools();
+	virtual ~JYunTools();
 
-	void check();
+	//json数组转换为Map
+	static QMap<QString, QString> jsonToMap(const QByteArray &bytearray);
+	//Map转换为json数组
+	static QByteArray mapToJson(const QMap<QString, QString> &map);
 };
 

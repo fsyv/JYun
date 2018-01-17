@@ -6,9 +6,17 @@
 #include <QFile>
 #include <QPixmap>
 #include <QResizeEvent>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include <QIODevice>
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMovie>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QUrl>

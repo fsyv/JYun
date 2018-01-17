@@ -23,10 +23,8 @@ public:
 	Database();
 	~Database();
 
-	//设置记住密码
-	void setRememberPass(QString username, bool status);
-	//设置自动登录
-	void setAutoLogin(QString username, bool status);
+	//设置登录时候用户配置
+	void setLoginConfig(QString username, bool rememberpass, bool autologin);
 	//保存用户名密码
 	void setUsernamepass(QString username, QString userpass);
 

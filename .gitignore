@@ -55,3 +55,4 @@ dkms.conf
 /JYunApplication/JYunApplication/GeneratedFiles
 /JYunServer/.idea
 /JYunApplication/.vs
+/JYunServer/__pycache__/*.pyc

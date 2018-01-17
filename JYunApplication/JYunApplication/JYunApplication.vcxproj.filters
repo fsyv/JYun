@@ -40,6 +40,9 @@
     <Filter Include="database">
       <UniqueIdentifier>{b9b2d0cb-7296-4c48-a242-b5fde3b1153f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="logic\network">
+      <UniqueIdentifier>{cacb30a4-ebaa-4ecf-b480-41ed48e4f0d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\qrc_JYunApplication.cpp">
@@ -179,6 +182,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_LoginMessageBox.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="logic\network\JYunHttp.cpp">
+      <Filter>logic\network</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunHttp.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunHttp.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\JYunTools.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -202,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="widget\JYunSerious.h">
       <Filter>widget</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\JYunTools.h">
+      <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -246,6 +264,9 @@
     </CustomBuild>
     <CustomBuild Include="messagebox\LoginMessageBox.h">
       <Filter>messagebox</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\network\JYunHttp.h">
+      <Filter>logic\network</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

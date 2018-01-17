@@ -4,6 +4,8 @@
 #include "database/Database.h"
 #include "messagebox/JYunMessageBox.h"
 #include "messagebox/LoginMessageBox.h"
+#include "logic/network/JYunHttp.h"
+#include "logic/JYunTools.h"
 
 JYunLogin::JYunLogin() :
 	m_pUsernameInput(nullptr),
@@ -62,6 +64,7 @@ void JYunLogin::initWidget()
 	m_pUsernameInput->move(60, 150);
 	m_pUsernameInput->setEditable(true);
 	m_pUsernameInput->lineEdit()->setPlaceholderText(" 请输入帐号");
+	m_pUsernameInput->installEventFilter(this);
 
 	m_pUserpassInput = new QLineEdit(this);
 	m_pUserpassInput->setObjectName("login_userpass");
@@ -94,15 +97,15 @@ void JYunLogin::initWidget()
 void JYunLogin::conn()
 {
 	//用户名输入栏事件绑定
-	connect(m_pUsernameInput->lineEdit(), &QLineEdit::textChanged, m_pUserpassInput, &QLineEdit::clear);
+	connect(m_pUsernameInput->lineEdit(), &QLineEdit::textChanged, this, &JYunLogin::usernameInputChange);
+	connect(m_pUsernameInput->lineEdit(), &QLineEdit::returnPressed, this, &JYunLogin::usernameReturnPressed);
+	connect(m_pUsernameInput, SIGNAL(currentIndexChanged(QString)), this, SLOT(usernameInputIndexChanged(QString)));
 
 	//密码输入栏事件绑定
+	connect(m_pUserpassInput, &QLineEdit::returnPressed, this, &JYunLogin::userpassReturnPressed);
 
-	////记住密码按钮事件绑定
-	//connect(m_pRememberPass, &QCheckBox::clicked, this, &JYunLogin::rememberPass);
-
-	////自动登录按钮事件绑定
-	//connect(m_pAutoLogin, &QCheckBox::clicked, this, &JYunLogin::autoLogin);
+	//自动登录按钮事件绑定
+	connect(m_pAutoLogin, &QCheckBox::clicked, this, &JYunLogin::autoLogin);
 
 	//登录按钮事件绑定
 	connect(m_pLoginButton, &QPushButton::clicked, this, &JYunLogin::login);
@@ -119,23 +122,15 @@ void JYunLogin::initData()
 	Database db;
 
 	QStringList users = db.getUserLists();
+	if (users.isEmpty())
+		return;
+
 	m_pUsernameInput->addItems(users);
 
-	QString username = m_pUsernameInput->lineEdit()->text();
+	getUserConfigByUsername(m_pUsernameInput->lineEdit()->text());
 	
-	if (!username.isEmpty())
-	{
-		//获取自动登录状态
-		bool autoLogin = db.isAutoLogin(username);
-		//获取是否记住密码
-		bool rememberPass = db.isRememberPass(username);
-
-		setRemberPass(rememberPass);
-		setAutoLogin(autoLogin);
-
-		if (autoLogin)
-			login();
-	}
+	if (m_pAutoLogin->isChecked())
+		login();
 }
 
 /***************************************************
@@ -144,8 +139,7 @@ void JYunLogin::initData()
 */
 void JYunLogin::setRemberPass(bool status)
 {
-	m_pRememberPass->setDown(status);
-
+	m_pRememberPass->setChecked(status);
 	if (status)
 		m_pUserpassInput->setText(m_stFakePass);
 }
@@ -156,7 +150,7 @@ void JYunLogin::setRemberPass(bool status)
 */
 void JYunLogin::setAutoLogin(bool status)
 {
-	m_pAutoLogin->setDown(status);
+	m_pAutoLogin->setChecked(status);
 }
 
 /***************************************************
@@ -170,6 +164,23 @@ void JYunLogin::keepUserpass(QString username, QString userpass)
 }
 
 /***************************************************
+*用过用户名获取用户配置
+****************************************************
+*/
+void JYunLogin::getUserConfigByUsername(QString username)
+{
+	Database db;
+	//获取自动登录状态
+	bool autoLogin = db.isAutoLogin(username);
+	//获取是否记住密码
+	bool rememberPass = db.isRememberPass(username);
+
+	setRemberPass(rememberPass);
+	setAutoLogin(autoLogin);
+	m_stRealPass = db.getPassByUsername(username);
+}
+
+/***************************************************
 *用户配置
 ****************************************************
 */
@@ -178,14 +189,16 @@ void JYunLogin::userConfig()
 	{
 		Database db;
 		//获取是否记住密码
-		db.setRememberPass(m_pUsernameInput->lineEdit()->text(), m_pRememberPass->isChecked());
 		//获取自动登录状态
-		db.setAutoLogin(m_pUsernameInput->lineEdit()->text(), m_pAutoLogin->isChecked());
+		db.setLoginConfig(m_pUsernameInput->lineEdit()->text(), 
+			m_pRememberPass->isChecked(), 
+			m_pAutoLogin->isChecked()
+		);
 	}
 
 	//如果要记住密码，保存到本地数据库
 	if (m_pRememberPass->isChecked())
-		keepUserpass(m_pUsernameInput->lineEdit()->text(), m_pUserpassInput->text());
+		keepUserpass(m_pUsernameInput->lineEdit()->text(), m_stRealPass);
 	else
 		keepUserpass(m_pUsernameInput->lineEdit()->text());
 }
@@ -206,6 +219,15 @@ void JYunLogin::loginSuccess()
 */
 void JYunLogin::loginFailed()
 {
+}
+
+/***************************************************
+*用户名输入栏失去焦点
+****************************************************
+*/
+void JYunLogin::usernameInputFocuOut()
+{
+	getUserConfigByUsername(m_pUsernameInput->lineEdit()->text());
 }
 
 /***************************************************
@@ -253,17 +275,57 @@ bool JYunLogin::eventFilter(QObject * object, QEvent * e)
 		else if (e->type() == QEvent::FocusOut)
 			passInputFocusOut();
 	}
+	else if (object == m_pUsernameInput)
+	{
+		if (e->type() == QEvent::FocusOut)
+			usernameInputFocuOut();
+	}
 
 	return BasicWidget::eventFilter(object, e);
 }
 
 /***************************************************
-*记住密码按钮响应函数
+*用户名输入栏改变响应函数
 ****************************************************
 */
-void JYunLogin::rememberPass(bool checked)
+void JYunLogin::usernameInputChange()
 {
+	m_pUserpassInput->clear();
+	m_stRealPass.clear();
+	m_pRememberPass->setChecked(false);
+	m_pAutoLogin->setChecked(false);
+}
 
+/***************************************************
+*用户名输入栏回车按下事件响应函数
+****************************************************
+*/
+void JYunLogin::usernameReturnPressed()
+{
+	if (m_stRealPass.isEmpty() || m_pUserpassInput->text().isEmpty())
+		m_pUserpassInput->setFocus();
+}
+
+/***************************************************
+*用户名下拉框索引改变响应函数
+****************************************************
+*/
+void JYunLogin::usernameInputIndexChanged(QString username)
+{
+	getUserConfigByUsername(username);
+}
+
+/***************************************************
+*用户密码输入栏回车按下事件响应函数
+****************************************************
+*/
+void JYunLogin::userpassReturnPressed()
+{
+	if (!m_pUserpassInput->text().isEmpty())
+	{
+		passInputFocusOut();
+		login();
+	}
 }
 
 /***************************************************
@@ -272,8 +334,8 @@ void JYunLogin::rememberPass(bool checked)
 */
 void JYunLogin::autoLogin(bool checked)
 {
-	//Database db;
-	//db.setAutoLogin(checked);
+	if (checked)
+		m_pRememberPass->setChecked(checked);
 }
 
 /***************************************************
@@ -294,4 +356,24 @@ void JYunLogin::login()
 	//窗口返回结果
 	//如果没有取消则发送登录请求
 	bool ret = LoginMessageBox::waitForConfirm(3000);
+
+	if (!ret)
+		return;
+
+	QString username = m_pUsernameInput->lineEdit()->text();
+
+	JYunHttp http;
+	QMap<QString, QString>  result = http.login(username, m_stRealPass);
+
+	if (result.value("login_result") == QString("True"))
+	{
+		//登录成功
+		loginSuccess();
+	}
+	else
+	{
+		//登录失败
+		JYunMessageBox::prompt(result.value("login_error"));
+		loginFailed();
+	}
 }
