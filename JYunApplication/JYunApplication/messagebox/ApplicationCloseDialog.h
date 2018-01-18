@@ -9,42 +9,46 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 提示框
+* @brief : application界面退出按钮按下提示框
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/5
+* @date : 2018/1/18
 **/
 
 #include "basic\BasicMessageBox.h"
 
-class JYunMessageBox : public BasicMessageBox
+class ApplicationCloseDialog : public BasicMessageBox
 {
 	Q_OBJECT
 public:
 	enum class Type {
-		Prompt = 0,		//提示
-		Success,		//成功
-		Failed			//失败
+		Close = 0,		//关闭对话框
+		Logout,			//注销
+		Hide,			//最小化
+		Quit			//退出
 	};
 public:
-	JYunMessageBox(const QString &string, const Type &type);
-	~JYunMessageBox();
+	ApplicationCloseDialog();
+	~ApplicationCloseDialog();
 
-	static void prompt(const QString &string);
-	static void success();
-	static void failed();
+	Type getType();
+
+	static Type waitForAnswer();
 
 protected:
 	void initWidget();
-	void setPicture();
-	//void resizeEvent(QResizeEvent *e) override;
+	void conn();
+
+	void init();
 
 private:
-	QString m_stInfo;
 	Type m_eType;
+	QPushButton * m_pCloseButton;
 
-	QLabel *m_pPicture;
-	QLabel *m_pText;
-	QPushButton *m_pPushButton;
+	QLabel * m_pText;
+
+	QPushButton *m_pLogoutButton;
+	QPushButton *m_pHideButton;
+	QPushButton *m_pQuitButton;
 };
 

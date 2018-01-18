@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "BasicWidget.h"
 
-#include "exception\Exception.h"
+#include "exception/Exception.h"
 
 BasicWidget::BasicWidget(QWidget *parent) :
 	QWidget(parent),
@@ -74,8 +74,15 @@ void BasicWidget::resizeEvent(QResizeEvent * e)
 	QWidget::resizeEvent(e);
 }
 
+bool BasicWidget::nativeEvent(const QByteArray & eventType, void * message, long * result)
+{
+	return QWidget::nativeEvent(eventType, message, result);
+}
+
 void BasicWidget::initWidget()
 {
+	installEventFilter(this);
+
 	m_pCloseButton->setObjectName("close");
 	m_pCloseButton->resize(32, 32);
 	m_pCloseButton->move(width() - m_pCloseButton->width(), 0);

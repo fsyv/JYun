@@ -21,14 +21,24 @@ class JYunApplication : public BasicWidget
 {
 	Q_OBJECT
 public:
-	explicit JYunApplication();
+	explicit JYunApplication(QString username);
 	~JYunApplication();
 
 protected:
 	void initWidget();
+	void conn();
+	void initData();
+	void init();
 
 	void resizeEvent(QResizeEvent *e) override;
 	void setAvatar(const  QPixmap &pixmap);
+
+	void closeEvent(QCloseEvent *e) override;
+
+public slots:
+    void startJYunSetup();
+	void startJYunCloudDisk();
+	void startJYunBackup();
 
 private:
 	QPushButton *m_pSetupButton;

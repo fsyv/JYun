@@ -4,11 +4,12 @@
 
 BasicMessageBox::BasicMessageBox(QWidget *parent):
 	QDialog(parent),
-	m_pCloseButton(nullptr),
 	m_bMousePress(false)
 {
 	setWindowFlags(Qt::FramelessWindowHint);
 	setStyleSheetFromFile(":/resource/qss/BasicMessageBox.qss");
+
+	setWindowModality(Qt::ApplicationModal);
 }
 
 

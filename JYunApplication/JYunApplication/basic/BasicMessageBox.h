@@ -37,7 +37,6 @@ protected:
 	void paintRoundRect(const int &radius = 5);
 
 private:
-	QPushButton * m_pCloseButton;
 	QPoint m_mousePressPoint;
 	bool m_bMousePress;
 };

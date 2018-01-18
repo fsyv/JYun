@@ -21,10 +21,9 @@
 #include "logic/Security.h"
 #include "widget/JYunSerious.h"
 
-#include "messagebox/JYunMessageBox.h"
-#include "messagebox/LoginMessageBox.h"
-
 #include <QtWidgets/QApplication>
+
+#include "widget\JYunApplication.h"
 
 void finish();
 
@@ -35,19 +34,19 @@ int main(int argc, char *argv[])
 
 	QApplication a(argc, argv);
 
-	//LoginMessageBox w;
-	//w.show();
+	JYunApplication w(QString("fsyv"));
+	w.show();
 
-	Security security;
-	JYunLogin w;
-	JYunSerious recall;
-	try {
-		security.check();
-		w.show();
-	}
-	catch (Exception e) {
-		recall.show();
-	}
+	//Security security;
+	//JYunLogin w;
+	//JYunSerious recall;
+	//try {
+	//	security.check();
+	//	w.show();
+	//}
+	//catch (Exception e) {
+	//	recall.show();
+	//}
 	
 	return a.exec();
 }

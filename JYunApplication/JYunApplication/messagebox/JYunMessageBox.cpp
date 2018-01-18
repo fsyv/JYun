@@ -12,8 +12,6 @@ JYunMessageBox::JYunMessageBox(const QString &string, const Type &type):
 	changeWidgetSize(QSize(300, 180));
 
 	initWidget();
-
-	setWindowModality(Qt::ApplicationModal);
 }
 
 

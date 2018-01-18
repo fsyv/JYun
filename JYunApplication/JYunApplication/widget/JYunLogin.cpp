@@ -7,6 +7,8 @@
 #include "logic/network/JYunHttp.h"
 #include "logic/JYunTools.h"
 
+#include "widget/JYunApplication.h"
+
 JYunLogin::JYunLogin() :
 	m_pUsernameInput(nullptr),
 	m_pUserpassInput(nullptr),
@@ -41,6 +43,21 @@ JYunLogin::~JYunLogin()
 	if (m_pLoginButton)
 		delete m_pLoginButton;
 	m_pLoginButton = nullptr;
+}
+
+/***************************************************
+*界面显示
+****************************************************
+*/
+void JYunLogin::show()
+{
+	BasicWidget::show();
+
+	//500毫秒后根据用户配置执行定时器
+	QTimer::singleShot(500, this, [this]() {
+		if (m_pAutoLogin->isChecked())
+			login();
+	});
 }
 
 void JYunLogin::init()
@@ -128,9 +145,6 @@ void JYunLogin::initData()
 	m_pUsernameInput->addItems(users);
 
 	getUserConfigByUsername(m_pUsernameInput->lineEdit()->text());
-	
-	if (m_pAutoLogin->isChecked())
-		login();
 }
 
 /***************************************************
@@ -204,6 +218,17 @@ void JYunLogin::userConfig()
 }
 
 /***************************************************
+*主程序启动
+****************************************************
+*/
+void JYunLogin::startJYunApplication()
+{
+	hide();
+	JYunApplication *w = new JYunApplication(m_pUsernameInput->lineEdit()->text());
+	w->show();
+}
+
+/***************************************************
 *登录成功
 ****************************************************
 */
@@ -211,6 +236,9 @@ void JYunLogin::loginSuccess()
 {
 	//保存用户配置
 	userConfig();
+
+	//启动主程序
+	startJYunApplication();
 }
 
 /***************************************************
@@ -364,6 +392,13 @@ void JYunLogin::login()
 
 	JYunHttp http;
 	QMap<QString, QString>  result = http.login(username, m_stRealPass);
+
+	//////////////////////////////////////////
+	//////////////测试使用///////////////////
+	/////////////////////////////////////////
+	result["login_result"] = QString("True");
+	/////////////////////////////////////////
+	/////////////////////////////////////////
 
 	if (result.value("login_result") == QString("True"))
 	{

@@ -20,3 +20,6 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QUrl>
+#include <QThread>
+#include <QTimer>
+#include <QCloseEvent>

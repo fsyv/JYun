@@ -7,7 +7,6 @@ LoginMessageBox::LoginMessageBox():
 	m_iTimerID(0)
 {
 	changeWidgetSize(QSize(240, 150));
-	setWindowModality(Qt::ApplicationModal);
 
 	initWidget();
 	conn();

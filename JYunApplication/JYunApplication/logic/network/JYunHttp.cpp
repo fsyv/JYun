@@ -47,7 +47,7 @@ QMap<QString, QString>  JYunHttp::login(const QString & username, const QString 
 	}
 	else
 	{
-		QString string = reply->errorString();
+		result["login_error"] = reply->errorString();
 	}
 
 	reply->deleteLater();

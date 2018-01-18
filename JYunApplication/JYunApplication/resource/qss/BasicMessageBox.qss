@@ -39,5 +39,53 @@ QPushButton#login_messagebox_button {
 QPushButton#login_messagebox_button:pressed{
     background-color: #B7B7B7;
 }
+/*********************ApplicationCloseDialog***/
+QPushButton#application_close_dialog_close{
+    background-color: transparent;
+	border-width: 1px;
+    border-radius: 20px;
+	border-color: beige;
+}
+QPushButton#application_close_dialog_close:hover{
+    background-color: #FF0000;
+}
+QPushButton#application_close_dialog_close:pressed{
+    background-color: #CD0000;
+}
 
+QPushButton#application_close_dialog_logout {
+    background-color: #BEBEBE;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+    color:#0698f5;
+}
+QPushButton#application_close_dialog_logout:pressed{
+    background-color: #B7B7B7;
+}
+
+QPushButton#application_close_dialog_hide {
+    background-color: #FFFFFF;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+    color:#0698f5;
+}
+QPushButton#application_close_dialog_hide:pressed{
+    background-color: #F2F2F2;
+}
+
+QPushButton#application_close_dialog_quit {
+    background-color: #CD2626;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+    color:#000000;
+}
+QPushButton#application_close_dialog_quit:pressed{
+    background-color: #B22222;
+}
 /*********************end**********************/

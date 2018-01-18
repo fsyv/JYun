@@ -43,6 +43,9 @@
     <Filter Include="logic\network">
       <UniqueIdentifier>{cacb30a4-ebaa-4ecf-b480-41ed48e4f0d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="basic\event">
+      <UniqueIdentifier>{82d97e48-6de7-495a-bc22-383f7b83a702}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\qrc_JYunApplication.cpp">
@@ -194,6 +197,24 @@
     <ClCompile Include="logic\JYunTools.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="basic\event\WidgetCreatedEvent.cpp">
+      <Filter>basic\event</Filter>
+    </ClCompile>
+    <ClCompile Include="messagebox\ApplicationCloseDialog.cpp">
+      <Filter>messagebox</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunMessageBox.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunMessageBox.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ApplicationCloseDialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ApplicationCloseDialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -205,9 +226,6 @@
     </ClInclude>
     <ClInclude Include="widget\clouddisk\CloudDiskStatusBar.h">
       <Filter>widget\clouddisk</Filter>
-    </ClInclude>
-    <ClInclude Include="messagebox\JYunMessageBox.h">
-      <Filter>messagebox</Filter>
     </ClInclude>
     <ClInclude Include="database\Database.h">
       <Filter>database</Filter>
@@ -267,6 +285,15 @@
     </CustomBuild>
     <CustomBuild Include="logic\network\JYunHttp.h">
       <Filter>logic\network</Filter>
+    </CustomBuild>
+    <CustomBuild Include="basic\event\WidgetCreatedEvent.h">
+      <Filter>basic\event</Filter>
+    </CustomBuild>
+    <CustomBuild Include="messagebox\JYunMessageBox.h">
+      <Filter>messagebox</Filter>
+    </CustomBuild>
+    <CustomBuild Include="messagebox\ApplicationCloseDialog.h">
+      <Filter>messagebox</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

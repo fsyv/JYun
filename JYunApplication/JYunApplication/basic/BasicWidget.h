@@ -32,6 +32,7 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *e) override;
 	void paintEvent(QPaintEvent *e) override;
 	void resizeEvent(QResizeEvent *e) override;
+	bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
 
 	void initWidget();
 	void moveWidget(const QPoint &point);

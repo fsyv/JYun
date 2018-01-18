@@ -23,6 +23,9 @@ public:
 	explicit JYunLogin();
 	~JYunLogin();
 
+	//界面显示
+	void show();
+
 protected:
 	void init();
 	//界面初始化
@@ -41,6 +44,8 @@ protected:
 	void getUserConfigByUsername(QString username);
 	//用户配置
 	void userConfig();
+	//主程序启动
+	void startJYunApplication();
 	//登录成功
 	void loginSuccess();
 	//登录失败
