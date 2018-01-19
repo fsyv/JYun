@@ -23,6 +23,8 @@ public:
 	virtual ~JYunHttp();
 
 	QMap<QString, QString> login(const QString &username, const QString &userpass);
+	//»ñÈ¡Í·Ïñ
+	void getHead();
 
 private:
 	QNetworkAccessManager *m_pManager;

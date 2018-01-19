@@ -29,19 +29,33 @@ protected:
 	void conn();
 	void initData();
 	void init();
+	//界面显示的时候关闭窗口
+	void closeWidgetWhenShown(QCloseEvent *e);
 
 	void resizeEvent(QResizeEvent *e) override;
 	void setAvatar(const  QPixmap &pixmap);
+	//获取用户头像
+	void getUserAvatar();
 
 	void closeEvent(QCloseEvent *e) override;
 
 public slots:
+    //启动设置界面
     void startJYunSetup();
+	//启动网络云盘界面
 	void startJYunCloudDisk();
+	//启动数据备份界面
 	void startJYunBackup();
+	//托盘点击响应函数
+	void taryClick(QSystemTrayIcon::ActivationReason reason);
 
 private:
 	QPushButton *m_pSetupButton;
 	QPushButton *m_pCloudDiskButton;
 	QPushButton *m_pBackupButton;
+
+	//托盘
+	QSystemTrayIcon *m_pSystemTrayIcon;
+	//用户名
+	QString m_stUsername;
 };

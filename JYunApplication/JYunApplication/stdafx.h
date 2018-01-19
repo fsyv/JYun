@@ -23,3 +23,5 @@
 #include <QThread>
 #include <QTimer>
 #include <QCloseEvent>
+#include <QSystemTrayIcon>
+#include <QDir>

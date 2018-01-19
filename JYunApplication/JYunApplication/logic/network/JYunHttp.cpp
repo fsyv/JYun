@@ -54,3 +54,11 @@ QMap<QString, QString>  JYunHttp::login(const QString & username, const QString 
 
 	return result;
 }
+
+/***************************************************
+*»ñÈ¡Í·Ïñ
+****************************************************
+*/
+void JYunHttp::getHead()
+{
+}

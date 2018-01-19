@@ -22,5 +22,6 @@
         <file>resource/qss/BasicMessageBox.qss</file>
         <file>resource/messagebox/loading.gif</file>
         <file>resource/image/transparent.png</file>
+        <file>resource/logo/tray_logo.ico</file>
     </qresource>
 </RCC>
