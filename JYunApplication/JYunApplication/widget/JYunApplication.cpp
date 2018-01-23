@@ -130,7 +130,6 @@ void JYunApplication::closeWidgetWhenShown(QCloseEvent * e)
 	case ApplicationCloseDialog::Type::Logout:
 		break;
 	case ApplicationCloseDialog::Type::Hide:
-		//hide();
 		BasicWidget::hide();
 		e->ignore();
 		break;
@@ -191,7 +190,7 @@ void JYunApplication::startJYunSetup()
 {
 	hide();
 
-	JYunSetup *w = new JYunSetup;
+	JYunSetup *w = new JYunSetup(m_stUsername);
 	w->show();
 }
 

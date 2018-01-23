@@ -46,6 +46,12 @@
     <Filter Include="basic\event">
       <UniqueIdentifier>{82d97e48-6de7-495a-bc22-383f7b83a702}</UniqueIdentifier>
     </Filter>
+    <Filter Include="logic\file">
+      <UniqueIdentifier>{7fe497a1-b7de-45b4-8893-a2b9b3d0d5d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="widget\clouddisk\filewidget">
+      <UniqueIdentifier>{6be4df9a-701a-4720-98f6-880f5dbd71bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\qrc_JYunApplication.cpp">
@@ -215,15 +221,72 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ApplicationCloseDialog.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunSetup.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunSetup.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\Folder.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\FileObject.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\File.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FileObject.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FileObject.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Folder.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Folder.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\DocumentFile.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageFile.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\MusicFile.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\OtherFile.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\VideoFile.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_File.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_File.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DocumentFile.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DocumentFile.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ImageFile.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ImageFile.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
       <Filter>exception</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="widget\JYunSetup.h">
-      <Filter>widget</Filter>
-    </ClInclude>
     <ClInclude Include="widget\clouddisk\CloudDiskStatusBar.h">
       <Filter>widget\clouddisk</Filter>
     </ClInclude>
@@ -238,6 +301,15 @@
     </ClInclude>
     <ClInclude Include="logic\JYunTools.h">
       <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\file\MusicFile.h">
+      <Filter>logic\file</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\file\OtherFile.h">
+      <Filter>logic\file</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\file\VideoFile.h">
+      <Filter>logic\file</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -294,6 +366,24 @@
     </CustomBuild>
     <CustomBuild Include="messagebox\ApplicationCloseDialog.h">
       <Filter>messagebox</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\JYunSetup.h">
+      <Filter>widget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\file\Folder.h">
+      <Filter>logic\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\file\File.h">
+      <Filter>logic\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\file\FileObject.h">
+      <Filter>logic\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\file\DocumentFile.h">
+      <Filter>logic\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\file\ImageFile.h">
+      <Filter>logic\file</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

@@ -9,25 +9,28 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 工具类，提供公共使用方法
+* @brief : 文档文件类
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/8
+* @date : 2018/1/22
 **/
 
-class JYunTools
-{
-public:
-	JYunTools();
-	virtual ~JYunTools();
+#include "File.h"
 
-	//json数组转换为Map
-	static QMap<QString, QString> jsonToMap(const QByteArray &bytearray);
-	//Map转换为json数组
-	static QByteArray mapToJson(const QMap<QString, QString> &map);
-	//计算文件MD5
-	static QByteArray fileMD5(QString filePath);
-	//计算字符串MD5
-	static QByteArray stringMD5(QString string);
+class DocumentFile : public File
+{
+	Q_OBJECT
+public:
+	explicit DocumentFile(QString name, QListWidget *parent = nullptr);
+	~DocumentFile();
+
+	void initMenu();
+	void initWidget();
+	void conn();
+	void initData();
+	void init();
+
+protected:
+	void mouseDoubleClicked() override;
 };
 

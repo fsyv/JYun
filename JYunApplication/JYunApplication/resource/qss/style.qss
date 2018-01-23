@@ -7,7 +7,6 @@ QPushButton#close{
     background-color: transparent;
 	border-width: 1px;
     border-radius: 20px;
-	border-color: beige;
 }
 
 QPushButton#close:hover{
@@ -244,13 +243,12 @@ QPushButton#clouddisk_left_button:checked{
 /*////////////////////CloudDiskStatusBar//////*/
 QFrame#clouddisk_bar{
     background-color: #FFFFFF;
-    border-bottom: 1px solid black;
+    border: 1px solid black;
 }
 
 QFrame#clouddisk_bar_frame{
     background-color: #FFFFFF;
-    border-right: 1px solid black;
-	border-bottom: 1px solid black;
+	border: 1px solid black;
 }
 
 QCheckBox#clouddisk_left_checkbox{

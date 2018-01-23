@@ -23,7 +23,8 @@
 
 #include <QtWidgets/QApplication>
 
-#include "widget\JYunApplication.h"
+#include "widget\JYunCloudDisk.h"
+#include "logic\file\FileObject.h"
 
 void finish();
 
@@ -34,8 +35,8 @@ int main(int argc, char *argv[])
 
 	QApplication a(argc, argv);
 
-	JYunApplication w(QString("fsyv"));
-	w.show();
+	JYunCloudDisk *w = new JYunCloudDisk;
+	w->show();
 
 	//Security security;
 	//JYunLogin w;

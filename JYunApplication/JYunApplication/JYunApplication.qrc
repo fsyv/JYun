@@ -23,5 +23,15 @@
         <file>resource/messagebox/loading.gif</file>
         <file>resource/image/transparent.png</file>
         <file>resource/logo/tray_logo.ico</file>
+        <file>resource/qss/file.qss</file>
+        <file>resource/file/CODE.png</file>
+        <file>resource/file/DOCUMENT.png</file>
+        <file>resource/file/EXCEL.png</file>
+        <file>resource/file/FOLDER.png</file>
+        <file>resource/file/IMAGE.png</file>
+        <file>resource/file/OTHER.png</file>
+        <file>resource/file/PDF.png</file>
+        <file>resource/file/VIDEO.png</file>
+        <file>resource/file/MUSIC.png</file>
     </qresource>
 </RCC>

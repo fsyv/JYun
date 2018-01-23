@@ -25,3 +25,8 @@
 #include <QCloseEvent>
 #include <QSystemTrayIcon>
 #include <QDir>
+#include <QListWidgetItem>
+#include <QListWidget>
+#include <QCryptographicHash>
+#include <QFile>
+#include <QFileInfo>

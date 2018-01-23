@@ -14,7 +14,8 @@
 * @email : fsyv@gmail.com
 * @date : 2018/1/4
 **/
-class CloudDiskFileWidget: public QFrame
+
+class CloudDiskFileWidget: public QListWidget
 {
 	Q_OBJECT
 public:
