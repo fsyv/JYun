@@ -49,8 +49,8 @@
     <Filter Include="logic\file">
       <UniqueIdentifier>{7fe497a1-b7de-45b4-8893-a2b9b3d0d5d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="widget\clouddisk\filewidget">
-      <UniqueIdentifier>{6be4df9a-701a-4720-98f6-880f5dbd71bb}</UniqueIdentifier>
+    <Filter Include="widget\clouddisk\statusbar">
+      <UniqueIdentifier>{a8be4d5a-0355-474c-a7b5-e25435714ea8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -251,9 +251,6 @@
     <ClCompile Include="logic\file\DocumentFile.cpp">
       <Filter>logic\file</Filter>
     </ClCompile>
-    <ClCompile Include="ImageFile.cpp">
-      <Filter>logic\file</Filter>
-    </ClCompile>
     <ClCompile Include="logic\file\MusicFile.cpp">
       <Filter>logic\file</Filter>
     </ClCompile>
@@ -275,10 +272,22 @@
     <ClCompile Include="GeneratedFiles\Release\moc_DocumentFile.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="logic\file\ImageFile.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ImageFile.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_ImageFile.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\clouddisk\statusbar\CloudDiskStatusBarChildWidget.cpp">
+      <Filter>widget\clouddisk\statusbar</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskStatusBarChildWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CloudDiskStatusBarChildWidget.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -384,6 +393,9 @@
     </CustomBuild>
     <CustomBuild Include="logic\file\ImageFile.h">
       <Filter>logic\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\clouddisk\statusbar\CloudDiskStatusBarChildWidget.h">
+      <Filter>widget\clouddisk\statusbar</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,8 @@
+﻿/*********************BasicMessageBox**********/
+CloudDiskStatusBarChildWidget{
+    background-color:rgba(200, 200, 200, 128);
+}
+CloudDiskStatusBarChildWidget::hover{
+	background-color:rgba(150, 150, 150, 128);
+}
+/*********************end**********************/

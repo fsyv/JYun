@@ -26,5 +26,7 @@ protected:
 private:
 	QFrame *m_pCheckBoxFrame;
 	QCheckBox *m_pSelectAll;
+
+	QFrame *m_pFolderFrame;
 };
 

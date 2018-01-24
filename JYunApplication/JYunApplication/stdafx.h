@@ -30,3 +30,4 @@
 #include <QCryptographicHash>
 #include <QFile>
 #include <QFileInfo>
+#include <QPainter>

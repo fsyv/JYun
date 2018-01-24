@@ -33,5 +33,6 @@
         <file>resource/file/PDF.png</file>
         <file>resource/file/VIDEO.png</file>
         <file>resource/file/MUSIC.png</file>
+        <file>resource/qss/CloudDiskStatusBarChildWidget.qss</file>
     </qresource>
 </RCC>
