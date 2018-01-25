@@ -21,6 +21,7 @@ class CloudDiskTopWidget;
 class CloudDiskLeftWidget;
 class CloudDiskStatusBar;
 class CloudDiskFileWidget;
+class CloudDiskSetup;
 
 class JYunCloudDisk : public BasicWidget
 {
@@ -31,6 +32,9 @@ public:
 
 protected:
 	void initWidget();
+	void conn();
+	void initData();
+	void init();
 
 private:
 	QLabel *m_pTitle;
@@ -38,5 +42,6 @@ private:
 	CloudDiskLeftWidget *m_pLeftWidget;
 	CloudDiskStatusBar *m_pStatusBar;
 	CloudDiskFileWidget *m_pFileWidget;
+	CloudDiskSetup *m_pSetup;
 };
 

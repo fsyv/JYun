@@ -24,7 +24,22 @@ public:
 
 protected:
 	void initWidget();
-	
+	void conn();
+	void initData();
+	void init();
+
+protected slots:
+	void documentButtonClick(bool flag);
+	void pictureButtonClick(bool flag);
+	void videoButtonClick(bool flag);
+	void musicButtonClick(bool flag);
+
+signals:
+	void rootClicked();
+	void recentlyClicked(bool);
+	void fileEchoChange(int);
+	void setupClicked(bool);
+
 private:
 	QPushButton *m_pRootDirectory;
 	QPushButton *m_pRecently;
@@ -36,5 +51,11 @@ private:
 	QPushButton *m_pMusic;
 
 	QPushButton *m_pSetup;
+
+	int m_iCurrentFileStyle;
+	const int DocumentButton = 0x01;	//Œƒµµ∞¥≈•
+	const int PictureButton = 0x02;		//Õº∆¨∞¥≈•
+	const int VideoButton = 0x04;		// ”∆µ∞¥≈•
+	const int MusicButton = 0x08;		//“Ù¿÷∞¥≈•
 };
 

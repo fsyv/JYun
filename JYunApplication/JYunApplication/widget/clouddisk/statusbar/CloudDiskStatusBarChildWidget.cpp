@@ -57,7 +57,7 @@ void CloudDiskStatusBarChildWidget::initWidget()
 	if (m_eRole == FolderRole::Root)
 		m_pNameLabel->move(5, 0);
 	else
-		m_pNameLabel->move(m_iRriangleHight + 5, 0);
+		m_pNameLabel->move(m_iRriangleHight + 1, 0);
 	
 	m_pNameLabel->setAlignment(Qt::AlignVCenter);
 }

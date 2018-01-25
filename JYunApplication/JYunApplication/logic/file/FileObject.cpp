@@ -66,6 +66,12 @@ void FileObject::setFilePath(const QString & path)
 	m_stFilePath = path;
 }
 
+void FileObject::setConfirmCheckBoxStatus(bool status)
+{
+	m_pConfirmCheckBox->setChecked(status);
+	m_pConfirmCheckBox->setVisible(status);
+}
+
 FileObject::FileType FileObject::fileType() const
 {
 	return m_eFileType;
@@ -156,9 +162,7 @@ void FileObject::destroyWidget()
 
 void FileObject::destroyItem()
 {
-	if (m_pListWidgetItem)
-		delete m_pListWidgetItem;
-	m_pListWidgetItem = nullptr;
+
 }
 
 void FileObject::enterEvent(QEvent * e)

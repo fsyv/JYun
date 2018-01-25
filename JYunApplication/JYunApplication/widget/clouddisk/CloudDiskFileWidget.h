@@ -15,6 +15,10 @@
 * @date : 2018/1/4
 **/
 
+#include <QList>
+
+class FileObject;
+
 class CloudDiskFileWidget: public QListWidget
 {
 	Q_OBJECT
@@ -24,5 +28,15 @@ public:
 
 protected:
 	void initWidget();
+	void conn();
+	void initData();
+	void init();
+
+public slots:
+	//全选按钮响应函数
+	void selectAllClick(bool flag);
+
+private:
+	QList<FileObject *> *m_pFileList;
 };
 

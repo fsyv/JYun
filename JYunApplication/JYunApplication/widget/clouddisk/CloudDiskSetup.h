@@ -9,31 +9,19 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : Õ¯¬Á‘∆≈Ã◊¥Ã¨¿∏
+* @brief : Õ¯¬Á‘∆≈Ã…Ë÷√ΩÁ√Ê
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/4
+* @date : 2018/1/25
 **/
-class CloudDiskStatusBar : public QFrame
+
+#include <QFrame>
+
+class CloudDiskSetup : public QFrame
 {
 	Q_OBJECT
 public:
-	explicit CloudDiskStatusBar(QWidget *parent = nullptr);
-	~CloudDiskStatusBar();
-
-protected:
-	void initWidget();
-	void conn();
-	void initData();
-	void init();
-
-signals:
-	void selectAllChange(bool);
-
-private:
-	QFrame *m_pCheckBoxFrame;
-	QCheckBox *m_pSelectAll;
-
-	QFrame *m_pFolderFrame;
+	explicit CloudDiskSetup(QWidget *parent = nullptr);
+	~CloudDiskSetup();
 };
 

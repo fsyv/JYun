@@ -11,7 +11,7 @@ CloudDiskStatusBar::CloudDiskStatusBar(QWidget *parent):
 {
 	resize(700, 40);
 
-	initWidget();
+	init();
 }
 
 
@@ -24,6 +24,10 @@ CloudDiskStatusBar::~CloudDiskStatusBar()
 	if (m_pCheckBoxFrame)
 		delete m_pCheckBoxFrame;
 	m_pCheckBoxFrame = nullptr;
+
+	if (m_pFolderFrame)
+		delete m_pFolderFrame;
+	m_pFolderFrame = nullptr;
 }
 
 void CloudDiskStatusBar::initWidget()
@@ -53,4 +57,24 @@ void CloudDiskStatusBar::initWidget()
 	CloudDiskStatusBarChildWidget *child1 = new CloudDiskStatusBarChildWidget(CloudDiskStatusBarChildWidget::FolderRole::Other, m_pFolderFrame);
 	child1->setName("这是文件夹啊啊");
 	child1->move(child->textWidth(), 0);
+}
+
+void CloudDiskStatusBar::conn()
+{
+	connect(m_pSelectAll, &QCheckBox::clicked, this, [this](bool flag) {
+		emit selectAllChange(flag);
+	});
+}
+
+void CloudDiskStatusBar::initData()
+{
+}
+
+void CloudDiskStatusBar::init()
+{
+	initWidget();
+
+	conn();
+
+	initData();
 }

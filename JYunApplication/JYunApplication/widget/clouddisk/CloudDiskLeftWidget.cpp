@@ -14,7 +14,7 @@ CloudDiskLeftWidget::CloudDiskLeftWidget(QWidget *parent):
 {
 	resize(100, 490);
 
-	initWidget();
+	init();
 }
 
 
@@ -55,11 +55,10 @@ CloudDiskLeftWidget::~CloudDiskLeftWidget()
 
 void CloudDiskLeftWidget::initWidget()
 {
-	m_pRootDirectory = new QPushButton("根目录", this);
+	m_pRootDirectory = new QPushButton("首页", this);
 	m_pRootDirectory->setObjectName("clouddisk_left_button");
 	m_pRootDirectory->resize(100, 35);
 	m_pRootDirectory->move(0, 0);
-	m_pRootDirectory->setCheckable(true);
 
 	m_pRecently = new QPushButton("时间线", this);
 	m_pRecently->setObjectName("clouddisk_left_button");
@@ -101,4 +100,78 @@ void CloudDiskLeftWidget::initWidget()
 	m_pSetup->resize(100, 35);
 	m_pSetup->move(0, 270);
 	m_pSetup->setCheckable(true);
+}
+
+void CloudDiskLeftWidget::conn()
+{
+	connect(m_pRootDirectory, &QPushButton::clicked, this, [this]() {
+		emit rootClicked();
+	});
+
+	connect(m_pRecently, &QPushButton::clicked, this, [this](bool flag) {
+		emit recentlyClicked(flag);
+	});
+
+	connect(m_pDocument, &QPushButton::clicked, this, &CloudDiskLeftWidget::documentButtonClick);
+	connect(m_pPicture, &QPushButton::clicked, this, &CloudDiskLeftWidget::pictureButtonClick);
+	connect(m_pVideo, &QPushButton::clicked, this, &CloudDiskLeftWidget::videoButtonClick);
+	connect(m_pMusic, &QPushButton::clicked, this, &CloudDiskLeftWidget::musicButtonClick);
+
+	connect(m_pSetup, &QPushButton::clicked, this, [this](bool flag) {
+		emit setupClicked(flag);
+	});
+}
+
+void CloudDiskLeftWidget::initData()
+{
+	m_iCurrentFileStyle = 0x00;
+}
+
+void CloudDiskLeftWidget::init()
+{
+	initWidget();
+
+	conn();
+
+	initData();
+}
+
+void CloudDiskLeftWidget::documentButtonClick(bool flag)
+{
+	if (flag)
+		m_iCurrentFileStyle |= DocumentButton;
+	else
+		m_iCurrentFileStyle ^= DocumentButton;
+
+	emit fileEchoChange(m_iCurrentFileStyle);
+}
+
+void CloudDiskLeftWidget::pictureButtonClick(bool flag)
+{
+	if (flag)
+		m_iCurrentFileStyle |= PictureButton;
+	else
+		m_iCurrentFileStyle ^= PictureButton;
+
+	emit fileEchoChange(m_iCurrentFileStyle);
+}
+
+void CloudDiskLeftWidget::videoButtonClick(bool flag)
+{
+	if (flag)
+		m_iCurrentFileStyle |= VideoButton;
+	else
+		m_iCurrentFileStyle ^= VideoButton;
+
+	emit fileEchoChange(m_iCurrentFileStyle);
+}
+
+void CloudDiskLeftWidget::musicButtonClick(bool flag)
+{
+	if (flag)
+		m_iCurrentFileStyle |= MusicButton;
+	else
+		m_iCurrentFileStyle ^= MusicButton;
+
+	emit fileEchoChange(m_iCurrentFileStyle);
 }

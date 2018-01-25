@@ -45,6 +45,8 @@ public:
 	void setFileName(const QString &name);
 	//设置文件路径
 	void setFilePath(const QString &path);
+	//设置CheckBox按钮状态
+	void setConfirmCheckBoxStatus(bool status);
 	//文件类型
 	FileType fileType() const;
 	//视图item
