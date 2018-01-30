@@ -24,12 +24,12 @@ class FileObject : public QFrame
 	Q_OBJECT
 public:
 	enum class FileType {
-		Folder = 0,		//文件夹
-		Document,		//文档
-		Image,			//图片
-		Video,			//视频
-		Music,			//音乐
-		Other,			//其它
+		Folder = 0x01,		//文件夹
+		Document = 0x02,		//文档
+		Image	 = 0x04,		//图片
+		Video	 = 0x08,		//视频
+		Music	 = 0x10,		//音乐
+		Other	 = 0x20,		//其它
 	};
 public:
 	explicit FileObject(QListWidget *parent = nullptr);

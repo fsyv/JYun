@@ -222,22 +222,22 @@ QPushButton#clouddisk_left_button{
     border-radius: 0px;
     border-color: beige;
     font: 仿宋 20px;
-    color:#0698f5;
+    color:#1E90FF;
 }
 
 QPushButton#clouddisk_left_button:hover{
-    background-color: #0698f5;
-    color:#E8E8E8;
+    background-color: #C8C8C8;
+    color:#1C86EE;
 }
 
 QPushButton#clouddisk_left_button:pressed{
     background-color: #FFFFFF;
-	color:#0698f5;
+	color:#1C86EE;
 }
 
 QPushButton#clouddisk_left_button:checked{
     background-color: #FFFFFF;
-	color:#0698f5;
+	color:#000000;
 }
 
 /*////////////////////CloudDiskStatusBar//////*/

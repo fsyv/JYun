@@ -13,7 +13,7 @@ CloudDiskTopWidget::CloudDiskTopWidget(QWidget *parent)
 {
 	resize(800, 50);
 
-	initWidget();
+	init();
 }
 
 CloudDiskTopWidget::~CloudDiskTopWidget()
@@ -93,4 +93,22 @@ void CloudDiskTopWidget::initWidget()
 	m_pTaskList->resize(150, 50);
 	m_pTaskList->move(650, 0);
 	m_pTaskList->setCheckable(true);
+}
+
+void CloudDiskTopWidget::conn()
+{
+	connect(m_pTaskList, &QPushButton::clicked, this, [this](bool flag) {
+		emit taskListButtonClicked(flag);
+	});
+}
+
+void CloudDiskTopWidget::initData()
+{
+}
+
+void CloudDiskTopWidget::init()
+{
+	initWidget();
+	conn();
+	initData();
 }

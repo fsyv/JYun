@@ -305,6 +305,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_CloudDiskStatusBar.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="widget\clouddisk\CloudDiskTaskList.cpp">
+      <Filter>widget\clouddisk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -331,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="logic\file\VideoFile.h">
       <Filter>logic\file</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\clouddisk\CloudDiskTaskList.h">
+      <Filter>widget\clouddisk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

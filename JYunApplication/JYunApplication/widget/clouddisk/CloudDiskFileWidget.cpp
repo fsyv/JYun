@@ -78,6 +78,33 @@ void CloudDiskFileWidget::init()
 	initData();
 }
 
+void CloudDiskFileWidget::showCategory(int echo)
+{
+	for (auto object = m_pFileList->begin(); object != m_pFileList->end(); ++object)
+		(*object)->setVisible((int)(*object)->fileType() & echo);
+}
+
+void CloudDiskFileWidget::showAll()
+{
+	for (auto object = m_pFileList->begin(); object != m_pFileList->end(); ++object)
+		(*object)->setVisible(true);
+}
+
+void CloudDiskFileWidget::sortItems()
+{
+	//文件夹排在前，文件排在后
+	//文件夹按创建时间排序
+	//文件按名字排序
+}
+
+void CloudDiskFileWidget::fileCategory(int echo)
+{
+	if (echo)
+		showCategory(echo);
+	else
+		showAll();
+}
+
 void CloudDiskFileWidget::selectAllClick(bool flag)
 {
 	for(auto object = m_pFileList->begin(); object != m_pFileList->end(); ++object)

@@ -169,7 +169,7 @@ void JYunApplication::getUserAvatar()
 	else
 	{
 		JYunHttp http;
-		http.getHead();
+		http.downloadHead(m_stUsername);
 		setAvatar(QPixmap(headPath));
 	}
 }

@@ -32,9 +32,16 @@ protected:
 	void initData();
 	void init();
 
+	void showCategory(int echo);
+	void showAll();
+	//排序
+	void sortItems();
+
 public slots:
 	//全选按钮响应函数
 	void selectAllClick(bool flag);
+	//文件显示分类
+	void fileCategory(int echo);
 
 private:
 	QList<FileObject *> *m_pFileList;

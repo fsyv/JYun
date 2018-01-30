@@ -53,9 +53,5 @@ private:
 	QPushButton *m_pSetup;
 
 	int m_iCurrentFileStyle;
-	const int DocumentButton = 0x01;	//文档按钮
-	const int PictureButton = 0x02;		//图片按钮
-	const int VideoButton = 0x04;		//视频按钮
-	const int MusicButton = 0x08;		//音乐按钮
 };
 

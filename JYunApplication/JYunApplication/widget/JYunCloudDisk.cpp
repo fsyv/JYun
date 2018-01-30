@@ -6,6 +6,7 @@
 #include "clouddisk\CloudDiskStatusBar.h"
 #include "clouddisk\CloudDiskFileWidget.h"
 #include "clouddisk\CloudDiskSetup.h"
+#include "clouddisk\CloudDiskTaskList.h"
 
 JYunCloudDisk::JYunCloudDisk():
 	m_pTitle(nullptr),
@@ -48,11 +49,20 @@ void JYunCloudDisk::initWidget()
 	m_pSetup = new CloudDiskSetup(this);
 	m_pSetup->move(100, 110);
 	m_pSetup->hide();
+
+	m_pTaskList = new CloudDiskTaskList(this);
+	m_pTaskList->move(650, 110);
+	m_pTaskList->hide();
 }
 
 void JYunCloudDisk::conn()
 {
+	//ÉÏ·½°´Å¥ÐÅºÅ²Û°ó¶¨
+	connect(m_pTopWidget, &CloudDiskTopWidget::taskListButtonClicked, m_pTaskList, &CloudDiskTaskList::setVisible);
+	//×´Ì¬À¸ÐÅºÅ²Û°ó¶¨
 	connect(m_pStatusBar, &CloudDiskStatusBar::selectAllChange, m_pFileWidget, &CloudDiskFileWidget::selectAllClick);
+	//×ó±ß°´Å¥ÐÅºÅ²Û°ó¶¨
+	connect(m_pLeftWidget, &CloudDiskLeftWidget::fileEchoChange, m_pFileWidget, &CloudDiskFileWidget::fileCategory);
 	connect(m_pLeftWidget, &CloudDiskLeftWidget::setupClicked, m_pSetup, &CloudDiskSetup::setVisible);
 }
 

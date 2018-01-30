@@ -372,12 +372,12 @@ void JYunLogin::autoLogin(bool checked)
 */
 void JYunLogin::login()
 {
-	//if (m_pUsernameInput->lineEdit()->text().isEmpty() ||
-	//	m_pUserpassInput->text().isEmpty())
-	//{
-	//	JYunMessageBox::prompt(QString("请输入帐号或者密码!"));
-	//	return;
-	//}
+	if (m_pUsernameInput->lineEdit()->text().isEmpty() ||
+		m_pUserpassInput->text().isEmpty())
+	{
+		JYunMessageBox::prompt(QString("请输入帐号或者密码!"));
+		return;
+	}
 
 	//弹出一个窗口
 	//倒计时6秒

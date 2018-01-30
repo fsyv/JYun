@@ -24,6 +24,12 @@ public:
 
 protected:
 	void initWidget();
+	void conn();
+	void initData();
+	void init();
+
+signals:
+	void taskListButtonClicked(bool);
 
 private:
 	QPushButton *m_pUpload;

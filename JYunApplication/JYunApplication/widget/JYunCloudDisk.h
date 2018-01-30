@@ -22,6 +22,7 @@ class CloudDiskLeftWidget;
 class CloudDiskStatusBar;
 class CloudDiskFileWidget;
 class CloudDiskSetup;
+class CloudDiskTaskList;
 
 class JYunCloudDisk : public BasicWidget
 {
@@ -43,5 +44,6 @@ private:
 	CloudDiskStatusBar *m_pStatusBar;
 	CloudDiskFileWidget *m_pFileWidget;
 	CloudDiskSetup *m_pSetup;
+	CloudDiskTaskList *m_pTaskList;
 };
 

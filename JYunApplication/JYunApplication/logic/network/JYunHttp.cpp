@@ -59,6 +59,59 @@ QMap<QString, QString>  JYunHttp::login(const QString & username, const QString 
 *»ñÈ¡Í·Ïñ
 ****************************************************
 */
-void JYunHttp::getHead()
+void JYunHttp::downloadHead(const QString &username)
 {
+	m_url.setPath(QString::fromUtf8("/head/?user=fsyv"), QUrl::TolerantMode);
+	QString string = m_url.url();
+
+	QNetworkRequest request(m_url);
+	request.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/x-www-form-urlencoded"));
+
+	QNetworkReply *reply = m_pManager->get(request);
+
+	QEventLoop temp_loop;
+	connect(reply, &QNetworkReply::finished, &temp_loop, &QEventLoop::quit);
+	temp_loop.exec();
+
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QString string = reply->readAll();	
+	}
+	else
+	{
+		QString string = reply->errorString();
+	}
+
+	reply->deleteLater();
+}
+
+void JYunHttp::uploadHead(const QString & username)
+{
+	//m_url.setPath("/head");
+
+	//QNetworkRequest request(m_url);
+	//request.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/json"));
+	//request.setRawHeader("Authorization", "Bearer 49152bfddae0c5b5d492d3d9871f8c11");
+
+	//QMap<QString, QString> login_info;
+	//login_info["username"] = username;
+
+	//QByteArray json = JYunTools::mapToJson(login_info);
+
+	//QNetworkReply *reply = m_pManager->post(request, json);
+
+	//QEventLoop temp_loop;
+	//connect(reply, &QNetworkReply::finished, &temp_loop, &QEventLoop::quit);
+	//temp_loop.exec();
+
+	//if (reply->error() == QNetworkReply::NoError)
+	//{
+	//	QString string = reply->readAll();
+	//}
+	//else
+	//{
+	//	QString string = reply->errorString();
+	//}
+
+	//reply->deleteLater();
 }

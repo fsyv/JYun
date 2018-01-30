@@ -9,27 +9,18 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : http服务
+* @brief : 网络云盘上方按钮界面
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/8
+* @date : 2018/1/4
 **/
 
-class JYunHttp : public QObject
+#include <QListWidget>
+
+class CloudDiskTaskList : public QListWidget
 {
-	Q_OBJECT
 public:
-	explicit JYunHttp();
-	virtual ~JYunHttp();
-
-	QMap<QString, QString> login(const QString &username, const QString &userpass);
-	//获取头像
-	void downloadHead(const QString &username);
-	//上传头像
-	void uploadHead(const QString &username);
-
-private:
-	QNetworkAccessManager *m_pManager;
-	QUrl m_url;
+	explicit CloudDiskTaskList(QWidget *parent = nullptr);
+	~CloudDiskTaskList();
 };
 
