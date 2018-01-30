@@ -36,19 +36,19 @@ int main(int argc, char *argv[])
 
 	QApplication a(argc, argv);
 
-	JYunApplication *w = new JYunApplication("fsyv1");
-	w->show();
+	//JYunApplication *w = new JYunApplication("fsyv1");
+	//w->show();
 
-	//Security security;
-	//JYunLogin w;
-	//JYunSerious recall;
-	//try {
-	//	security.check();
-	//	w.show();
-	//}
-	//catch (Exception e) {
-	//	recall.show();
-	//}
+	Security security;
+	JYunLogin w;
+	JYunSerious recall;
+	try {
+		security.check();
+		w.showWidget();
+	}
+	catch (Exception e) {
+		recall.show();
+	}
 	
 	return a.exec();
 }

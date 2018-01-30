@@ -24,7 +24,7 @@ public:
 	~JYunLogin();
 
 	//界面显示
-	void show();
+	void showWidget();
 
 protected:
 	void init();
@@ -75,7 +75,8 @@ protected slots:
 	void autoLogin(bool checked);
     //登录按钮的响应函数
     void login();
-
+	//注册按钮响应函数
+	void registered();
 
 private:
 	QComboBox *m_pUsernameInput;
@@ -83,10 +84,13 @@ private:
 	QCheckBox *m_pRememberPass;
 	QCheckBox *m_pAutoLogin;
 	QPushButton *m_pLoginButton;
+	QPushButton *m_pRegisterButton;
 
 	//假密码
 	QString m_stFakePass;
 	//真密码
 	QString m_stRealPass;
+	//密码md5
+	QString m_stPassMd5;
 };
 

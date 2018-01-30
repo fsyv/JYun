@@ -33,6 +33,7 @@ protected:
 	void paintEvent(QPaintEvent *e) override;
 	void resizeEvent(QResizeEvent *e) override;
 	bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
+	void closeEvent(QCloseEvent *e) override;
 
 	void initWidget();
 	void moveWidget(const QPoint &point);
@@ -42,6 +43,9 @@ protected:
 
 public slots:
 	void closeWidget();
+
+signals:
+	void quitWidget();
 
 private:
 	QPushButton *m_pCloseButton;

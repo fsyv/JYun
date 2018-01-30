@@ -29,5 +29,7 @@ public:
 	static QByteArray fileMD5(QString filePath);
 	//计算字符串MD5
 	static QByteArray stringMD5(QString string);
+	//字节码保存为本地图片
+	static void byteToLocalImage(const QString &filePath, const QByteArray &byte);
 };
 

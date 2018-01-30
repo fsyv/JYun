@@ -8,6 +8,7 @@
 #include "logic/JYunTools.h"
 
 #include "widget/JYunApplication.h"
+#include "widget/JYunRegister.h"
 
 JYunLogin::JYunLogin() :
 	m_pUsernameInput(nullptr),
@@ -49,14 +50,18 @@ JYunLogin::~JYunLogin()
 *界面显示
 ****************************************************
 */
-void JYunLogin::show()
+void JYunLogin::showWidget()
 {
 	BasicWidget::show();
 
 	//500毫秒后根据用户配置执行定时器
 	QTimer::singleShot(500, this, [this]() {
 		if (m_pAutoLogin->isChecked())
+		{
+			Database db;
+			m_stPassMd5 = db.getPassByUsername(m_pUsernameInput->lineEdit()->text());
 			login();
+		}
 	});
 }
 
@@ -103,8 +108,13 @@ void JYunLogin::initWidget()
 
 	m_pLoginButton = new QPushButton("登  录", this);
 	m_pLoginButton->setObjectName("login_button");
-	m_pLoginButton->resize(180, 30);
+	m_pLoginButton->resize(100, 30);
 	m_pLoginButton->move(60, 300);
+
+	m_pRegisterButton = new QPushButton("注册", this);
+	m_pRegisterButton->setObjectName("login_button");
+	m_pRegisterButton->resize(60, 30);
+	m_pRegisterButton->move(180, 300);
 }
 
 /***************************************************
@@ -126,6 +136,9 @@ void JYunLogin::conn()
 
 	//登录按钮事件绑定
 	connect(m_pLoginButton, &QPushButton::clicked, this, &JYunLogin::login);
+
+	//注册按钮事件绑定
+	connect(m_pRegisterButton, &QPushButton::clicked, this, &JYunLogin::registered);
 }
 
 /***************************************************
@@ -178,7 +191,7 @@ void JYunLogin::keepUserpass(QString username, QString userpass)
 }
 
 /***************************************************
-*用过用户名获取用户配置
+*通过用户名获取用户配置
 ****************************************************
 */
 void JYunLogin::getUserConfigByUsername(QString username)
@@ -191,7 +204,6 @@ void JYunLogin::getUserConfigByUsername(QString username)
 
 	setRemberPass(rememberPass);
 	setAutoLogin(autoLogin);
-	m_stRealPass = db.getPassByUsername(username);
 }
 
 /***************************************************
@@ -212,7 +224,7 @@ void JYunLogin::userConfig()
 
 	//如果要记住密码，保存到本地数据库
 	if (m_pRememberPass->isChecked())
-		keepUserpass(m_pUsernameInput->lineEdit()->text(), m_stRealPass);
+		keepUserpass(m_pUsernameInput->lineEdit()->text(), JYunTools::stringMD5(m_stRealPass));
 	else
 		keepUserpass(m_pUsernameInput->lineEdit()->text());
 }
@@ -274,7 +286,11 @@ void JYunLogin::passInputFocusIn()
 void JYunLogin::passInputFocusOut()
 {
 	m_stRealPass = m_pUserpassInput->text();
-	m_pUserpassInput->setText(m_stFakePass);
+	if (!m_stRealPass.isEmpty())
+	{
+		m_stPassMd5 = JYunTools::stringMD5(m_stRealPass);
+		m_pUserpassInput->setText(m_stFakePass);
+	}
 }
 
 /***************************************************
@@ -380,7 +396,7 @@ void JYunLogin::login()
 	}
 
 	//弹出一个窗口
-	//倒计时6秒
+	//倒计时3秒
 	//窗口返回结果
 	//如果没有取消则发送登录请求
 	bool ret = LoginMessageBox::waitForConfirm(3000);
@@ -389,16 +405,10 @@ void JYunLogin::login()
 		return;
 
 	QString username = m_pUsernameInput->lineEdit()->text();
+	QString userpass = m_stPassMd5;
 
 	JYunHttp http;
-	QMap<QString, QString>  result = http.login(username, m_stRealPass);
-
-	//////////////////////////////////////////
-	//////////////测试使用///////////////////
-	/////////////////////////////////////////
-	result["login_result"] = QString("True");
-	/////////////////////////////////////////
-	/////////////////////////////////////////
+	QMap<QString, QString> result = http.login(username, userpass);
 
 	if (result.value("login_result") == QString("True"))
 	{
@@ -411,4 +421,21 @@ void JYunLogin::login()
 		JYunMessageBox::prompt(result.value("login_error"));
 		loginFailed();
 	}
+}
+
+/***************************************************
+*注册按钮响应函数
+****************************************************
+*/
+void JYunLogin::registered()
+{
+	hide();
+
+	JYunRegister w;
+	w.show();
+	QEventLoop temp_loop;
+	connect(&w, &JYunRegister::quitWidget, &temp_loop, &QEventLoop::quit);
+	temp_loop.exec();
+
+	show();
 }

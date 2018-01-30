@@ -161,6 +161,36 @@ QPushButton#setup_commit:pressed{
     background-color: rgb(226, 238, 246);
 }
 
+/*********************JYunRegister***********/
+
+QLineEdit#register_label{
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+    border-color: #1E90FF;
+}
+
+QLineEdit#register_input{
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+    border-color: #1E90FF;
+}
+
+QPushButton#register_button {
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: beige;
+    font: 仿宋 20px;
+    color:#0698f5;
+}
+QPushButton#register_button:pressed{
+    background-color: rgb(226, 238, 246);
+}
+
 /*********************JYunCloudDisk************/
 /*////////////////////CloudDiskTopWidget//////*/
 CloudDiskTopWidget{

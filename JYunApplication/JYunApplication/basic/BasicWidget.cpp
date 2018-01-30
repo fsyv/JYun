@@ -79,6 +79,13 @@ bool BasicWidget::nativeEvent(const QByteArray & eventType, void * message, long
 	return QWidget::nativeEvent(eventType, message, result);
 }
 
+void BasicWidget::closeEvent(QCloseEvent * e)
+{
+	emit quitWidget();
+
+	QWidget::closeEvent(e);
+}
+
 void BasicWidget::initWidget()
 {
 	installEventFilter(this);

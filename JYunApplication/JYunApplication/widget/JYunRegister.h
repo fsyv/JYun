@@ -9,30 +9,42 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : http服务
+* @brief : 注册界面
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/8
+* @date : 2018/1/30
 **/
 
-class JYunHttp : public QObject
+#include "basic\BasicWidget.h"
+
+class JYunRegister : public BasicWidget
 {
 	Q_OBJECT
 public:
-	explicit JYunHttp();
-	virtual ~JYunHttp();
+	explicit JYunRegister();
+	~JYunRegister();
 
-	QMap<QString, QString> login(const QString &username, const QString &userpass);
-	//获取头像
-	void downloadHead(const QString &username);
-	//上传头像
-	void uploadHead(const QString &username);
-	//校验用户名是否存在
-	bool checkUsername(const QString &username);
-	//注册
-	QMap<QString, QString> registered(const QString &username, const QString &userpass);
+protected:
+	void initWidget();
+	void conn();
+	void initData();
+	void init();
+
+	//用户名输入栏失去焦点
+	void usernameInputFocusOut();
+
+	void resizeEvent(QResizeEvent *e) override;
+	bool eventFilter(QObject *object, QEvent *e) override;
+
+protected slots:
+	//注册按钮槽函数
+	void registered();
+
 private:
-	QNetworkAccessManager *m_pManager;
-	QUrl m_url;
+	QLineEdit *m_pUsernameLabel;
+	QLineEdit *m_pUsernameLineEdit;
+	QLineEdit *m_pUserpassLabel;
+	QLineEdit *m_pUserpassLineEdit;
+	QPushButton *m_pRegisterButton;
 };
 

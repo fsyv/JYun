@@ -308,6 +308,15 @@
     <ClCompile Include="widget\clouddisk\CloudDiskTaskList.cpp">
       <Filter>widget\clouddisk</Filter>
     </ClCompile>
+    <ClCompile Include="widget\JYunRegister.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunRegister.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunRegister.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -420,6 +429,9 @@
     </CustomBuild>
     <CustomBuild Include="widget\clouddisk\CloudDiskStatusBar.h">
       <Filter>widget\clouddisk</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\JYunRegister.h">
+      <Filter>widget</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

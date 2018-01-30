@@ -103,7 +103,7 @@ QByteArray JYunTools::fileMD5(QString filePath)
 		return 0;
 	}
 
-	QByteArray md5 = QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5);
+	QByteArray md5 = QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
 
 	file.close();
 
@@ -112,5 +112,23 @@ QByteArray JYunTools::fileMD5(QString filePath)
 
 QByteArray JYunTools::stringMD5(QString string)
 {
-	return QCryptographicHash::hash(string.toUtf8(), QCryptographicHash::Md5);
+	return QCryptographicHash::hash(string.toUtf8(), QCryptographicHash::Md5).toHex();
+}
+
+/***************************************************
+*字节码保存为本地图片
+****************************************************
+*/
+void JYunTools::byteToLocalImage(const QString &filePath, const QByteArray & byte)
+{
+	QFile file(filePath);
+
+	if (file.exists())
+		file.remove();
+
+	if (!file.open(QIODevice::WriteOnly))
+		return;
+
+	file.write(byte);
+	file.close();
 }
