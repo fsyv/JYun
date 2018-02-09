@@ -1,24 +1,29 @@
 #include "stdafx.h"
 #include "FileObject.h"
 
-FileObject::FileObject(QListWidget *parent):
+#include "DocumentFile.h"
+#include "ImageFile.h"
+#include "MusicFile.h"
+#include "VideoFile.h"
+#include "OtherFile.h"
+#include "Folder.h"
+
+FileObject::FileObject(QListWidgetItem *item):
 	QFrame(),
 	m_pConfirmCheckBox(nullptr),
 	m_pPictureLabel(nullptr),
 	m_pNameLabel(nullptr),
-	m_pMenu(nullptr)
+	m_pMenu(nullptr),
+	m_pListWidgetItem(item)
 {
 	setStyleSheetFromFile(":/resource/qss/file.qss");
-
-	m_pListWidgetItem = new QListWidgetItem(parent);
 
 	init();
 }
 
-FileObject::FileObject(QString name, FileType type, QListWidget * parent):
-	FileObject(parent)
+FileObject::FileObject(FileType type, QListWidgetItem *item):
+	FileObject(item)
 {
-	m_stFileName = name;
 	m_eFileType = type;
 
 	setNameLabel(m_stFileName);
@@ -33,6 +38,7 @@ FileObject::~FileObject()
 void FileObject::setStyleSheetFromFile(QString filename)
 {
 	QFile file(filename);
+
 	if (file.open(QIODevice::ReadOnly))
 		setStyleSheet(file.readAll());
 	file.close();
@@ -59,6 +65,7 @@ void FileObject::setNameLabel(const QString &name)
 void FileObject::setFileName(const QString & name)
 {
 	m_stFileName = name;
+	setNameLabel(name);
 }
 
 void FileObject::setFilePath(const QString & path)
@@ -66,10 +73,29 @@ void FileObject::setFilePath(const QString & path)
 	m_stFilePath = path;
 }
 
+void FileObject::setFileNamePath(const QString & namePath)
+{
+	QFileInfo info(namePath);
+
+	setFileName(info.fileName());
+	setFilePath(info.path());
+}
+
 void FileObject::setConfirmCheckBoxStatus(bool status)
 {
 	m_pConfirmCheckBox->setChecked(status);
 	m_pConfirmCheckBox->setVisible(status);
+}
+
+void FileObject::setItem(QListWidget * parent)
+{
+	m_pListWidgetItem = new QListWidgetItem(parent);
+	m_pListWidgetItem->setSizeHint(QSize(125, 125));
+}
+
+void FileObject::setItem(QListWidgetItem * item)
+{
+	m_pListWidgetItem = m_pListWidgetItem;
 }
 
 FileObject::FileType FileObject::fileType() const
@@ -94,7 +120,60 @@ QString FileObject::filePath() const
 
 QString FileObject::fileNamePath() const
 {
-	return filePath() + fileName();
+	return filePath() + QString("/") + fileName();
+}
+
+void FileObject::copy()
+{
+}
+
+void FileObject::move()
+{
+}
+
+void FileObject::rename()
+{
+}
+
+void FileObject::upload()
+{
+}
+
+void FileObject::download()
+{
+}
+
+void FileObject::clear()
+{
+}
+
+FileObject * FileObject::createFile(const FileType & type)
+{
+	FileObject *object;
+
+	switch (type)
+	{
+	case FileType::Folder:
+		object = new Folder;
+		break;
+	case FileType::Document:
+		object = new DocumentFile;
+		break;
+	case FileType::Image:
+		object = new ImageFile;
+		break;
+	case FileType::Music:
+		object = new MusicFile;
+		break;
+	case FileType::Video:
+		object = new VideoFile;
+		break;
+	default:
+		object = new OtherFile;
+		break;
+	}
+		
+	return object;
 }
 
 void FileObject::initWidget()
@@ -129,7 +208,8 @@ void FileObject::conn()
 void FileObject::initData()
 {
 	//设置每个单元格的大小
-	m_pListWidgetItem->setSizeHint(QSize(125, 125));
+	if(m_pListWidgetItem)
+	    m_pListWidgetItem->setSizeHint(QSize(125, 125));
 }
 
 void FileObject::init()
@@ -196,7 +276,7 @@ void FileObject::mouseDoubleClickEvent(QMouseEvent * e)
 
 void FileObject::mouseLeftClicked()
 {
-
+	m_pConfirmCheckBox->setChecked(!m_pConfirmCheckBox->isChecked());
 }
 
 void FileObject::mouseRightClicked()

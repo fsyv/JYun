@@ -2,8 +2,8 @@
 #include "MusicFile.h"
 
 
-MusicFile::MusicFile(QString name, QListWidget *parent) :
-	File(name, FileType::Music, parent)
+MusicFile::MusicFile(QListWidgetItem *item) :
+	File(FileType::Music, item)
 {
 	init();
 }
@@ -76,6 +76,13 @@ void MusicFile::init()
 	conn();
 
 	initData();
+}
+
+bool MusicFile::isMusicFile(const QString & fileSuffix)
+{
+	QStringList suffixs = fromConfigFileGetSupportSuffix(QString("MusicFile")).split(";");
+
+	return suffixs.contains(fileSuffix, Qt::CaseInsensitive);
 }
 
 void MusicFile::mouseDoubleClicked()

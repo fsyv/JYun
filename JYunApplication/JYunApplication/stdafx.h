@@ -31,3 +31,8 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QPainter>
+#include <QMimeData>
+#include <QMutex>
+#include <QScrollArea>
+
+#include "logic\User.h"

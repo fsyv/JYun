@@ -128,6 +128,7 @@ void JYunApplication::closeWidgetWhenShown(QCloseEvent * e)
 		e->ignore();
 		break;
 	case ApplicationCloseDialog::Type::Logout:
+		emit logout();
 		break;
 	case ApplicationCloseDialog::Type::Hide:
 		BasicWidget::hide();
@@ -190,8 +191,14 @@ void JYunApplication::startJYunSetup()
 {
 	hide();
 
-	JYunSetup *w = new JYunSetup(m_stUsername);
-	w->show();
+	JYunSetup w(m_stUsername);
+	w.show();
+
+	QEventLoop event_loop;
+	connect(&w, &JYunCloudDisk::quitWidget, &event_loop, &QEventLoop::quit);
+	event_loop.exec();
+
+	show();
 }
 
 /***************************************************
@@ -202,8 +209,14 @@ void JYunApplication::startJYunCloudDisk()
 {
 	hide();
 
-	JYunCloudDisk *w = new JYunCloudDisk;
-	w->show();
+	JYunCloudDisk w(m_stUsername);
+	w.show();
+
+	QEventLoop event_loop;
+	connect(&w, &JYunCloudDisk::quitWidget, &event_loop, &QEventLoop::quit);
+	event_loop.exec();
+
+	show();
 }
 
 /***************************************************
@@ -214,8 +227,14 @@ void JYunApplication::startJYunBackup()
 {
 	hide();
 
-	JYunBackup *w = new JYunBackup;
-	w->show();
+	JYunBackup w;
+	w.show();
+
+	QEventLoop event_loop;
+	connect(&w, &JYunCloudDisk::quitWidget, &event_loop, &QEventLoop::quit);
+	event_loop.exec();
+
+	show();
 }
 
 /***************************************************

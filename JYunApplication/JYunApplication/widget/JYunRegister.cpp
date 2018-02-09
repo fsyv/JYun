@@ -98,6 +98,10 @@ void JYunRegister::init()
 void JYunRegister::usernameInputFocusOut()
 {
 	QString username = m_pUsernameLineEdit->text();
+
+	if (username.isEmpty())
+		return;
+
 	JYunHttp http;
 	if (http.checkUsername(username))
 	{
@@ -147,12 +151,22 @@ void JYunRegister::registered()
 	QString userpass = JYunTools::stringMD5(m_pUserpassLineEdit->text());
 
 	JYunHttp http;
+
+	if (http.checkUsername(username))
+	{
+		//用户名已经存在
+		JYunMessageBox::prompt("用户名已经存在");
+		m_pUsernameLineEdit->setFocus();
+		return;
+	}
+
 	QMap<QString, QString> result = http.registered(username, userpass);
 
 	if (result.value("register_result") == QString("True"))
 	{
 		//注册成功
 		JYunMessageBox::prompt("注册成功！");
+		close();
 	}
 	else
 	{

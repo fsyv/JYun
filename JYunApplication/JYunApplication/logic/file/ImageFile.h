@@ -21,7 +21,7 @@ class ImageFile : public File
 {
 	Q_OBJECT
 public:
-	ImageFile(QString name, QListWidget *parent = nullptr);
+	ImageFile(QListWidgetItem *item = nullptr);
 	~ImageFile();
 
 	void initMenu();
@@ -30,7 +30,12 @@ public:
 	void initData();
 	void init();
 
+	static bool isImageFile(const QString &fileSuffix);
+
 protected:
 	void mouseDoubleClicked() override;
+
+private:
+
 };
 

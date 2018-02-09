@@ -2,6 +2,10 @@
 #include "JYunSetup.h"
 
 #include "messagebox\JYunMessageBox.h"
+#include "logic\network\JYunHttp.h"
+#include "logic/JYunTools.h"
+
+#include "logic\file\ImageFile.h"
 
 JYunSetup::JYunSetup(QString username) :
 	m_pChangeAvatarButton(nullptr),
@@ -72,8 +76,12 @@ void JYunSetup::changeHead()
 	QFileInfo file(filePath);
 
 	if (file.exists())
+	{
 		//更换界面显示头像
-		setAvatar(QPixmap(file.filePath()));
+		m_pHeadImage->clear();
+		m_pHeadImage->setFileNamePath(file.filePath());
+		setAvatar(QPixmap(m_pHeadImage->fileNamePath()));
+	}
 	else
 		JYunMessageBox::prompt(QString("文件不存在!"));
 }
@@ -87,6 +95,19 @@ void JYunSetup::commit()
 	//检测头像是否改变
 	//检测密码是否改变
 
+	JYunHttp http;
+	QString md5 = http.getHeadMd5(m_stUsername);
+
+	if (m_pHeadImage->md5() != md5)
+	{
+		//上传头像
+		http.uploadHead(m_stUsername);
+		QFile file(m_pHeadImage->fileNamePath());
+		file.copy(QDir::currentPath() + QString("/head/") + m_stUsername);
+	}
+
+	QString userpass = JYunTools::stringMD5(m_pUserpassLineEdit->text());
+	http.modifyPass(m_stUsername, userpass);
 }
 
 void JYunSetup::initWidget()
@@ -147,6 +168,8 @@ void JYunSetup::initData()
 	//设置用户名和假密码
 	m_pUsernameLineEdit->setText(m_stUsername);
 	m_pUserpassLineEdit->setText(m_stFakePass);
+
+	updateAvatar();
 }
 
 void JYunSetup::init()
@@ -186,6 +209,19 @@ void JYunSetup::updateAvatar()
 	//计算本地头像的MD5值
 	//如果与服务器相同则使用本地缓存图片
 	//如果与服务器不相同则从服务器下载图片
+
+	//本地头像对象
+	m_pHeadImage = new ImageFile;
+	m_pHeadImage->setFileNamePath(QDir::currentPath() + QString("/head/") + m_stUsername);
+	JYunHttp http;
+	QString md5 = http.getHeadMd5(m_stUsername);
+
+	if (m_pHeadImage->md5() != md5)
+	{
+		//更新头像
+		http.downloadHead(m_stUsername);
+	}
+	setAvatar(QPixmap(m_pHeadImage->fileNamePath()));
 }
 
 void JYunSetup::resizeEvent(QResizeEvent * e)

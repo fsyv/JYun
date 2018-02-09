@@ -17,18 +17,34 @@
 
 #include "FileObject.h"
 
+class Folder;
+
 class File : public FileObject
 {
 	Q_OBJECT
 public:
-	explicit File(QString name, FileType type, QListWidget *parent = nullptr);
+	explicit File(FileType type = FileType::Other, QListWidgetItem *item = nullptr);
+	explicit File(const File &file);
 	~File();
 
 	void calcFileMd5();
 	
 	QString md5();
 
+	static File *createFile(const QString &filename);
+
+	void mouseDoubleClicked() override;
+	void upload() override;
+	void download() override;
+	void clear() override;
+
+protected:
+	static QString fromConfigFileGetSupportSuffix(const QString &ksy);
+
 private:
 	QString m_stFileMD5;
+
+	Folder *m_pParentFolder;
 };
 
+Q_DECLARE_METATYPE(File)

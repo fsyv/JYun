@@ -17,6 +17,8 @@
 
 #include <QSqlDatabase>
 
+class FileObject;
+
 class Database
 {
 public:
@@ -36,6 +38,15 @@ public:
 	bool isRememberPass(QString username);
 	//从本地数据库通过帐号获取密码
 	QString getPassByUsername(QString username);
+	//保存文件列表到本地
+	void saveFilesToLocal(const QString &path, const QList<FileObject *> &files);
+	//从本地缓存获取文件列表
+	QList<FileObject *> getFilesFromLocal(const QString &path);
+	//文件缓存是否有效
+	bool isLocalCacheValid(const QString &path);
+
+protected:
+	QByteArray filesJson(const QString &path);
 private:
 	QSqlDatabase db;
 };

@@ -42,7 +42,6 @@ QByteArray JYunTools::mapToJson(const QMap<QString, QString>& map)
 {
 	QJsonObject json;
 
-	;
 	for(QMap<QString, QString>::const_iterator it = map.constBegin();
 		it != map.constEnd(); ++it)
 		json.insert(it.key(), it.value());

@@ -28,7 +28,7 @@ class JYunCloudDisk : public BasicWidget
 {
 	Q_OBJECT
 public:
-	explicit JYunCloudDisk();
+	explicit JYunCloudDisk(const QString &username);
 	~JYunCloudDisk();
 
 protected:
@@ -45,5 +45,7 @@ private:
 	CloudDiskFileWidget *m_pFileWidget;
 	CloudDiskSetup *m_pSetup;
 	CloudDiskTaskList *m_pTaskList;
+
+	QString m_stUsername;
 };
 

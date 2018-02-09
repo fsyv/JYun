@@ -2,8 +2,8 @@
 #include "VideoFile.h"
 
 
-VideoFile::VideoFile(QString name, QListWidget *parent) :
-	File(name, FileType::Video, parent)
+VideoFile::VideoFile(QListWidgetItem *item) :
+	File(FileType::Video, item)
 {
 	init();
 }
@@ -76,6 +76,13 @@ void VideoFile::init()
 	conn();
 
 	initData();
+}
+
+bool VideoFile::isVideoFile(const QString & fileSuffix)
+{
+	QStringList suffixs = fromConfigFileGetSupportSuffix(QString("VideoFile")).split(";");
+
+	return suffixs.contains(fileSuffix, Qt::CaseInsensitive);
 }
 
 void VideoFile::mouseDoubleClicked()

@@ -15,6 +15,8 @@
 * @date : 2018/1/4
 **/
 
+class File;
+
 class CloudDiskTopWidget : public QFrame
 {
 	Q_OBJECT
@@ -28,7 +30,17 @@ protected:
 	void initData();
 	void init();
 
+protected slots:
+    //上传按钮响应函数
+	void upload();
+
 signals:
+	void uploadFile(File *);
+	void backward();
+	void forward();
+	void refresh();
+	void downloadFile();
+	void shareFile();
 	void taskListButtonClicked(bool);
 
 private:

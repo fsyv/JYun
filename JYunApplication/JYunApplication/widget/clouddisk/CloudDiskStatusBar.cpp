@@ -30,6 +30,55 @@ CloudDiskStatusBar::~CloudDiskStatusBar()
 	m_pFolderFrame = nullptr;
 }
 
+void CloudDiskStatusBar::addFolder(Folder * folder)
+{
+	if (!folder)
+		//抛出异常
+		return;
+
+	CloudDiskStatusBarChildWidget *child = new CloudDiskStatusBarChildWidget(m_pFolderFrame);
+	connect(child, &CloudDiskStatusBarChildWidget::clicked, this, &CloudDiskStatusBar::childWidgetClicked);
+
+	if (m_FolderList.isEmpty())
+		child->setFolderRole(CloudDiskStatusBarChildWidget::FolderRole::Root);
+	else
+		child->setFolderRole(CloudDiskStatusBarChildWidget::FolderRole::Other);
+
+	child->setFolder(folder);
+
+	m_FolderList.append(child);
+
+	adjustFolderWidth();
+}
+
+void CloudDiskStatusBar::childWidgetClicked(CloudDiskStatusBarChildWidget * child)
+{
+	if (!child)
+		//抛出异常
+		return;
+
+	int size = m_FolderList.size();
+	for (int i = 0; i < size; ++i)
+	{
+		if (m_FolderList[i] == child)
+		{
+			while (m_FolderList.size() > i + 1)
+			{
+				CloudDiskStatusBarChildWidget *back = m_FolderList.back();
+				disconnect(back, &CloudDiskStatusBarChildWidget::clicked, this, &CloudDiskStatusBar::childWidgetClicked);
+				delete back;
+				m_FolderList.pop_back();
+			}
+
+			break;
+		}
+	}
+
+	adjustFolderWidth();
+
+	emit folderClicked(child->folder());
+}
+
 void CloudDiskStatusBar::initWidget()
 {
 	setObjectName("clouddisk_bar");
@@ -49,14 +98,6 @@ void CloudDiskStatusBar::initWidget()
 	m_pFolderFrame->setObjectName("clouddisk_bar_frame");
 	m_pFolderFrame->resize(660, 40);
 	m_pFolderFrame->move(40, 0);
-
-	CloudDiskStatusBarChildWidget *child = new CloudDiskStatusBarChildWidget(CloudDiskStatusBarChildWidget::FolderRole::Root, m_pFolderFrame);
-	child->setName("根目录");
-	child->move(0, 0);
-
-	CloudDiskStatusBarChildWidget *child1 = new CloudDiskStatusBarChildWidget(CloudDiskStatusBarChildWidget::FolderRole::Other, m_pFolderFrame);
-	child1->setName("这是文件夹啊啊");
-	child1->move(child->textWidth(), 0);
 }
 
 void CloudDiskStatusBar::conn()
@@ -77,4 +118,18 @@ void CloudDiskStatusBar::init()
 	conn();
 
 	initData();
+}
+
+void CloudDiskStatusBar::adjustFolderWidth()
+{
+	//如果长度大于MAX_WIDTH
+	//则将第一次隐藏，重复此过程
+
+	int move = 0;
+	for (CloudDiskStatusBarChildWidget *child : m_FolderList)
+	{
+		if (child->folderRole() != CloudDiskStatusBarChildWidget::FolderRole::NotShow)
+			child->move(move, 0);
+		move += child->textWidth();
+	}
 }

@@ -1,0 +1,10 @@
+{
+    "name" : "system_config.json",
+	"version" : "0.01",
+	"FileType" : {
+	    "DocumentFile" : "txt;doc;docx",
+	    "ImageFile" : "png;gif;jpg",
+		"MusicFile" : "mp3",
+		"VideoFile" : "mp4"
+	}
+}

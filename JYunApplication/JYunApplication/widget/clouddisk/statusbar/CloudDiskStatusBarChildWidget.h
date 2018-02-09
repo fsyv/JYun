@@ -17,22 +17,29 @@
 
 #include <QFrame>
 
+class Folder;
+
 class CloudDiskStatusBarChildWidget : public QFrame
 {
 	Q_OBJECT
 public:
 	enum class FolderRole {
+		NotShow,		//不显示
 		Root,		//根目录
 		Other		//其他
 	};
 public:
-	explicit CloudDiskStatusBarChildWidget(FolderRole role = FolderRole::Other, QWidget *parent = nullptr);
+	explicit CloudDiskStatusBarChildWidget(QWidget *parent = nullptr);
+	explicit CloudDiskStatusBarChildWidget(const CloudDiskStatusBarChildWidget &child);
 	~CloudDiskStatusBarChildWidget();
 
 	void setName(const QString &name);
 	void setFolderRole(const FolderRole &name);
+	void setFolder(Folder *folder);
 
 	int textWidth() const;
+	FolderRole folderRole() const;
+	Folder *folder() const;
 
 protected:
 	void initData();
@@ -46,6 +53,10 @@ protected:
 
 	void resizeEvent(QResizeEvent *e) override;
 	void paintEvent(QPaintEvent *e) override;
+	void mousePressEvent(QMouseEvent *e) override;
+
+signals:
+	void clicked(CloudDiskStatusBarChildWidget *);
 
 private:
 	QLabel *m_pNameLabel;
@@ -56,5 +67,8 @@ private:
 	int m_iTextWidth;
 	FolderRole m_eRole;
 	QPainterPath m_PainterPath;
+
+	Folder *m_pCurrentFolder;
 };
 
+Q_DECLARE_METATYPE(CloudDiskStatusBarChildWidget)

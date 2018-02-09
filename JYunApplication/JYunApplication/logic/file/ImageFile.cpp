@@ -2,8 +2,8 @@
 #include "logic\file\ImageFile.h"
 
 
-ImageFile::ImageFile(QString name, QListWidget *parent) :
-	File(name, FileType::Image, parent)
+ImageFile::ImageFile(QListWidgetItem *item) :
+	File(FileType::Image, item)
 {
 	init();
 }
@@ -76,6 +76,13 @@ void ImageFile::init()
 	conn();
 
 	initData();
+}
+
+bool ImageFile::isImageFile(const QString & fileSuffix)
+{
+	QStringList suffixs = fromConfigFileGetSupportSuffix(QString("ImageFile")).split(";");
+
+	return suffixs.contains(fileSuffix, Qt::CaseInsensitive);
 }
 
 void ImageFile::mouseDoubleClicked()

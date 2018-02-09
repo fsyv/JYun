@@ -17,6 +17,8 @@
 
 #include "basic/BasicWidget.h"
 
+class ImageFile;
+
 class JYunSetup : public BasicWidget
 {
 	Q_OBJECT
@@ -59,5 +61,7 @@ private:
 	QString m_stUsername;
 	QString m_stRealPass;
 	QString m_stFakePass;
+
+	ImageFile *m_pHeadImage;
 };
 

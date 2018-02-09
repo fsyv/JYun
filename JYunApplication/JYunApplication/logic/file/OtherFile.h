@@ -20,7 +20,7 @@
 class OtherFile : public File
 {
 public:
-	OtherFile(QString name, QListWidget *parent = nullptr);
+	OtherFile(QListWidgetItem *item = nullptr);
 	~OtherFile();
 
 	void initMenu();

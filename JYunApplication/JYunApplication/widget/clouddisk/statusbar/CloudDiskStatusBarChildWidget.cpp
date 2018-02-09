@@ -1,17 +1,25 @@
 #include "stdafx.h"
 #include "CloudDiskStatusBarChildWidget.h"
 
+#include "logic/file/Folder.h"
 
-CloudDiskStatusBarChildWidget::CloudDiskStatusBarChildWidget(FolderRole role, QWidget *parent) :
+CloudDiskStatusBarChildWidget::CloudDiskStatusBarChildWidget(QWidget *parent) :
 	QFrame(parent),
-	m_pNameLabel(nullptr),
-	m_eRole(role)
+	m_pNameLabel(nullptr)
 {
 	setStyleSheetFromFile(":/resource/qss/CloudDiskStatusBarChildWidget.qss");
+
+	m_eRole = FolderRole::NotShow;
 	initData();
 	initWidget();
 }
 
+CloudDiskStatusBarChildWidget::CloudDiskStatusBarChildWidget(const CloudDiskStatusBarChildWidget & child) :
+	CloudDiskStatusBarChildWidget((QWidget *)child.parent())
+{
+	setFolderRole(child.folderRole());
+	setFolder(child.folder());
+}
 
 CloudDiskStatusBarChildWidget::~CloudDiskStatusBarChildWidget()
 {
@@ -35,12 +43,42 @@ void CloudDiskStatusBarChildWidget::setFolderRole(const FolderRole & name)
 {
 	m_eRole = name;
 
+	if (m_eRole == FolderRole::NotShow)
+		setVisible(false);
+	else
+		setVisible(true);
+
+	if (m_eRole == FolderRole::Root)
+		m_pNameLabel->move(5, 0);
+	else if (m_eRole == FolderRole::Other)
+		m_pNameLabel->move(m_iRriangleHight + 1, 0);
+
 	initPath();
+}
+
+void CloudDiskStatusBarChildWidget::setFolder(Folder * folder)
+{
+	m_pCurrentFolder = folder;
+	setName(m_pCurrentFolder->fileName());
 }
 
 int CloudDiskStatusBarChildWidget::textWidth() const
 {
-	return m_iTextWidth;
+	if (m_eRole == FolderRole::Root)
+		return m_iTextWidth;
+	else if (m_eRole == FolderRole::Other)
+		return m_iTextWidth + m_iRriangleHight;
+	
+}
+
+CloudDiskStatusBarChildWidget::FolderRole CloudDiskStatusBarChildWidget::folderRole() const
+{
+	return m_eRole;
+}
+
+Folder * CloudDiskStatusBarChildWidget::folder() const
+{
+	return m_pCurrentFolder;
 }
 
 void CloudDiskStatusBarChildWidget::initData()
@@ -48,17 +86,12 @@ void CloudDiskStatusBarChildWidget::initData()
 	m_iRriangleHight = 28;
 	m_iMaxTextWidth = 60;
 	m_iMinTextWidth = 40;
+	m_iTextWidth = 45;
 }
 
 void CloudDiskStatusBarChildWidget::initWidget()
 {
 	m_pNameLabel = new QLabel(this);
-
-	if (m_eRole == FolderRole::Root)
-		m_pNameLabel->move(5, 0);
-	else
-		m_pNameLabel->move(m_iRriangleHight + 1, 0);
-	
 	m_pNameLabel->setAlignment(Qt::AlignVCenter);
 }
 
@@ -91,8 +124,11 @@ void CloudDiskStatusBarChildWidget::initPath()
 {
 	if (m_eRole == FolderRole::Root)
 		initRootPath();
-	else
+	else if (m_eRole == FolderRole::Other)
 		initOtherPath();
+
+	update();
+	//repaint();
 }
 
 void CloudDiskStatusBarChildWidget::adjustLabelWidth()
@@ -133,4 +169,9 @@ void CloudDiskStatusBarChildWidget::paintEvent(QPaintEvent * e)
 	painter.drawPath(m_PainterPath);
 
 	QFrame::paintEvent(e);
+}
+
+void CloudDiskStatusBarChildWidget::mousePressEvent(QMouseEvent * e)
+{
+	emit clicked(this);
 }

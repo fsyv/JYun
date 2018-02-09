@@ -2,8 +2,8 @@
 #include "DocumentFile.h"
 
 
-DocumentFile::DocumentFile(QString name, QListWidget *parent):
-	File(name, FileType::Document, parent)
+DocumentFile::DocumentFile(QListWidgetItem *item):
+	File(FileType::Document, item)
 {
 	init();
 }
@@ -76,6 +76,13 @@ void DocumentFile::init()
 	conn();
 
 	initData();
+}
+
+bool DocumentFile::isDocumentFile(const QString & fileSuffix)
+{
+	QStringList suffixs = fromConfigFileGetSupportSuffix(QString("DocumentFile")).split(";");
+
+	return suffixs.contains(fileSuffix, Qt::CaseInsensitive);
 }
 
 void DocumentFile::mouseDoubleClicked()

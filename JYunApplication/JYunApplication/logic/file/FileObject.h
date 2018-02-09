@@ -32,8 +32,8 @@ public:
 		Other	 = 0x20,		//其它
 	};
 public:
-	explicit FileObject(QListWidget *parent = nullptr);
-	explicit FileObject(QString name, FileType type, QListWidget *parent = nullptr);
+	explicit FileObject(QListWidgetItem *item = nullptr);
+	explicit FileObject(FileType type, QListWidgetItem *item = nullptr);
 	virtual ~FileObject();
 
 	void setStyleSheetFromFile(QString filename);
@@ -45,8 +45,14 @@ public:
 	void setFileName(const QString &name);
 	//设置文件路径
 	void setFilePath(const QString &path);
+	//设置文件名字+路径
+	void setFileNamePath(const QString &namePath);
 	//设置CheckBox按钮状态
 	void setConfirmCheckBoxStatus(bool status);
+	//设置视图item
+	void setItem(QListWidget *parent);
+	void setItem(QListWidgetItem *item);
+
 	//文件类型
 	FileType fileType() const;
 	//视图item
@@ -57,6 +63,22 @@ public:
 	QString filePath() const;
 	//文件名字路径
 	QString fileNamePath() const;
+
+	//复制
+	virtual void copy();
+	//移动
+	virtual void move();
+	//重命名
+	virtual void rename();
+	//上传
+	virtual void upload();
+	//下载
+	virtual void download();
+	//清空
+	virtual void clear();
+
+	static FileObject *createFile(const FileType &type);
+
 protected:
 	void initWidget();
 	void conn();

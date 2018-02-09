@@ -57,11 +57,7 @@ void JYunLogin::showWidget()
 	//500毫秒后根据用户配置执行定时器
 	QTimer::singleShot(500, this, [this]() {
 		if (m_pAutoLogin->isChecked())
-		{
-			Database db;
-			m_stPassMd5 = db.getPassByUsername(m_pUsernameInput->lineEdit()->text());
 			login();
-		}
 	});
 }
 
@@ -149,15 +145,26 @@ void JYunLogin::initData()
 {
 	m_stFakePass = QString("不要偷看密码哦!");
 
-	Database db;
+	{
+		Database db;
 
-	QStringList users = db.getUserLists();
-	if (users.isEmpty())
-		return;
+		QStringList users = db.getUserLists();
 
-	m_pUsernameInput->addItems(users);
+		if (users.isEmpty())
+			return;
+
+		m_pUsernameInput->addItems(users);
+	}
 
 	getUserConfigByUsername(m_pUsernameInput->lineEdit()->text());
+
+	if (m_pRememberPass->isChecked())
+	{
+		Database db;
+
+		m_stPassMd5 = db.getPassByUsername(m_pUsernameInput->lineEdit()->text());
+	}
+	    
 }
 
 /***************************************************
@@ -224,7 +231,7 @@ void JYunLogin::userConfig()
 
 	//如果要记住密码，保存到本地数据库
 	if (m_pRememberPass->isChecked())
-		keepUserpass(m_pUsernameInput->lineEdit()->text(), JYunTools::stringMD5(m_stRealPass));
+		keepUserpass(m_pUsernameInput->lineEdit()->text(), m_stPassMd5);
 	else
 		keepUserpass(m_pUsernameInput->lineEdit()->text());
 }
@@ -236,8 +243,15 @@ void JYunLogin::userConfig()
 void JYunLogin::startJYunApplication()
 {
 	hide();
-	JYunApplication *w = new JYunApplication(m_pUsernameInput->lineEdit()->text());
-	w->show();
+
+	JYunApplication w(m_pUsernameInput->lineEdit()->text());
+	w.show();
+
+	QEventLoop event_loop;
+	connect(&w, &JYunApplication::logout, &event_loop, &QEventLoop::quit);
+	connect(&w, &JYunApplication::logout, this, &JYunLogin::show);
+	event_loop.exec();
+
 }
 
 /***************************************************
@@ -246,6 +260,11 @@ void JYunLogin::startJYunApplication()
 */
 void JYunLogin::loginSuccess()
 {
+	//设置全局用户变量
+	User *user = User::getInstance();
+	QString username = m_pUsernameInput->lineEdit()->text();
+	user->setUsername(username);
+
 	//保存用户配置
 	userConfig();
 

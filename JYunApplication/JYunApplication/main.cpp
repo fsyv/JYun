@@ -25,6 +25,7 @@
 
 #include "widget\JYunApplication.h"
 #include "widget\JYunCloudDisk.h"
+#include "widget\JYunSetup.h"
 #include "logic\file\FileObject.h"
 
 void finish();
@@ -36,15 +37,16 @@ int main(int argc, char *argv[])
 
 	QApplication a(argc, argv);
 
-	//JYunApplication *w = new JYunApplication("fsyv1");
-	//w->show();
+	JYunCloudDisk w("fsyv");
 
-	Security security;
-	JYunLogin w;
+	//Security security;
+	//JYunLogin w;
 	JYunSerious recall;
 	try {
-		security.check();
-		w.showWidget();
+		/*security.check();
+		w.showWidget();*/
+		
+		w.show();
 	}
 	catch (Exception e) {
 		recall.show();

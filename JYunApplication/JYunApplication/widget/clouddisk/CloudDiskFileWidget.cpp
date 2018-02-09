@@ -10,7 +10,7 @@
 
 CloudDiskFileWidget::CloudDiskFileWidget(QWidget *parent):
 	QListWidget(parent),
-	m_pFileList(nullptr)
+	m_pCurrentFolder(nullptr)
 {
 	resize(700, 450);
 
@@ -20,12 +20,12 @@ CloudDiskFileWidget::CloudDiskFileWidget(QWidget *parent):
 
 CloudDiskFileWidget::~CloudDiskFileWidget()
 {
-	if (m_pFileList)
-	{
-		m_pFileList->clear();
-		delete m_pFileList;
-		m_pFileList = nullptr;
-	}
+	delete m_pCurrentFolder;
+}
+
+void CloudDiskFileWidget::afterConn()
+{
+	initData();
 }
 
 void CloudDiskFileWidget::initWidget()
@@ -38,35 +38,16 @@ void CloudDiskFileWidget::initWidget()
 
 void CloudDiskFileWidget::conn()
 {
+
 }
 
 void CloudDiskFileWidget::initData()
 {
-	FileObject *file = new Folder("文件夹", this);
-	setItemWidget(file->item(), file);
-
-	FileObject *file1 = new DocumentFile("文档", this);
-	setItemWidget(file1->item(), file1);
-
-	FileObject *file2 = new ImageFile("图片", this);
-	setItemWidget(file2->item(), file2);
-
-	FileObject *file3 = new MusicFile("音乐", this);
-	setItemWidget(file3->item(), file3);
-
-	FileObject *file4 = new OtherFile("其它", this);
-	setItemWidget(file4->item(), file4);
-
-	FileObject *file5 = new VideoFile("视频", this);
-	setItemWidget(file5->item(), file5);
-
-	m_pFileList = new QList<FileObject *>;
-	m_pFileList->append(file);
-	m_pFileList->append(file1);
-	m_pFileList->append(file2);
-	m_pFileList->append(file3);
-	m_pFileList->append(file4);
-	m_pFileList->append(file5);
+	//创建根目录
+	User *user = User::getInstance();
+	user->setUsername("fsyv");
+	m_pCurrentFolder = Folder::createRootFolder(user->getUsername());
+	openFolder(m_pCurrentFolder);
 }
 
 void CloudDiskFileWidget::init()
@@ -74,27 +55,64 @@ void CloudDiskFileWidget::init()
 	initWidget();
 
 	conn();
-
-	initData();
 }
 
 void CloudDiskFileWidget::showCategory(int echo)
 {
-	for (auto object = m_pFileList->begin(); object != m_pFileList->end(); ++object)
-		(*object)->setVisible((int)(*object)->fileType() & echo);
+	QList<QListWidgetItem *> items = this->items();
+	for (auto item = items.begin(); item != items.end(); ++item)
+	{
+		FileObject *file = (FileObject *)itemWidget(*item);
+		file->setVisible((int)file->fileType() & echo);
+	}
 }
 
 void CloudDiskFileWidget::showAll()
 {
-	for (auto object = m_pFileList->begin(); object != m_pFileList->end(); ++object)
-		(*object)->setVisible(true);
+	QList<QListWidgetItem *> items = this->items();
+	for (auto item = items.begin(); item != items.end(); ++item)
+		((FileObject *)itemWidget(*item))->setVisible(true);
 }
 
-void CloudDiskFileWidget::sortItems()
+void CloudDiskFileWidget::setFolder(Folder *folder)
 {
-	//文件夹排在前，文件排在后
-	//文件夹按创建时间排序
-	//文件按名字排序
+	if (folder != m_pCurrentFolder)
+	{
+		//断开当前文件夹的信号槽
+		disconnect(m_pCurrentFolder, &Folder::open, this, &CloudDiskFileWidget::openFolder);
+		m_pCurrentFolder = folder;
+		connect(m_pCurrentFolder, &Folder::open, this, &CloudDiskFileWidget::openFolder);
+	}
+	else
+		connect(m_pCurrentFolder, &Folder::open, this, &CloudDiskFileWidget::openFolder);
+
+	//获取当前文件夹下列表
+	update();
+}
+
+void CloudDiskFileWidget::update()
+{
+	reset();
+	clear();
+
+	QList<FileObject *> *fileList = m_pCurrentFolder->fileList();
+
+	for (FileObject *object : *fileList)
+	{
+		object->setItem(this);
+		setItemWidget(object->item(), object);
+	}
+}
+
+QList<QListWidgetItem*> CloudDiskFileWidget::items()
+{
+	QList<QListWidgetItem *> items;
+
+	int count = this->count();
+	for (int i = 0; i < count; ++i)
+		items.append(this->item(i));
+
+	return items;
 }
 
 void CloudDiskFileWidget::fileCategory(int echo)
@@ -105,8 +123,64 @@ void CloudDiskFileWidget::fileCategory(int echo)
 		showAll();
 }
 
+void CloudDiskFileWidget::uploadFile(File *file)
+{
+	file->setItem(this);
+	setItemWidget(file->item(), file);
+}
+
+void CloudDiskFileWidget::backward()
+{
+	if (m_FolderQueue.size() > 1)
+		setFolder(m_FolderQueue.dequeue());
+	else
+		setFolder(m_FolderQueue.head());
+}
+
+void CloudDiskFileWidget::forward()
+{
+}
+
+void CloudDiskFileWidget::refresh()
+{
+	m_pCurrentFolder->update();
+	update();
+}
+
+void CloudDiskFileWidget::downloadFile()
+{
+}
+
+void CloudDiskFileWidget::shareFile()
+{
+}
+
+void CloudDiskFileWidget::openFolder(Folder * folder)
+{
+	qDebug() << 1;
+	//把folder压入栈
+	m_FolderQueue.push_back(folder);
+	setFolder(folder);
+
+	emit enterFolder(m_pCurrentFolder);
+}
+
+void CloudDiskFileWidget::stateBarFolderClicked(Folder * folder)
+{
+	m_FolderQueue.push_back(folder);
+	setFolder(folder);
+}
+
+void CloudDiskFileWidget::showRootDirectory()
+{
+	Folder *folder = m_pCurrentFolder->getRootFolder();
+	if (folder != m_pCurrentFolder)
+		openFolder(folder);
+}
+
 void CloudDiskFileWidget::selectAllClick(bool flag)
 {
-	for(auto object = m_pFileList->begin(); object != m_pFileList->end(); ++object)
-		(*object)->setConfirmCheckBoxStatus(flag);
+	QList<QListWidgetItem *> items = this->items();
+	for(QListWidgetItem *item : items)
+		((FileObject *)itemWidget(item))->setConfirmCheckBoxStatus(flag);
 }

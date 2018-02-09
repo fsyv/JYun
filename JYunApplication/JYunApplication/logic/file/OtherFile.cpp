@@ -2,8 +2,8 @@
 #include "OtherFile.h"
 
 
-OtherFile::OtherFile(QString name, QListWidget *parent) :
-	File(name, FileType::Other, parent)
+OtherFile::OtherFile(QListWidgetItem *item) :
+	File(FileType::Other, item)
 {
 	init();
 }

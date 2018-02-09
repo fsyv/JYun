@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CloudDiskTopWidget.h"
 
+#include "logic/file/File.h"
+
 CloudDiskTopWidget::CloudDiskTopWidget(QWidget *parent)
 	: QFrame(parent),
 	m_pUpload(nullptr),
@@ -97,6 +99,35 @@ void CloudDiskTopWidget::initWidget()
 
 void CloudDiskTopWidget::conn()
 {
+	//上传按钮信号槽绑定
+	connect(m_pUpload, &QPushButton::clicked, this, &CloudDiskTopWidget::upload);
+
+	//后退按钮信号槽绑定
+	connect(m_pBackward, &QPushButton::clicked, this, [this]() {
+		emit backward();
+	});
+
+	//向前按钮信号槽绑定
+	connect(m_pForward, &QPushButton::clicked, this, [this]() {
+		emit forward();
+	});
+
+	//刷新按钮信号槽绑定
+	connect(m_pRefresh, &QPushButton::clicked, this, [this]() {
+		emit refresh();
+	});
+
+	//下载按钮信号槽绑定
+	connect(m_pDownload, &QPushButton::clicked, this, [this]() {
+		emit downloadFile();
+	});
+
+	//分析按钮信号槽绑定
+	connect(m_pShare, &QPushButton::clicked, this, [this]() {
+		emit shareFile();
+	});
+
+	//任务列表按钮信号槽绑定
 	connect(m_pTaskList, &QPushButton::clicked, this, [this](bool flag) {
 		emit taskListButtonClicked(flag);
 	});
@@ -111,4 +142,24 @@ void CloudDiskTopWidget::init()
 	initWidget();
 	conn();
 	initData();
+}
+
+void CloudDiskTopWidget::upload()
+{
+	QStringList filepaths = QFileDialog::getOpenFileNames(
+		this,
+		QString("选择文件"),
+		QDir::homePath().append("/Desktop")
+	);
+
+	if (filepaths.isEmpty())
+		return;
+
+	for (const auto &filepath : filepaths)
+	{
+		File *file = File::createFile(filepath);
+		file->setFileNamePath(filepath);
+		emit uploadFile(file);
+	}
+		
 }

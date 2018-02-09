@@ -20,7 +20,7 @@
 class VideoFile : public File
 {
 public:
-	VideoFile(QString name, QListWidget *parent = nullptr);
+	VideoFile(QListWidgetItem *item = nullptr);
 	~VideoFile();
 
 	void initMenu();
@@ -28,6 +28,8 @@ public:
 	void conn();
 	void initData();
 	void init();
+	
+	static bool isVideoFile(const QString &fileSuffix);
 
 protected:
 	void mouseDoubleClicked() override;

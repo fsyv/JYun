@@ -49,6 +49,9 @@ public slots:
 	//ÍÐÅÌµã»÷ÏìÓ¦º¯Êý
 	void taryClick(QSystemTrayIcon::ActivationReason reason);
 
+signals:
+	void logout();
+
 private:
 	QPushButton *m_pSetupButton;
 	QPushButton *m_pCloudDiskButton;

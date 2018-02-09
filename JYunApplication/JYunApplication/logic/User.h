@@ -15,12 +15,24 @@
 * @date : 2018/1/8
 **/
 
+#include <QtCore>
+
 class User
 {
 public:
+	static User *getInstance();
+	static void destroyInstance();
+
+	void setUsername(const QString &username);
+
+	QString &getUsername();
+private:
 	User();
 	virtual ~User();
 
+	QString m_stUsername;
 
+	static User *m_pInstanceUser;
+	static QMutex mutex;
 };
 

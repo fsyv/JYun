@@ -8,13 +8,17 @@
 #include "clouddisk\CloudDiskSetup.h"
 #include "clouddisk\CloudDiskTaskList.h"
 
-JYunCloudDisk::JYunCloudDisk():
+#include "logic\file\File.h"
+#include "logic\file\Folder.h"
+
+JYunCloudDisk::JYunCloudDisk(const QString &username):
 	m_pTitle(nullptr),
 	m_pTopWidget(nullptr),
 	m_pLeftWidget(nullptr),
 	m_pStatusBar(nullptr),
 	m_pFileWidget(nullptr),
-	m_pSetup(nullptr)
+	m_pSetup(nullptr),
+	m_stUsername(username)
 {
 	changeWidgetSize(QSize(800, 600));
 
@@ -24,6 +28,29 @@ JYunCloudDisk::JYunCloudDisk():
 
 JYunCloudDisk::~JYunCloudDisk()
 {
+	if (m_pTitle)
+		delete m_pTitle;
+	m_pTitle = nullptr;
+
+	if (m_pTopWidget)
+		delete m_pTopWidget;
+	m_pTopWidget = nullptr;
+
+	if (m_pLeftWidget)
+		delete m_pLeftWidget;
+	m_pLeftWidget = nullptr;
+
+	if (m_pStatusBar)
+		delete m_pStatusBar;
+	m_pStatusBar = nullptr;
+
+	if (m_pFileWidget)
+		delete m_pFileWidget;
+	m_pFileWidget = nullptr;
+
+	if (m_pSetup)
+		delete m_pSetup;
+	m_pSetup = nullptr;
 }
 
 void JYunCloudDisk::initWidget()
@@ -58,12 +85,24 @@ void JYunCloudDisk::initWidget()
 void JYunCloudDisk::conn()
 {
 	//上方按钮信号槽绑定
+	connect(m_pTopWidget, &CloudDiskTopWidget::uploadFile, m_pFileWidget, &CloudDiskFileWidget::uploadFile);
+	connect(m_pTopWidget, &CloudDiskTopWidget::backward, m_pFileWidget, &CloudDiskFileWidget::backward);
+	connect(m_pTopWidget, &CloudDiskTopWidget::forward, m_pFileWidget, &CloudDiskFileWidget::forward);
+	connect(m_pTopWidget, &CloudDiskTopWidget::refresh, m_pFileWidget, &CloudDiskFileWidget::refresh);
+	connect(m_pTopWidget, &CloudDiskTopWidget::downloadFile, m_pFileWidget, &CloudDiskFileWidget::downloadFile);
+	connect(m_pTopWidget, &CloudDiskTopWidget::shareFile, m_pFileWidget, &CloudDiskFileWidget::shareFile);
 	connect(m_pTopWidget, &CloudDiskTopWidget::taskListButtonClicked, m_pTaskList, &CloudDiskTaskList::setVisible);
 	//状态栏信号槽绑定
 	connect(m_pStatusBar, &CloudDiskStatusBar::selectAllChange, m_pFileWidget, &CloudDiskFileWidget::selectAllClick);
+	connect(m_pStatusBar, &CloudDiskStatusBar::folderClicked, m_pFileWidget, &CloudDiskFileWidget::stateBarFolderClicked);
 	//左边按钮信号槽绑定
+	connect(m_pLeftWidget, &CloudDiskLeftWidget::rootClicked, m_pFileWidget, &CloudDiskFileWidget::showRootDirectory);
 	connect(m_pLeftWidget, &CloudDiskLeftWidget::fileEchoChange, m_pFileWidget, &CloudDiskFileWidget::fileCategory);
 	connect(m_pLeftWidget, &CloudDiskLeftWidget::setupClicked, m_pSetup, &CloudDiskSetup::setVisible);
+	//文件展示界面信号槽绑定
+	connect(m_pFileWidget, &CloudDiskFileWidget::enterFolder, m_pStatusBar, &CloudDiskStatusBar::addFolder);
+
+	m_pFileWidget->afterConn();
 }
 
 void JYunCloudDisk::initData()
