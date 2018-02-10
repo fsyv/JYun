@@ -20,18 +20,11 @@
 class MusicFile : public File
 {
 public:
-	MusicFile(QListWidgetItem *item = nullptr);
+	MusicFile();
 	~MusicFile();
 
-	void initMenu();
-	void initWidget();
-	void conn();
-	void initData();
 	void init();
 
 	static bool isMusicFile(const QString &fileSuffix);
-
-protected:
-	void mouseDoubleClicked() override;
 };
 

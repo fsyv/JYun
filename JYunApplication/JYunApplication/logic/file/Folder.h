@@ -21,7 +21,7 @@ class Folder : public FileObject
 {
 	Q_OBJECT
 public:
-	explicit Folder(QListWidgetItem *parent = nullptr);
+	explicit Folder();
 	explicit Folder(const Folder &folder);
 	~Folder();
 
@@ -37,15 +37,12 @@ public:
 	Folder *getRootFolder();
 	//直接刷新，跳过从1级，2级缓存取数据
 	void update();
+	QDateTime refreshDateTime()const;
 
 	//创建根目录
 	static Folder *createRootFolder(const QString &username);
 
 protected:
-	void initMenu();
-	void initWidget();
-	void conn();
-	void initData();
 	void init();
 	//是否需要刷新列表
 	bool isRefresh();
@@ -61,10 +58,6 @@ protected:
 	QList<FileObject *> getFilesFromServer();
 	//排序
 	void sortFiles(QList<FileObject *> &files);
-	//文件列表信号槽绑定
-	void connFiles(QList<FileObject *> &files);
-
-	void mouseDoubleClicked() override;
 
 protected slots:
 	void openFolder(Folder *folder);

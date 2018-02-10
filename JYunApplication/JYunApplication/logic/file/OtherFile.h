@@ -20,16 +20,9 @@
 class OtherFile : public File
 {
 public:
-	OtherFile(QListWidgetItem *item = nullptr);
+	OtherFile();
 	~OtherFile();
 
-	void initMenu();
-	void initWidget();
-	void conn();
-	void initData();
 	void init();
-
-protected:
-	void mouseDoubleClicked() override;
 };
 

@@ -321,7 +321,7 @@ QList<FileObject*> JYunHttp::getFileList(const QString & path)
 			QString name = jsonObject.value("FileName").toString();
 			int type = jsonObject.value("FileType").toInt();
 
-			FileObject *file = FileObject::createFile((FileObject::FileType)type);
+			FileObject *file = FileObject::createFile((FileType)type);
 			file->setFileName(name);
 
 			files.append(file);

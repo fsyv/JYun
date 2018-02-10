@@ -34,5 +34,9 @@
 #include <QMimeData>
 #include <QMutex>
 #include <QScrollArea>
+#include <QFrame>
+#include <QWidget>
 
+//自定义类型
 #include "logic\User.h"
+#include "logic\file\FileType.h"

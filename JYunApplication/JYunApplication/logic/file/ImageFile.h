@@ -19,23 +19,12 @@
 
 class ImageFile : public File
 {
-	Q_OBJECT
 public:
-	ImageFile(QListWidgetItem *item = nullptr);
+	ImageFile();
 	~ImageFile();
 
-	void initMenu();
-	void initWidget();
-	void conn();
-	void initData();
 	void init();
 
 	static bool isImageFile(const QString &fileSuffix);
-
-protected:
-	void mouseDoubleClicked() override;
-
-private:
-
 };
 

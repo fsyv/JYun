@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "CloudDiskLeftWidget.h"
 
-#include "logic\file\FileObject.h"
-
 CloudDiskLeftWidget::CloudDiskLeftWidget(QWidget *parent):
 	QFrame(parent),
 	m_pRootDirectory(nullptr),
@@ -141,9 +139,9 @@ void CloudDiskLeftWidget::init()
 void CloudDiskLeftWidget::documentButtonClick(bool flag)
 {
 	if (flag)
-		m_iCurrentFileStyle |= (int)FileObject::FileType::Document;
+		m_iCurrentFileStyle |= (int)FileType::Document;
 	else
-		m_iCurrentFileStyle ^= (int)FileObject::FileType::Document;
+		m_iCurrentFileStyle ^= (int)FileType::Document;
 
 	emit fileEchoChange(m_iCurrentFileStyle);
 }
@@ -151,9 +149,9 @@ void CloudDiskLeftWidget::documentButtonClick(bool flag)
 void CloudDiskLeftWidget::pictureButtonClick(bool flag)
 {
 	if (flag)
-		m_iCurrentFileStyle |= (int)FileObject::FileType::Image;
+		m_iCurrentFileStyle |= (int)FileType::Image;
 	else
-		m_iCurrentFileStyle ^= (int)FileObject::FileType::Image;
+		m_iCurrentFileStyle ^= (int)FileType::Image;
 
 	emit fileEchoChange(m_iCurrentFileStyle);
 }
@@ -161,9 +159,9 @@ void CloudDiskLeftWidget::pictureButtonClick(bool flag)
 void CloudDiskLeftWidget::videoButtonClick(bool flag)
 {
 	if (flag)
-		m_iCurrentFileStyle |= (int)FileObject::FileType::Video;
+		m_iCurrentFileStyle |= (int)FileType::Video;
 	else
-		m_iCurrentFileStyle ^= (int)FileObject::FileType::Video;
+		m_iCurrentFileStyle ^= (int)FileType::Video;
 
 	emit fileEchoChange(m_iCurrentFileStyle);
 }
@@ -171,9 +169,9 @@ void CloudDiskLeftWidget::videoButtonClick(bool flag)
 void CloudDiskLeftWidget::musicButtonClick(bool flag)
 {
 	if (flag)
-		m_iCurrentFileStyle |= (int)FileObject::FileType::Music;
+		m_iCurrentFileStyle |= (int)FileType::Music;
 	else
-		m_iCurrentFileStyle ^= (int)FileObject::FileType::Music;
+		m_iCurrentFileStyle ^= (int)FileType::Music;
 
 	emit fileEchoChange(m_iCurrentFileStyle);
 }

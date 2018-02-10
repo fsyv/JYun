@@ -17,7 +17,8 @@
 
 #include <QList>
 
-class FileObject;
+class FileObjectWidget;
+
 class File;
 class Folder;
 

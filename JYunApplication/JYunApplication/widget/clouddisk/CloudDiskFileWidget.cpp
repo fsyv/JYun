@@ -8,6 +8,8 @@
 #include "logic/file/OtherFile.h"
 #include "logic/file/VideoFile.h"
 
+#include "../file/FileObjectWidget.h"
+
 CloudDiskFileWidget::CloudDiskFileWidget(QWidget *parent):
 	QListWidget(parent),
 	m_pCurrentFolder(nullptr)
@@ -62,8 +64,8 @@ void CloudDiskFileWidget::showCategory(int echo)
 	QList<QListWidgetItem *> items = this->items();
 	for (auto item = items.begin(); item != items.end(); ++item)
 	{
-		FileObject *file = (FileObject *)itemWidget(*item);
-		file->setVisible((int)file->fileType() & echo);
+		FileObjectWidget *fileWidget = (FileObjectWidget *)itemWidget(*item);
+		fileWidget->setVisible((int)(fileWidget->file()->fileType()) & echo);
 	}
 }
 
@@ -71,7 +73,7 @@ void CloudDiskFileWidget::showAll()
 {
 	QList<QListWidgetItem *> items = this->items();
 	for (auto item = items.begin(); item != items.end(); ++item)
-		((FileObject *)itemWidget(*item))->setVisible(true);
+		((FileObjectWidget *)itemWidget(*item))->setVisible(true);
 }
 
 void CloudDiskFileWidget::setFolder(Folder *folder)
@@ -92,15 +94,13 @@ void CloudDiskFileWidget::setFolder(Folder *folder)
 
 void CloudDiskFileWidget::update()
 {
-	reset();
 	clear();
 
 	QList<FileObject *> *fileList = m_pCurrentFolder->fileList();
 
 	for (FileObject *object : *fileList)
 	{
-		object->setItem(this);
-		setItemWidget(object->item(), object);
+		setItemWidget(new QListWidgetItem(this), FileObjectWidget::createWidget(object));
 	}
 }
 
@@ -125,8 +125,7 @@ void CloudDiskFileWidget::fileCategory(int echo)
 
 void CloudDiskFileWidget::uploadFile(File *file)
 {
-	file->setItem(this);
-	setItemWidget(file->item(), file);
+	file->setParentFolder(m_pCurrentFolder);
 }
 
 void CloudDiskFileWidget::backward()
@@ -182,5 +181,5 @@ void CloudDiskFileWidget::selectAllClick(bool flag)
 {
 	QList<QListWidgetItem *> items = this->items();
 	for(QListWidgetItem *item : items)
-		((FileObject *)itemWidget(item))->setConfirmCheckBoxStatus(flag);
+		((FileObjectWidget *)itemWidget(item))->setConfirmCheckBoxStatus(flag);
 }

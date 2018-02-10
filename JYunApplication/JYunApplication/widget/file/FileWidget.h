@@ -15,35 +15,19 @@
 * @date : 2018/1/21
 **/
 
-#include "FileObject.h"
+#include "FileObjectWidget.h"
 
-class Folder;
+class File;
 
-class File : public FileObject
+class FileWidget : public FileObjectWidget
 {
 	Q_OBJECT
 public:
-	explicit File(const FileType &type = FileType::Other);
-	explicit File(const File &file);
-	~File();
+	explicit FileWidget(File *file, QWidget *parent = nullptr);
+	~FileWidget();
 
-	void calcFileMd5();
-	void setParentFolder(Folder *folder);
-	void clear();
-
-	QString md5();
-	Folder *parentFolder() const;
-
-	static File *createFile(const QString &filename);
-
-protected:
-	static QString fromConfigFileGetSupportSuffix(const QString &ksy);
-
-private:
-	QString m_stFileMD5;
-
-	//当前文件所在的文件夹
-	Folder *m_pParentFolder;
+	void mouseDoubleClicked() override;
+	void upload() override;
+	void download() override;
+	void clear() override;
 };
-
-Q_DECLARE_METATYPE(File)

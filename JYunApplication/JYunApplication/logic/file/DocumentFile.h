@@ -19,20 +19,12 @@
 
 class DocumentFile : public File
 {
-	Q_OBJECT
 public:
-	explicit DocumentFile(QListWidgetItem *item = nullptr);
+	explicit DocumentFile();
 	~DocumentFile();
-
-	void initMenu();
-	void initWidget();
-	void conn();
-	void initData();
+;
 	void init();
 
 	static bool isDocumentFile(const QString &fileSuffix);
-
-protected:
-	void mouseDoubleClicked() override;
 };
 

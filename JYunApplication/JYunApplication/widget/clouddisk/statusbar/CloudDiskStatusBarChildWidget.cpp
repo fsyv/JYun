@@ -68,6 +68,8 @@ int CloudDiskStatusBarChildWidget::textWidth() const
 		return m_iTextWidth;
 	else if (m_eRole == FolderRole::Other)
 		return m_iTextWidth + m_iRriangleHight;
+	else
+		return 0;
 	
 }
 

@@ -9,41 +9,30 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 所有文件的公共类，文件总共分为：1.文档；2.图片；3.视频；4音乐；5.其它
+* @brief : 图片文件类
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/21
+* @date : 2018/1/22
 **/
 
-#include "FileObject.h"
+#include "FileWidget.h"
 
-class Folder;
+class ImageFile;
 
-class File : public FileObject
+class ImageFileWidget : public FileWidget
 {
 	Q_OBJECT
 public:
-	explicit File(const FileType &type = FileType::Other);
-	explicit File(const File &file);
-	~File();
+	ImageFileWidget(ImageFile *file, QWidget *parent = nullptr);
+	~ImageFileWidget();
 
-	void calcFileMd5();
-	void setParentFolder(Folder *folder);
-	void clear();
-
-	QString md5();
-	Folder *parentFolder() const;
-
-	static File *createFile(const QString &filename);
+	void initMenu();
+	void initWidget();
+	void conn();
+	void initData();
+	void init();
 
 protected:
-	static QString fromConfigFileGetSupportSuffix(const QString &ksy);
-
-private:
-	QString m_stFileMD5;
-
-	//当前文件所在的文件夹
-	Folder *m_pParentFolder;
+	void mouseDoubleClicked() override;
 };
 
-Q_DECLARE_METATYPE(File)

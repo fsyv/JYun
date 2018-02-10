@@ -52,6 +52,9 @@
     <Filter Include="widget\clouddisk\statusbar">
       <UniqueIdentifier>{a8be4d5a-0355-474c-a7b5-e25435714ea8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="widget\file">
+      <UniqueIdentifier>{9b6cdbbb-17f2-4c16-b8de-f1917cc99631}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\qrc_JYunApplication.cpp">
@@ -233,21 +236,6 @@
     <ClCompile Include="logic\file\FileObject.cpp">
       <Filter>logic\file</Filter>
     </ClCompile>
-    <ClCompile Include="logic\file\File.cpp">
-      <Filter>logic\file</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_FileObject.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_FileObject.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_Folder.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_Folder.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="logic\file\DocumentFile.cpp">
       <Filter>logic\file</Filter>
     </ClCompile>
@@ -260,26 +248,8 @@
     <ClCompile Include="logic\file\VideoFile.cpp">
       <Filter>logic\file</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_File.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_File.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_DocumentFile.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_DocumentFile.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="logic\file\ImageFile.cpp">
       <Filter>logic\file</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ImageFile.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ImageFile.cpp">
-      <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="widget\clouddisk\statusbar\CloudDiskStatusBarChildWidget.cpp">
       <Filter>widget\clouddisk\statusbar</Filter>
@@ -317,6 +287,99 @@
     <ClCompile Include="GeneratedFiles\Release\moc_JYunRegister.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="logic\file\File.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FileObject.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FileObject.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Folder.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Folder.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_File.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_File.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\DocumentFileWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DocumentFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DocumentFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\FileObjectWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FileObjectWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FileObjectWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\FileWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\FolderWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FolderWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FolderWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\ImageFileWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ImageFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ImageFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\MusicFileWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MusicFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MusicFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\OtherFileWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_OtherFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_OtherFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\VideoFileWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VideoFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VideoFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -346,6 +409,9 @@
     </ClInclude>
     <ClInclude Include="widget\clouddisk\CloudDiskTaskList.h">
       <Filter>widget\clouddisk</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\file\FileType.h">
+      <Filter>logic\file</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -409,9 +475,6 @@
     <CustomBuild Include="logic\file\Folder.h">
       <Filter>logic\file</Filter>
     </CustomBuild>
-    <CustomBuild Include="logic\file\File.h">
-      <Filter>logic\file</Filter>
-    </CustomBuild>
     <CustomBuild Include="logic\file\FileObject.h">
       <Filter>logic\file</Filter>
     </CustomBuild>
@@ -432,6 +495,33 @@
     </CustomBuild>
     <CustomBuild Include="widget\JYunRegister.h">
       <Filter>widget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\file\File.h">
+      <Filter>logic\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\DocumentFileWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\FileObjectWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\FileWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\FolderWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\ImageFileWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\MusicFileWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\OtherFileWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\VideoFileWidget.h">
+      <Filter>widget\file</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

@@ -2,28 +2,34 @@
 #include "File.h"
 
 #include "logic/JYunTools.h"
-#include "logic\network\JYunHttp.h"
+#include "logic/network/JYunHttp.h"
 
 #include "DocumentFile.h"
 #include "ImageFile.h"
 #include "MusicFile.h"
 #include "VideoFile.h"
 #include "OtherFile.h"
+#include "Folder.h"
 
-File::File(FileType type, QListWidgetItem *item):
-	FileObject(type, item)
+File::File(const FileType &type):
+	FileObject(type),
+	m_pParentFolder(nullptr)
 {
 
 }
 
 File::File(const File & file):
-	File(file.fileType(), file.item())
+	FileObject(file),
+	m_pParentFolder(nullptr)
 {
-
+	setParentFolder(file.parentFolder());
 }
 
 File::~File()
 {
+	if (m_pParentFolder)
+		delete m_pParentFolder;
+	m_pParentFolder = nullptr;
 }
 
 void File::calcFileMd5()
@@ -31,11 +37,30 @@ void File::calcFileMd5()
 	m_stFileMD5 = JYunTools::fileMD5(fileNamePath());
 }
 
+void File::setParentFolder(Folder * folder)
+{
+	if (folder)
+		m_pParentFolder = new Folder(*folder);
+	else
+		m_pParentFolder = folder;
+}
+
+void File::clear()
+{
+	m_stFileMD5.clear();
+	FileObject::clear();
+}
+
 QString File::md5()
 {
 	if (m_stFileMD5.isEmpty())
 		calcFileMd5();
 	return m_stFileMD5;
+}
+
+Folder * File::parentFolder() const
+{
+	return m_pParentFolder;
 }
 
 File *File::createFile(const QString & filename)
@@ -55,31 +80,11 @@ File *File::createFile(const QString & filename)
 		file = new VideoFile;
 	else
 		file = new OtherFile;
+
 	return file;
 }
 
-void File::mouseDoubleClicked()
-{
-}
-
-void File::upload()
-{
-
-}
-
-void File::download()
-{
-	JYunHttp http;
-
-	http.downloadFile(md5(), QString("e:/JYun_download/") + fileName());
-}
-
-void File::clear()
-{
-	m_stFileMD5.clear();
-}
-
-QString File::fromConfigFileGetSupportSuffix(const QString & ksy)
+QString File::fromConfigFileGetSupportSuffix(const QString & key)
 {
 	QFile file(QDir::currentPath() + "/system/system_config.json");
 
@@ -100,5 +105,5 @@ QString File::fromConfigFileGetSupportSuffix(const QString & ksy)
 	}
 
 	QJsonObject jsonObject = document.object().take(QString("FileType")).toObject();
-	return jsonObject.take(ksy).toString();
+	return jsonObject.take(key).toString();
 }
