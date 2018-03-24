@@ -29,6 +29,8 @@ public:
 	void setAbsolutePath(const QString &absolutePath);
 	//设置父类文件夹
 	void setParentFolder(Folder *parent);
+	//添加文件
+	void addFile(FileObject *file);
 
 	Folder * parentFolder() const;
 	QList<FileObject *> *fileList();
@@ -58,12 +60,6 @@ protected:
 	QList<FileObject *> getFilesFromServer();
 	//排序
 	void sortFiles(QList<FileObject *> &files);
-
-protected slots:
-	void openFolder(Folder *folder);
-
-signals:
-	void open(Folder *);
 
 private:
 	//父类文件夹对象

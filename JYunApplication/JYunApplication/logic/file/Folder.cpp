@@ -12,7 +12,8 @@ Folder::Folder():
 }
 
 Folder::Folder(const Folder & folder):
-	FileObject(folder)
+	FileObject(folder),
+	m_pFileLists(nullptr)
 {
 	setAbsolutePath(folder.absolutePath());
 
@@ -39,6 +40,15 @@ void Folder::setAbsolutePath(const QString & absolutePath)
 void Folder::setParentFolder(Folder * parent)
 {
 	m_pParentFolder = parent;
+}
+
+void Folder::addFile(FileObject * file)
+{
+	QList<FileObject *> *files = fileList();
+
+	files->append(file);
+
+	((Folder *)file)->setParentFolder(this);
 }
 
 Folder * Folder::parentFolder() const
@@ -183,8 +193,3 @@ void Folder::sortFiles(QList<FileObject *> &files)
 	//°´×ÖÄ¸Ë³ÐòÅÅÐò
 }
 
-void Folder::openFolder(Folder * folder)
-{
-	qDebug() << 3;
-	emit open(folder);
-}

@@ -10,7 +10,6 @@
         <file>resource/qss/style.qss</file>
         <file>resource/combobox/arrow.png</file>
         <file>resource/clouddisk/button/backward.png</file>
-        <file>resource/clouddisk/button/forward.png</file>
         <file>resource/clouddisk/button/refresh.png</file>
         <file>resource/clouddisk/checkbox/hovel.png</file>
         <file>resource/clouddisk/checkbox/normal.png</file>

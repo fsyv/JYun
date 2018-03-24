@@ -17,8 +17,6 @@
 
 #include <QList>
 
-class FileObjectWidget;
-
 class File;
 class Folder;
 
@@ -36,15 +34,16 @@ protected:
 	void initWidget();
 	void conn();
 	void initData();
+	void initMenu();
 	void init();
 
-	void showCategory(int echo);
-	void showAll();
 	//设置当前文件夹
 	void setFolder(Folder *folder);
 	//更新当前显示内容
 	void update();
 	QList<QListWidgetItem *> items();
+
+	void contextMenuEvent(QContextMenuEvent *e) override;
 
 public slots:
 	//全选按钮响应函数
@@ -55,8 +54,6 @@ public slots:
 	void uploadFile(File *file);
 	//后退响应函数
 	void backward();
-	//向前响应函数
-	void forward();
 	//刷新响应函数
 	void refresh();
 	//下载文件响应函数
@@ -70,11 +67,22 @@ public slots:
 	//显示根目录
 	void showRootDirectory();
 
+	//右键菜单的响应事件
+	//新建文件夹
+	void newFolder();
+	//上传文件
+	void upload();
+	//分享
+	void share();
+
 signals:
 	void enterFolder(Folder *folder);
 
 private:
+	QMenu *m_pMenu;
+
 	Folder *m_pCurrentFolder;
 	QQueue<Folder *> m_FolderQueue;
+	int m_iEcho;
 };
 

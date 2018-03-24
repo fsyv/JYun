@@ -3,7 +3,7 @@
 	"version" : "0.01",
 	"FileType" : {
 	    "DocumentFile" : "txt;doc;docx",
-	    "ImageFile" : "png;gif;jpg",
+	    "ImageFile" : "png;gif;jpg;ico",
 		"MusicFile" : "mp3",
 		"VideoFile" : "mp4"
 	}

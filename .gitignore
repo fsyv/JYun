@@ -57,3 +57,9 @@ dkms.conf
 /JYunApplication/.vs
 /JYunServer/__pycache__/*.pyc
 *.pyc
+/JYunServer/.vscode
+/JYunServer/lib/log4cpp
+/JYunServer/lib/libevent
+/JYunServer/cmake-build-debug
+/JYunServer/.idea
+/JYunServer/CMakeLists.txt

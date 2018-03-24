@@ -45,6 +45,16 @@ void File::setParentFolder(Folder * folder)
 		m_pParentFolder = folder;
 }
 
+void File::setFileSize(quint64 size)
+{
+	m_ui64FileSize = size;
+}
+
+void File::setUploadDateTime(QDateTime time)
+{
+	m_uploadDateTime = time;
+}
+
 void File::clear()
 {
 	m_stFileMD5.clear();
@@ -61,6 +71,16 @@ QString File::md5()
 Folder * File::parentFolder() const
 {
 	return m_pParentFolder;
+}
+
+quint64 File::fileSize() const
+{
+	return m_ui64FileSize;
+}
+
+QDateTime File::uploadDateTime() const
+{
+	return m_uploadDateTime;
 }
 
 File *File::createFile(const QString & filename)
@@ -80,6 +100,8 @@ File *File::createFile(const QString & filename)
 		file = new VideoFile;
 	else
 		file = new OtherFile;
+
+	file->setFileSize(fileInfo.size());
 
 	return file;
 }

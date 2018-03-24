@@ -7,7 +7,6 @@ CloudDiskTopWidget::CloudDiskTopWidget(QWidget *parent)
 	: QFrame(parent),
 	m_pUpload(nullptr),
 	m_pBackward(nullptr),
-	m_pForward(nullptr),
 	m_pRefresh(nullptr),
 	m_pDownload(nullptr),
 	m_pShare(nullptr),
@@ -27,10 +26,6 @@ CloudDiskTopWidget::~CloudDiskTopWidget()
 	if (m_pBackward)
 		delete m_pBackward;
 	m_pBackward = nullptr;
-
-	if (m_pForward)
-		delete m_pForward;
-	m_pForward = nullptr;
 
 	if (m_pRefresh)
 		delete m_pRefresh;
@@ -64,18 +59,10 @@ void CloudDiskTopWidget::initWidget()
 	m_pBackward->setIconSize(m_pBackward->size());
 	m_pBackward->setToolTip("向后");
 
-	m_pForward = new QPushButton(this);
-	m_pForward->setObjectName("clouddisk_top_image");
-	m_pForward->resize(32, 32);
-	m_pForward->move(142, 8);
-	m_pForward->setIcon(QIcon(":/resource/clouddisk/button/forward.png"));
-	m_pForward->setIconSize(m_pForward->size());
-	m_pForward->setToolTip("向前");
-
 	m_pRefresh = new QPushButton(this);
 	m_pRefresh->setObjectName("clouddisk_top_image");
 	m_pRefresh->resize(32, 32);
-	m_pRefresh->move(184, 8);
+	m_pRefresh->move(142, 8);
 	m_pRefresh->setIcon(QIcon(":/resource/clouddisk/button/refresh.png"));
 	m_pRefresh->setIconSize(m_pRefresh->size());
 	m_pRefresh->setToolTip("刷新");
@@ -105,11 +92,6 @@ void CloudDiskTopWidget::conn()
 	//后退按钮信号槽绑定
 	connect(m_pBackward, &QPushButton::clicked, this, [this]() {
 		emit backward();
-	});
-
-	//向前按钮信号槽绑定
-	connect(m_pForward, &QPushButton::clicked, this, [this]() {
-		emit forward();
 	});
 
 	//刷新按钮信号槽绑定
@@ -159,7 +141,8 @@ void CloudDiskTopWidget::upload()
 	{
 		File *file = File::createFile(filepath);
 		file->setFileNamePath(filepath);
+		file->setUploadDateTime();
+
 		emit uploadFile(file);
 	}
-		
 }

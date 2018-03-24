@@ -280,6 +280,7 @@
     <ClCompile Include="logic\file\MusicFile.cpp" />
     <ClCompile Include="logic\file\OtherFile.cpp" />
     <ClCompile Include="logic\file\VideoFile.cpp" />
+    <ClCompile Include="logic\network\BasicNetwork.cpp" />
     <ClCompile Include="logic\network\JYunHttp.cpp" />
     <ClCompile Include="logic\Security.cpp" />
     <ClCompile Include="logic\JYunTools.cpp" />
@@ -490,6 +491,8 @@
     <ClInclude Include="logic\file\OtherFile.h" />
     <ClInclude Include="logic\file\VideoFile.h" />
     <ClInclude Include="logic\JYunTools.h" />
+    <ClInclude Include="logic\network\BasicNetwork.h" />
+    <ClInclude Include="logic\network\MsgType.h" />
     <ClInclude Include="logic\User.h" />
     <CustomBuild Include="messagebox\JYunMessageBox.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

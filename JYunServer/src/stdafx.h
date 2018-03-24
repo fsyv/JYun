@@ -1,6 +1,5 @@
-#pragma once
-#pragma execution_character_set("utf-8")
-
+#ifndef STDAFX_H_H
+#define STDAFX_H_H
 /******************************************************************************
 *                 JJJJJJJ   YY    YY                                          *
 *                   JJJ      YY  YY                                           *
@@ -9,18 +8,32 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 文件类型
+* @brief : 棰勭紪璇戝ご
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/2/21
+* @date : 2018/3/17
 **/
 
-enum class FileType
-{
-	Folder = 0x01,		//文件夹
-	Document = 0x02,	//文档
-	Image = 0x04,		//图片
-	Video = 0x08,		//视频
-	Music = 0x10,		//音乐
-	Other = 0x20,		//其它
-};
+//C++ library
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <queue>
+#include <map>
+#include <ctime>
+#include <vector>
+#include <chrono>
+#include <sstream>
+#include <functional>
+
+//linux
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
+
+//libevent library
+#include <event2/event.h>
+#include <event2/bufferevent.h>
+
+#endif 

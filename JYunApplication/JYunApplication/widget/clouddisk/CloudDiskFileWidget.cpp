@@ -9,10 +9,12 @@
 #include "logic/file/VideoFile.h"
 
 #include "../file/FileObjectWidget.h"
+#include "../file/FolderWidget.h"
 
 CloudDiskFileWidget::CloudDiskFileWidget(QWidget *parent):
 	QListWidget(parent),
-	m_pCurrentFolder(nullptr)
+	m_pCurrentFolder(nullptr),
+	m_iEcho(0)
 {
 	resize(700, 450);
 
@@ -35,7 +37,7 @@ void CloudDiskFileWidget::initWidget()
 	setObjectName("clouddisk_file");
 
 	setViewMode(QListView::IconMode);
-	setSpacing(25);
+	setSpacing(30);
 }
 
 void CloudDiskFileWidget::conn()
@@ -52,28 +54,39 @@ void CloudDiskFileWidget::initData()
 	openFolder(m_pCurrentFolder);
 }
 
+void CloudDiskFileWidget::initMenu()
+{
+	setContextMenuPolicy(Qt::DefaultContextMenu);
+
+	m_pMenu = new QMenu(this);
+
+	//右键菜单
+	// 1.新建文件夹
+	// 2.上传文件
+	// 3.刷新
+	// 4.分享
+
+	QAction *newFolderAct = new QAction("新建文件夹");
+	connect(newFolderAct, &QAction::triggered, this, &CloudDiskFileWidget::newFolder);
+	m_pMenu->addAction(newFolderAct);
+	QAction *uploadAct = new QAction("上传");
+	connect(uploadAct, &QAction::triggered, this, &CloudDiskFileWidget::upload);
+	m_pMenu->addAction(uploadAct);
+	QAction *updateAct = new QAction("刷新");
+	connect(updateAct, &QAction::triggered, this, &CloudDiskFileWidget::refresh);
+	m_pMenu->addAction(updateAct);
+	QAction *shareAct = new QAction("分享");
+	connect(shareAct, &QAction::triggered, this, &CloudDiskFileWidget::share);
+	m_pMenu->addAction(shareAct);
+}
+
 void CloudDiskFileWidget::init()
 {
 	initWidget();
 
 	conn();
-}
 
-void CloudDiskFileWidget::showCategory(int echo)
-{
-	QList<QListWidgetItem *> items = this->items();
-	for (auto item = items.begin(); item != items.end(); ++item)
-	{
-		FileObjectWidget *fileWidget = (FileObjectWidget *)itemWidget(*item);
-		fileWidget->setVisible((int)(fileWidget->file()->fileType()) & echo);
-	}
-}
-
-void CloudDiskFileWidget::showAll()
-{
-	QList<QListWidgetItem *> items = this->items();
-	for (auto item = items.begin(); item != items.end(); ++item)
-		((FileObjectWidget *)itemWidget(*item))->setVisible(true);
+	initMenu();
 }
 
 void CloudDiskFileWidget::setFolder(Folder *folder)
@@ -100,7 +113,21 @@ void CloudDiskFileWidget::update()
 
 	for (FileObject *object : *fileList)
 	{
-		setItemWidget(new QListWidgetItem(this), FileObjectWidget::createWidget(object));
+		if (m_iEcho)
+		{
+			if ((m_iEcho | (int)(FileType::Folder)) & (int)object->fileType())
+			{
+				QListWidgetItem *item = new QListWidgetItem(this);
+				item->setSizeHint(QSize(125, 125));
+				setItemWidget(item, FileObjectWidget::createWidget(object));
+			}
+		}
+		else
+		{
+			QListWidgetItem *item = new QListWidgetItem(this);
+			item->setSizeHint(QSize(125, 125));
+			setItemWidget(item, FileObjectWidget::createWidget(object));
+		}
 	}
 }
 
@@ -115,17 +142,32 @@ QList<QListWidgetItem*> CloudDiskFileWidget::items()
 	return items;
 }
 
+void CloudDiskFileWidget::contextMenuEvent(QContextMenuEvent * e)
+{
+	m_pMenu->move(e->globalPos());
+	m_pMenu->show();
+}
+
 void CloudDiskFileWidget::fileCategory(int echo)
 {
-	if (echo)
-		showCategory(echo);
-	else
-		showAll();
+	//文件夹始终会显示
+	m_iEcho = echo;
+
+	update();
 }
 
 void CloudDiskFileWidget::uploadFile(File *file)
 {
-	file->setParentFolder(m_pCurrentFolder);
+	//当前文件夹添加子文件
+	m_pCurrentFolder->addFile(file);
+
+	//视图层做处理
+	QListWidgetItem *item = new QListWidgetItem(this);
+	item->setSizeHint(QSize(125, 125));
+	setItemWidget(item, FileObjectWidget::createWidget(file));
+
+	//文件开始上传
+	//file->upload();
 }
 
 void CloudDiskFileWidget::backward()
@@ -134,10 +176,6 @@ void CloudDiskFileWidget::backward()
 		setFolder(m_FolderQueue.dequeue());
 	else
 		setFolder(m_FolderQueue.head());
-}
-
-void CloudDiskFileWidget::forward()
-{
 }
 
 void CloudDiskFileWidget::refresh()
@@ -175,6 +213,41 @@ void CloudDiskFileWidget::showRootDirectory()
 	Folder *folder = m_pCurrentFolder->getRootFolder();
 	if (folder != m_pCurrentFolder)
 		openFolder(folder);
+}
+
+void CloudDiskFileWidget::newFolder()
+{
+	Folder *folder = new Folder();
+	folder->setFileName("新建文件夹");
+	m_pCurrentFolder->addFile(folder);
+	QListWidgetItem *item = new QListWidgetItem(this);
+	item->setSizeHint(QSize(125, 125));
+	setItemWidget(item, new FolderWidget(folder));
+}
+
+void CloudDiskFileWidget::upload()
+{
+	QStringList filepaths = QFileDialog::getOpenFileNames(
+		this,
+		QString("选择文件"),
+		QDir::homePath().append("/Desktop")
+	);
+
+	if (filepaths.isEmpty())
+		return;
+
+	for (const auto &filepath : filepaths)
+	{
+		File *file = File::createFile(filepath);
+		file->setFileNamePath(filepath);
+		file->setUploadDateTime();
+
+		uploadFile(file);
+	}
+}
+
+void CloudDiskFileWidget::share()
+{
 }
 
 void CloudDiskFileWidget::selectAllClick(bool flag)

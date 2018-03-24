@@ -87,7 +87,6 @@ void JYunCloudDisk::conn()
 	//上方按钮信号槽绑定
 	connect(m_pTopWidget, &CloudDiskTopWidget::uploadFile, m_pFileWidget, &CloudDiskFileWidget::uploadFile);
 	connect(m_pTopWidget, &CloudDiskTopWidget::backward, m_pFileWidget, &CloudDiskFileWidget::backward);
-	connect(m_pTopWidget, &CloudDiskTopWidget::forward, m_pFileWidget, &CloudDiskFileWidget::forward);
 	connect(m_pTopWidget, &CloudDiskTopWidget::refresh, m_pFileWidget, &CloudDiskFileWidget::refresh);
 	connect(m_pTopWidget, &CloudDiskTopWidget::downloadFile, m_pFileWidget, &CloudDiskFileWidget::downloadFile);
 	connect(m_pTopWidget, &CloudDiskTopWidget::shareFile, m_pFileWidget, &CloudDiskFileWidget::shareFile);

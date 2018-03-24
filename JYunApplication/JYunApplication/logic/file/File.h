@@ -29,10 +29,14 @@ public:
 
 	void calcFileMd5();
 	void setParentFolder(Folder *folder);
+	void setFileSize(quint64 size);
+	void setUploadDateTime(QDateTime time = QDateTime::currentDateTime());
 	void clear();
 
 	QString md5();
 	Folder *parentFolder() const;
+	quint64 fileSize() const;
+	QDateTime uploadDateTime() const;
 
 	static File *createFile(const QString &filename);
 
@@ -41,6 +45,10 @@ protected:
 
 private:
 	QString m_stFileMD5;
+	//文件大小
+	quint64 m_ui64FileSize;
+	//文件上传时间
+	QDateTime m_uploadDateTime;
 
 	//当前文件所在的文件夹
 	Folder *m_pParentFolder;

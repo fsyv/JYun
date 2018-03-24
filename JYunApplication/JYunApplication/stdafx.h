@@ -40,3 +40,4 @@
 //自定义类型
 #include "logic\User.h"
 #include "logic\file\FileType.h"
+#include "logic\network\MsgType.h"

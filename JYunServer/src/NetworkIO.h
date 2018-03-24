@@ -1,5 +1,5 @@
-#pragma once
-#pragma execution_character_set("utf-8")
+#ifndef NETWORKIO_H_H
+#define NETWORKIO_H_H
 
 /******************************************************************************
 *                 JJJJJJJ   YY    YY                                          *
@@ -9,18 +9,32 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : ÎÄ¼şÀàĞÍ
+* @brief : é¢„ç¼–è¯‘å¤´
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/2/21
+* @date : 2018/3/17
 **/
 
-enum class FileType
-{
-	Folder = 0x01,		//ÎÄ¼ş¼Ğ
-	Document = 0x02,	//ÎÄµµ
-	Image = 0x04,		//Í¼Æ¬
-	Video = 0x08,		//ÊÓÆµ
-	Music = 0x10,		//ÒôÀÖ
-	Other = 0x20,		//ÆäËü
+#include "MsgType.h"
+
+typedef struct _Msg{
+    unsigned int m_uiBeginFlag;     //å¼€å§‹æ ¡éªŒä½ 0xAFAFAFCF
+    MsgType m_eMsgType;             //æ¶ˆæ¯ç±»å‹
+    int m_iMsgLen;                  //æ¶ˆæ¯é•¿åº¦
+    unsigned int m_uiEndFlag;       //ç»“æŸæ ¡éªŒä½ 0xCFCFCFAF
+    char m_aMsgData[0];             //æ¶ˆæ¯å†…å®¹
+} Msg, *pMsg;
+
+class NetworkIO{
+public:
+    explicit NetworkIO();
+    virtual ~NetworkIO();
+
+    int sendConfirmMsg();
+
+protected:
+    virtual int sendMsg(Msg *msg) = 0;
+    virtual int readMsg(Msg *msg);
 };
+
+#endif //NETWORKIO_H_H

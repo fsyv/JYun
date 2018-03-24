@@ -37,7 +37,6 @@ protected slots:
 signals:
 	void uploadFile(File *);
 	void backward();
-	void forward();
 	void refresh();
 	void downloadFile();
 	void shareFile();
@@ -46,7 +45,6 @@ signals:
 private:
 	QPushButton *m_pUpload;
 	QPushButton *m_pBackward;
-	QPushButton *m_pForward;
 	QPushButton *m_pRefresh; 
 	QPushButton *m_pDownload;
 	QPushButton *m_pShare;

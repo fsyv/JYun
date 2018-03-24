@@ -9,18 +9,17 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 文件类型
+* @brief : 网络通信消息类型
 * @author : fsyv
 * @email : fsyv@gmail.com
 * @date : 2018/2/21
 **/
 
-enum class FileType
-{
-	Folder = 0x01,		//文件夹
-	Document = 0x02,	//文档
-	Image = 0x04,		//图片
-	Video = 0x08,		//视频
-	Music = 0x10,		//音乐
-	Other = 0x20,		//其它
-};
+//消息类型
+typedef enum _MsgType {
+	Ack_OK = 0,         //确定成功
+	Ack_Error,          //确定错误
+	Get_Download,		//下载
+	Put_Upload			//上传
+}MsgType;
+

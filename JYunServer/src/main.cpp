@@ -1,6 +1,3 @@
-#pragma once
-#pragma execution_character_set("utf-8")
-
 /******************************************************************************
 *                 JJJJJJJ   YY    YY                                          *
 *                   JJJ      YY  YY                                           *
@@ -9,18 +6,19 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : ÎÄ¼şÀàĞÍ
+* @brief : æœåŠ¡ç«¯ä»£ç 
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/2/21
+* @date : 2018/3/17
 **/
+#include "stdafx.h"
+#include "JYunServer.h"
 
-enum class FileType
+int main()
 {
-	Folder = 0x01,		//ÎÄ¼ş¼Ğ
-	Document = 0x02,	//ÎÄµµ
-	Image = 0x04,		//Í¼Æ¬
-	Video = 0x08,		//ÊÓÆµ
-	Music = 0x10,		//ÒôÀÖ
-	Other = 0x20,		//ÆäËü
-};
+
+    JYunServer w;
+    w.start();
+
+    return 0;
+}

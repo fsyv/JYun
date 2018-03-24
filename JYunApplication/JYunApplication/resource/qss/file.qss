@@ -1,5 +1,5 @@
 ﻿/*********************BasicMessageBox**********/
-FileObject::hover{
+FileObjectWidget::hover{
     background-color:rgba(141, 213, 233, 128);
 }
 /*********************end**********************/

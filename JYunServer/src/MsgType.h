@@ -1,5 +1,5 @@
-#pragma once
-#pragma execution_character_set("utf-8")
+#ifndef MSGTYPE_H_
+#define MSGTYPE_H_
 
 /******************************************************************************
 *                 JJJJJJJ   YY    YY                                          *
@@ -9,18 +9,26 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 文件类型
+* @brief : 缃戠粶閫氫俊娑堟伅绫诲瀷
 * @author : fsyv
 * @email : fsyv@gmail.com
 * @date : 2018/2/21
 **/
 
-enum class FileType
-{
-	Folder = 0x01,		//文件夹
-	Document = 0x02,	//文档
-	Image = 0x04,		//图片
-	Video = 0x08,		//视频
-	Music = 0x10,		//音乐
-	Other = 0x20,		//其它
-};
+//娑堟伅绫诲瀷
+typedef enum _MsgType {
+	Ack_Confirm = 0,	//韬唤楠岃瘉
+	Ack_OK,             //纭畾鎴愬姛
+	Ack_Error,          //纭畾閿欒
+	Get_Download,		//涓嬭浇
+	Put_Upload			//涓婁紶
+}MsgType;
+
+//杩炴帴鏍￠獙
+typedef struct _ConfirmMsg{
+    int m_iConfirm;
+}ConfirmMsg_t;
+
+
+
+#endif
