@@ -1,0 +1,14 @@
+{
+    "name" : "system_config.json",
+	"version" : "0.01",
+	"server" : {
+	    "host" : "119.29.157.226",
+		"port" : 65530
+	}
+	"FileType" : {
+	    "DocumentFile" : "txt;doc;docx",
+	    "ImageFile" : "png;gif;jpg;ico",
+		"MusicFile" : "mp3",
+		"VideoFile" : "mp4"
+	}
+}

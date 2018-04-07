@@ -1,0 +1,562 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="exception">
+      <UniqueIdentifier>{61622fed-ba37-486b-bad4-deefb713a39e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="basic">
+      <UniqueIdentifier>{4102f530-c437-4dad-87f0-41bcab56b720}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="widget">
+      <UniqueIdentifier>{6b45a533-fe90-4592-bc8b-36fb64b20b16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="widget\backup">
+      <UniqueIdentifier>{0375e9da-10bd-4f2e-98c2-f77dc3f2b3ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="messagebox">
+      <UniqueIdentifier>{1d262154-d1cb-4b9d-a24c-7eb5e082296a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="widget\clouddisk">
+      <UniqueIdentifier>{430a8f35-a7fe-458b-9ebe-fc271d5aace5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="logic">
+      <UniqueIdentifier>{852b4384-6f81-435a-b7c2-abc7409372fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="database">
+      <UniqueIdentifier>{b9b2d0cb-7296-4c48-a242-b5fde3b1153f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="logic\network">
+      <UniqueIdentifier>{cacb30a4-ebaa-4ecf-b480-41ed48e4f0d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="basic\event">
+      <UniqueIdentifier>{82d97e48-6de7-495a-bc22-383f7b83a702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="logic\file">
+      <UniqueIdentifier>{7fe497a1-b7de-45b4-8893-a2b9b3d0d5d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="widget\clouddisk\statusbar">
+      <UniqueIdentifier>{a8be4d5a-0355-474c-a7b5-e25435714ea8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="widget\file">
+      <UniqueIdentifier>{9b6cdbbb-17f2-4c16-b8de-f1917cc99631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="commoncode">
+      <UniqueIdentifier>{b6910175-039b-413c-a4c2-b2cdfc27224d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GeneratedFiles\qrc_JYunApplication.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="exception\Exception.cpp">
+      <Filter>exception</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="basic\BasicWidget.cpp">
+      <Filter>basic</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\JYunApplication.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunApplication.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunApplication.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BasicWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BasicWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\JYunLogin.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunLogin.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunLogin.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\JYunSetup.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\JYunCloudDisk.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\clouddisk\CloudDiskTopWidget.cpp">
+      <Filter>widget\clouddisk</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskTopWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CloudDiskTopWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunCloudDisk.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunCloudDisk.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\clouddisk\CloudDiskLeftWidget.cpp">
+      <Filter>widget\clouddisk</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskLeftWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CloudDiskLeftWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\clouddisk\CloudDiskStatusBar.cpp">
+      <Filter>widget\clouddisk</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\clouddisk\CloudDiskFileWidget.cpp">
+      <Filter>widget\clouddisk</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CloudDiskFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\JYunBackup.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunBackup.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunBackup.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\backup\BackupLeftWidget.cpp">
+      <Filter>widget\backup</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\backup\BackupFileListWidget.cpp">
+      <Filter>widget\backup</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BackupFileListWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BackupFileListWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BackupLeftWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BackupLeftWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="messagebox\JYunMessageBox.cpp">
+      <Filter>messagebox</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\Security.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="database\Database.cpp">
+      <Filter>database</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\User.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\JYunSerious.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="basic\BasicMessageBox.cpp">
+      <Filter>basic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BasicMessageBox.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BasicMessageBox.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="messagebox\LoginMessageBox.cpp">
+      <Filter>messagebox</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_LoginMessageBox.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_LoginMessageBox.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\JYunTools.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="basic\event\WidgetCreatedEvent.cpp">
+      <Filter>basic\event</Filter>
+    </ClCompile>
+    <ClCompile Include="messagebox\ApplicationCloseDialog.cpp">
+      <Filter>messagebox</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunMessageBox.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunMessageBox.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ApplicationCloseDialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ApplicationCloseDialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunSetup.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunSetup.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\Folder.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\FileObject.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\DocumentFile.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\MusicFile.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\OtherFile.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\VideoFile.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\ImageFile.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\clouddisk\statusbar\CloudDiskStatusBarChildWidget.cpp">
+      <Filter>widget\clouddisk\statusbar</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskStatusBarChildWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CloudDiskStatusBarChildWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\clouddisk\CloudDiskSetup.cpp">
+      <Filter>widget\clouddisk</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskSetup.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CloudDiskSetup.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskStatusBar.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CloudDiskStatusBar.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\clouddisk\CloudDiskTaskList.cpp">
+      <Filter>widget\clouddisk</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\JYunRegister.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunRegister.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunRegister.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\file\File.cpp">
+      <Filter>logic\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FileObject.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FileObject.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Folder.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Folder.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_File.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_File.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\DocumentFileWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DocumentFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DocumentFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\FileObjectWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FileObjectWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FileObjectWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\FileWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\FolderWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FolderWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FolderWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\ImageFileWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ImageFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ImageFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\MusicFileWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MusicFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MusicFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\OtherFileWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_OtherFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_OtherFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\file\VideoFileWidget.cpp">
+      <Filter>widget\file</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VideoFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VideoFileWidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="basic\BasicNetwork.cpp">
+      <Filter>basic</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\network\JYunTcp.cpp">
+      <Filter>logic\network</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BasicNetwork.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BasicNetwork.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunTcp.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunTcp.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\GlobalParameter.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\JYunConfig.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="JYunStart.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="exception\Exception.h">
+      <Filter>exception</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="database\Database.h">
+      <Filter>database</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\User.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\JYunSerious.h">
+      <Filter>widget</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\JYunTools.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\file\MusicFile.h">
+      <Filter>logic\file</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\file\OtherFile.h">
+      <Filter>logic\file</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\file\VideoFile.h">
+      <Filter>logic\file</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\clouddisk\CloudDiskTaskList.h">
+      <Filter>widget\clouddisk</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\file\FileType.h">
+      <Filter>logic\file</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\GlobalParameter.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\JYunConfig.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="JYunStart.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="JYunApplication.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\JYunApplication.h">
+      <Filter>widget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="basic\BasicWidget.h">
+      <Filter>basic</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\JYunLogin.h">
+      <Filter>widget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\clouddisk\CloudDiskTopWidget.h">
+      <Filter>widget\clouddisk</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\JYunCloudDisk.h">
+      <Filter>widget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\clouddisk\CloudDiskLeftWidget.h">
+      <Filter>widget\clouddisk</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\clouddisk\CloudDiskFileWidget.h">
+      <Filter>widget\clouddisk</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\JYunBackup.h">
+      <Filter>widget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\backup\BackupFileListWidget.h">
+      <Filter>widget\backup</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\backup\BackupLeftWidget.h">
+      <Filter>widget\backup</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\Security.h">
+      <Filter>logic</Filter>
+    </CustomBuild>
+    <CustomBuild Include="basic\BasicMessageBox.h">
+      <Filter>basic</Filter>
+    </CustomBuild>
+    <CustomBuild Include="messagebox\LoginMessageBox.h">
+      <Filter>messagebox</Filter>
+    </CustomBuild>
+    <CustomBuild Include="basic\event\WidgetCreatedEvent.h">
+      <Filter>basic\event</Filter>
+    </CustomBuild>
+    <CustomBuild Include="messagebox\JYunMessageBox.h">
+      <Filter>messagebox</Filter>
+    </CustomBuild>
+    <CustomBuild Include="messagebox\ApplicationCloseDialog.h">
+      <Filter>messagebox</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\JYunSetup.h">
+      <Filter>widget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\file\Folder.h">
+      <Filter>logic\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\file\FileObject.h">
+      <Filter>logic\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\file\DocumentFile.h">
+      <Filter>logic\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\file\ImageFile.h">
+      <Filter>logic\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\clouddisk\statusbar\CloudDiskStatusBarChildWidget.h">
+      <Filter>widget\clouddisk\statusbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\clouddisk\CloudDiskSetup.h">
+      <Filter>widget\clouddisk</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\clouddisk\CloudDiskStatusBar.h">
+      <Filter>widget\clouddisk</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\JYunRegister.h">
+      <Filter>widget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\file\File.h">
+      <Filter>logic\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\DocumentFileWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\FileObjectWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\FileWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\FolderWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\ImageFileWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\MusicFileWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\OtherFileWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\file\VideoFileWidget.h">
+      <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="basic\BasicNetwork.h">
+      <Filter>basic</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\network\JYunTcp.h">
+      <Filter>logic\network</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="logo.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resource\logo\logo.ico" />
+  </ItemGroup>
+</Project>

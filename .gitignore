@@ -63,3 +63,17 @@ dkms.conf
 /JYunServer/cmake-build-debug
 /JYunServer/.idea
 /JYunServer/CMakeLists.txt
+/JYunServer/lib/mariadb-connector
+/JYunServer/lib/libevent
+/JYunServer/lib/log4cpp
+/JYunCode/JYunServer/lib/mariadb-connector
+/JYunCode/JYunServer/lib/libevent
+/JYunCode/JYunServer/lib/log4cpp
+/JYunCode/CMakeLists.txt
+/JYunCode/.idea
+/JYunCode/cmake-build-debug
+/JYunCode/JYunApplication/x64
+/JYunCode/JYunApplication/.vs
+/JYunCode/JYunApplication/JYunApplication/x64
+/JYunCode/JYunApplication/JYunApplication/GeneratedFiles
+/JYunCode/JYunServer/CMakeLists.txt
