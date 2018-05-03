@@ -28,15 +28,31 @@ public:
 	~File();
 
 	void calcFileMd5();
-	void setParentFolder(Folder *folder);
 	void setFileSize(quint64 size);
-	void setUploadDateTime(QDateTime time = QDateTime::currentDateTime());
 	void clear();
+	void setMd5(QString md5);
 
 	QString md5();
 	Folder *parentFolder() const;
 	quint64 fileSize() const;
-	QDateTime uploadDateTime() const;
+
+	void getRemoteUrl();
+	void setRemoteUrl(QString url);
+	void setRemoteUrl(QString host, quint16 port, QString path);
+	QUrl remoteUrl();
+
+	void setLocalUrl(QString path);
+	QUrl localUrl();
+	bool remove();
+
+	//文件路径
+	virtual QString filePath() final;
+
+	bool download() final;
+	bool upload() final;
+
+	//文件的预览方法
+	virtual bool preview();
 
 	static File *createFile(const QString &filename);
 
@@ -47,11 +63,11 @@ private:
 	QString m_stFileMD5;
 	//文件大小
 	quint64 m_ui64FileSize;
-	//文件上传时间
-	QDateTime m_uploadDateTime;
 
-	//当前文件所在的文件夹
-	Folder *m_pParentFolder;
+	//远程文件定位
+	QUrl m_urlRemote;
+	//本地文件定位
+	QUrl m_urlLocal;
 };
 
 Q_DECLARE_METATYPE(File)

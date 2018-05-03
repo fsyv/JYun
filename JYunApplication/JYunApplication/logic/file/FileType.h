@@ -22,5 +22,6 @@ enum class FileType
 	Image = 0x04,		//图片
 	Video = 0x08,		//视频
 	Music = 0x10,		//音乐
-	Other = 0x20,		//其它
+
+	Other = 0x10000000,		//其它
 };

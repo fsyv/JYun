@@ -9,30 +9,17 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 文件夹类
+* @brief : 启动程序
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/21
+* @date : 2018/4/6
 **/
-
-#include "FileObjectWidget.h"
-
-class Folder;
-
-class FolderWidget : public FileObjectWidget
+class JYunStart
 {
-	Q_OBJECT
 public:
-	explicit FolderWidget(Folder *file, QWidget *parent = nullptr);
-	~FolderWidget();
+	JYunStart();
+	~JYunStart();
 
-protected:
-	void initMenu();
-	void initWidget();
-	void conn();
-	void initData();
-	void init();
-	
-	//文件列表信号槽绑定
-	void connFiles(QList<FileObject *> &files);
+	static void start();
 };
+

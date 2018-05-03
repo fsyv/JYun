@@ -9,15 +9,17 @@
 #include "Folder.h"
 
 FileObject::FileObject(const FileType &type):
-	m_eFileType(type)
+	m_eFileType(type),
+	m_pParentFolder(nullptr)
 {
-	init();
+	
 }
 
 FileObject::FileObject(const FileObject & file):
 	FileObject(file.fileType())
 {
-	setFileNamePath(file.fileNamePath());
+	setFileName(file.fileName());
+	m_pParentFolder = file.parentFolder();
 }
 
 FileObject::~FileObject()
@@ -30,23 +32,19 @@ void FileObject::setFileName(const QString & name)
 	m_stFileName = name;
 }
 
-void FileObject::setFilePath(const QString & path)
-{
-	m_stFilePath = path;
-}
-
-void FileObject::setFileNamePath(const QString & namePath)
-{
-	QFileInfo info(namePath);
-
-	setFileName(info.fileName());
-	setFilePath(info.path());
-}
-
 void FileObject::clear()
 {
-	m_stFileName.clear();
-	m_stFilePath.clear();
+	
+}
+
+void FileObject::setDateTime(QDateTime date)
+{
+	m_FileDateTime = date;
+}
+
+QDateTime FileObject::dateTime() const
+{
+	return m_FileDateTime;
 }
 
 FileType FileObject::fileType() const
@@ -59,14 +57,19 @@ QString FileObject::fileName() const
 	return m_stFileName;
 }
 
-QString FileObject::filePath() const
+QString FileObject::fileNamePath()
 {
-	return m_stFilePath;
+	return filePath() + "/" + fileName();
 }
 
-QString FileObject::fileNamePath() const
+void FileObject::setParentFolder(Folder * folder)
 {
-	return filePath() + QString("/") + fileName();
+	m_pParentFolder = folder;
+}
+
+Folder * FileObject::parentFolder() const
+{
+	return m_pParentFolder;
 }
 
 FileObject * FileObject::createFile(const FileType & type)
@@ -96,9 +99,5 @@ FileObject * FileObject::createFile(const FileType & type)
 	}
 		
 	return object;
-}
-
-void FileObject::init()
-{
 }
 

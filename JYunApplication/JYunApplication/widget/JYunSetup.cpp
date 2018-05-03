@@ -2,19 +2,20 @@
 #include "JYunSetup.h"
 
 #include "messagebox\JYunMessageBox.h"
-#include "logic\network\JYunHttp.h"
 #include "logic/JYunTools.h"
 
 #include "logic\file\ImageFile.h"
+#include "logic\network\JYunTcp.h"
+#include "logic\User.h"
 
-JYunSetup::JYunSetup(QString username) :
+JYunSetup::JYunSetup() :
 	m_pChangeAvatarButton(nullptr),
 	m_pUsernameLabel(nullptr),
 	m_pUsernameLineEdit(nullptr),
 	m_pUserpassLabel(nullptr),
 	m_pUserpassLineEdit(nullptr),
 	m_pCommitButton(nullptr),
-	m_stUsername(username)
+	m_pHeadImage(nullptr)
 {
 	changeWidgetSize(QSize(300, 400));
 
@@ -47,6 +48,10 @@ JYunSetup::~JYunSetup()
 	if (m_pCommitButton)
 		delete m_pCommitButton;
 	m_pCommitButton = nullptr;
+
+	if (m_pHeadImage)
+		delete m_pHeadImage;
+	m_pHeadImage = nullptr;
 }
 
 void JYunSetup::setAvatar(const QPixmap & pixmap)
@@ -79,8 +84,8 @@ void JYunSetup::changeHead()
 	{
 		//更换界面显示头像
 		m_pHeadImage->clear();
-		m_pHeadImage->setFileNamePath(file.filePath());
-		setAvatar(QPixmap(m_pHeadImage->fileNamePath()));
+		m_pHeadImage->setLocalUrl(file.filePath());
+		setAvatar(QPixmap(m_pHeadImage->localUrl().path()));
 	}
 	else
 		JYunMessageBox::prompt(QString("文件不存在!"));
@@ -95,19 +100,32 @@ void JYunSetup::commit()
 	//检测头像是否改变
 	//检测密码是否改变
 
-	JYunHttp http;
-	QString md5 = http.getHeadMd5(m_stUsername);
+}
 
-	if (m_pHeadImage->md5() != md5)
+void JYunSetup::updateHead(GetUserHead * gmsg)
+{
+	if (!gmsg)
+		return;
+
+	m_pHeadImage->setRemoteUrl(gmsg->m_aHeadUrl);
+
+	m_pHeadImage->download();
+}
+
+void JYunSetup::headMd5(GetUserHeadMd5 * gmsg)
+{
+	if (!gmsg)
+		return;
+
+	if (m_pHeadImage->md5() != QString(gmsg->m_aMd5))
 	{
-		//上传头像
-		http.uploadHead(m_stUsername);
-		QFile file(m_pHeadImage->fileNamePath());
-		file.copy(QDir::currentPath() + QString("/head/") + m_stUsername);
-	}
+		m_pHeadImage->remove();
 
-	QString userpass = JYunTools::stringMD5(m_pUserpassLineEdit->text());
-	http.modifyPass(m_stUsername, userpass);
+		JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
+		User *user = GlobalParameter::getInstance()->getUser();
+
+		network->sendGetUserHead(user->getUsername());
+	}
 }
 
 void JYunSetup::initWidget()
@@ -159,14 +177,21 @@ void JYunSetup::conn()
 
 	//提交头像按钮信号槽绑定
 	connect(m_pCommitButton, &QPushButton::clicked, this, &JYunSetup::commit);
+
+	//注册网络事件绑定
+	JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
+	connect(network, &JYunTcp::getUserHeadMsg, this, &JYunSetup::updateHead);
+	connect(network, &JYunTcp::getUserHeadMd5Msg, this, &JYunSetup::headMd5);
 }
 
 void JYunSetup::initData()
 {
 	m_stFakePass = QString("不要偷看密码哦!");
 
+	User *user = GlobalParameter::getInstance()->getUser();
+
 	//设置用户名和假密码
-	m_pUsernameLineEdit->setText(m_stUsername);
+	m_pUsernameLineEdit->setText(user->getUsername());
 	m_pUserpassLineEdit->setText(m_stFakePass);
 
 	updateAvatar();
@@ -210,18 +235,14 @@ void JYunSetup::updateAvatar()
 	//如果与服务器相同则使用本地缓存图片
 	//如果与服务器不相同则从服务器下载图片
 
+	User *user = GlobalParameter::getInstance()->getUser();
+
 	//本地头像对象
 	m_pHeadImage = new ImageFile;
-	m_pHeadImage->setFileNamePath(QDir::currentPath() + QString("/head/") + m_stUsername);
-	JYunHttp http;
-	QString md5 = http.getHeadMd5(m_stUsername);
+	QString headPath = QDir::currentPath() + QString("/head/") + user->getUsername();
+	m_pHeadImage->setLocalUrl(headPath);
 
-	if (m_pHeadImage->md5() != md5)
-	{
-		//更新头像
-		http.downloadHead(m_stUsername);
-	}
-	setAvatar(QPixmap(m_pHeadImage->fileNamePath()));
+	setAvatar(QPixmap(headPath));
 }
 
 void JYunSetup::resizeEvent(QResizeEvent * e)

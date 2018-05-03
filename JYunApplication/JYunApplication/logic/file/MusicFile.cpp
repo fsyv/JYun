@@ -5,7 +5,7 @@
 MusicFile::MusicFile() :
 	File(FileType::Music)
 {
-	init();
+	
 }
 
 
@@ -13,9 +13,11 @@ MusicFile::~MusicFile()
 {
 }
 
-void MusicFile::init()
+bool MusicFile::preview()
 {
+	return false;
 }
+
 
 bool MusicFile::isMusicFile(const QString & fileSuffix)
 {

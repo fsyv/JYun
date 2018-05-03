@@ -36,8 +36,9 @@
 #include <QScrollArea>
 #include <QFrame>
 #include <QWidget>
+#include <QByteArray>
 
 //自定义类型
-#include "logic\User.h"
-#include "logic\file\FileType.h"
-#include "logic\network\MsgType.h"
+#include "logic/GlobalParameter.h"
+#include "logic/file/FileType.h"
+#include "logic/network/Msg.h"

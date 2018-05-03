@@ -21,6 +21,7 @@
 *******************************************************************************
 **/
 
+class Folder;
 
 class FileObject : public QObject
 {
@@ -32,31 +33,39 @@ public:
 
 	//设置文件名字
 	void setFileName(const QString &name);
-	//设置文件路径
-	void setFilePath(const QString &path);
-	//设置文件名字+路径
-	void setFileNamePath(const QString &namePath);
 	void clear();
-
+	void setDateTime(QDateTime date = QDateTime::currentDateTime());
+	QDateTime dateTime() const;
 
 	//文件类型
 	FileType fileType() const;
 	//文件名字
 	QString fileName() const;
 	//文件路径
-	QString filePath() const;
+	virtual QString filePath() = 0;
 	//文件名字路径
-	QString fileNamePath() const;
+	virtual QString fileNamePath();
+
+	//设置父类文件夹
+	void setParentFolder(Folder *folder);
+	Folder * parentFolder() const;
+
+	//下载方法
+	virtual bool download() = 0;
+	//上传方法
+	virtual bool upload() = 0;
 
 	static FileObject *createFile(const FileType &type);
 
 protected:
-	void init();
-
 	//文件名字
 	QString m_stFileName;
 	FileType m_eFileType;
-	//本地路径
-	QString m_stFilePath;
+	//文件时间
+	QDateTime m_FileDateTime;
+	//父类文件夹对象
+	//如果父类是根目录
+	//则这个指针是它自己本身
+	Folder *m_pParentFolder;
 };
 

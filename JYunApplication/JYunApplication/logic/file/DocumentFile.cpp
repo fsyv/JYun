@@ -5,16 +5,17 @@
 DocumentFile::DocumentFile():
 	File(FileType::Document)
 {
-	init();
+	
 }
 
 DocumentFile::~DocumentFile()
 {
 }
 
-void DocumentFile::init()
+bool DocumentFile::preview()
 {
-
+	//加载前面一部分内容
+	return false;
 }
 
 bool DocumentFile::isDocumentFile(const QString & fileSuffix)

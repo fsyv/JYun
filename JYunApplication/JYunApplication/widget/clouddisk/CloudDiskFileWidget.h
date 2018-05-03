@@ -19,6 +19,7 @@
 
 class File;
 class Folder;
+class FileObject;
 
 class CloudDiskFileWidget: public QListWidget
 {
@@ -66,6 +67,8 @@ public slots:
 	void stateBarFolderClicked(Folder *folder);
 	//显示根目录
 	void showRootDirectory();
+	//
+	void fileDoubleClick(FileObject *file);
 
 	//右键菜单的响应事件
 	//新建文件夹

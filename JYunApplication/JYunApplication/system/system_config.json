@@ -1,10 +1,8 @@
 {
     "name" : "system_config.json",
 	"version" : "0.01",
-	"FileType" : {
-	    "DocumentFile" : "txt;doc;docx",
-	    "ImageFile" : "png;gif;jpg;ico",
-		"MusicFile" : "mp3",
-		"VideoFile" : "mp4"
+	"configs" : {
+	    "network" : "system/network_config.json",
+		"file" : "system/file_config.json"
 	}
 }

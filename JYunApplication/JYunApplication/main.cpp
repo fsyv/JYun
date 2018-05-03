@@ -15,18 +15,23 @@
 **/
 
 #include "stdafx.h"
+#include <QtWidgets/QApplication>
+
+#include "JYunStart.h"
 
 #include "widget/JYunLogin.h"
 #include "exception/Exception.h"
 #include "logic/Security.h"
 #include "widget/JYunSerious.h"
 
-#include <QtWidgets/QApplication>
-
 #include "widget\JYunApplication.h"
 #include "widget\JYunCloudDisk.h"
 #include "widget\JYunSetup.h"
 #include "logic\file\FileObject.h"
+#include "logic\GlobalParameter.h"
+#include "logic\network\JYunTcp.h"
+#include "logic\JYunConfig.h"
+#include "logic\User.h"
 
 void finish();
 
@@ -37,15 +42,26 @@ int main(int argc, char *argv[])
 
 	QApplication a(argc, argv);
 
-	JYunCloudDisk w("fsyv");
+	//JYunStart::start();
 
-	//Security security;
-	//JYunLogin w;
+	//安全检查
+	//初始化全局变量
+	//获取配置文件 =====
+	//读取配置文件
+	//建立网络
+	//启动客户端
+
+	Security security;
+	GlobalParameter *param = GlobalParameter::getInstance();
+	param->init();
+
+	param->getUser()->setUsername("fsyv");
+
+	JYunCloudDisk w;
 	JYunSerious recall;
 	try {
-		/*security.check();
-		w.showWidget();*/
-		
+		security.check();
+		//w.showWidget();
 		w.show();
 	}
 	catch (Exception e) {
@@ -61,5 +77,5 @@ int main(int argc, char *argv[])
 */
 void finish()
 {
-	
+	GlobalParameter::destroyInstance();
 }

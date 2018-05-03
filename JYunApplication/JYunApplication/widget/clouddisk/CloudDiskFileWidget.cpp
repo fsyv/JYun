@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CloudDiskFileWidget.h"
 
+#include "logic/GlobalParameter.h"
+
 #include "logic/file/Folder.h"
 #include "logic/file/DocumentFile.h"
 #include "logic/file/ImageFile.h"
@@ -10,6 +12,7 @@
 
 #include "../file/FileObjectWidget.h"
 #include "../file/FolderWidget.h"
+#include "logic/User.h"
 
 CloudDiskFileWidget::CloudDiskFileWidget(QWidget *parent):
 	QListWidget(parent),
@@ -48,8 +51,7 @@ void CloudDiskFileWidget::conn()
 void CloudDiskFileWidget::initData()
 {
 	//创建根目录
-	User *user = User::getInstance();
-	user->setUsername("fsyv");
+	User *user = GlobalParameter::getInstance()->getUser();
 	m_pCurrentFolder = Folder::createRootFolder(user->getUsername());
 	openFolder(m_pCurrentFolder);
 }
@@ -94,12 +96,8 @@ void CloudDiskFileWidget::setFolder(Folder *folder)
 	if (folder != m_pCurrentFolder)
 	{
 		//断开当前文件夹的信号槽
-		disconnect(m_pCurrentFolder, &Folder::open, this, &CloudDiskFileWidget::openFolder);
 		m_pCurrentFolder = folder;
-		connect(m_pCurrentFolder, &Folder::open, this, &CloudDiskFileWidget::openFolder);
 	}
-	else
-		connect(m_pCurrentFolder, &Folder::open, this, &CloudDiskFileWidget::openFolder);
 
 	//获取当前文件夹下列表
 	update();
@@ -119,14 +117,18 @@ void CloudDiskFileWidget::update()
 			{
 				QListWidgetItem *item = new QListWidgetItem(this);
 				item->setSizeHint(QSize(125, 125));
-				setItemWidget(item, FileObjectWidget::createWidget(object));
+				FileObjectWidget *widget = FileObjectWidget::createWidget(object);
+				connect(widget, &FileObjectWidget::doubleClick, this, &CloudDiskFileWidget::fileDoubleClick);
+				setItemWidget(item, widget);
 			}
 		}
 		else
 		{
 			QListWidgetItem *item = new QListWidgetItem(this);
 			item->setSizeHint(QSize(125, 125));
-			setItemWidget(item, FileObjectWidget::createWidget(object));
+			FileObjectWidget *widget = FileObjectWidget::createWidget(object);
+			connect(widget, &FileObjectWidget::doubleClick, this, &CloudDiskFileWidget::fileDoubleClick);
+			setItemWidget(item, widget);
 		}
 	}
 }
@@ -167,7 +169,7 @@ void CloudDiskFileWidget::uploadFile(File *file)
 	setItemWidget(item, FileObjectWidget::createWidget(file));
 
 	//文件开始上传
-	//file->upload();
+	file->upload();
 }
 
 void CloudDiskFileWidget::backward()
@@ -215,6 +217,14 @@ void CloudDiskFileWidget::showRootDirectory()
 		openFolder(folder);
 }
 
+void CloudDiskFileWidget::fileDoubleClick(FileObject * file)
+{
+	if (file->fileType() == FileType::Folder)
+		openFolder((Folder *)file);
+	else
+		((File *)file)->preview();
+}
+
 void CloudDiskFileWidget::newFolder()
 {
 	Folder *folder = new Folder();
@@ -222,7 +232,9 @@ void CloudDiskFileWidget::newFolder()
 	m_pCurrentFolder->addFile(folder);
 	QListWidgetItem *item = new QListWidgetItem(this);
 	item->setSizeHint(QSize(125, 125));
-	setItemWidget(item, new FolderWidget(folder));
+	FileObjectWidget *widget = new FolderWidget(folder);
+	connect(widget, &FileObjectWidget::doubleClick, this, &CloudDiskFileWidget::fileDoubleClick);
+	setItemWidget(item, widget);
 }
 
 void CloudDiskFileWidget::upload()
@@ -239,8 +251,8 @@ void CloudDiskFileWidget::upload()
 	for (const auto &filepath : filepaths)
 	{
 		File *file = File::createFile(filepath);
-		file->setFileNamePath(filepath);
-		file->setUploadDateTime();
+		file->setLocalUrl(filepath);
+		file->setDateTime();
 
 		uploadFile(file);
 	}

@@ -22,8 +22,8 @@ class DocumentFile : public File
 public:
 	explicit DocumentFile();
 	~DocumentFile();
-;
-	void init();
+
+    bool preview() override;
 
 	static bool isDocumentFile(const QString &fileSuffix);
 };

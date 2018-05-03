@@ -2,7 +2,6 @@
 #include "File.h"
 
 #include "logic/JYunTools.h"
-#include "logic/network/JYunHttp.h"
 
 #include "DocumentFile.h"
 #include "ImageFile.h"
@@ -11,16 +10,16 @@
 #include "OtherFile.h"
 #include "Folder.h"
 
+#include "logic/JYunConfig.h"
+
 File::File(const FileType &type):
-	FileObject(type),
-	m_pParentFolder(nullptr)
+	FileObject(type)
 {
 
 }
 
 File::File(const File & file):
-	FileObject(file),
-	m_pParentFolder(nullptr)
+	FileObject(file)
 {
 	setParentFolder(file.parentFolder());
 }
@@ -37,28 +36,21 @@ void File::calcFileMd5()
 	m_stFileMD5 = JYunTools::fileMD5(fileNamePath());
 }
 
-void File::setParentFolder(Folder * folder)
-{
-	if (folder)
-		m_pParentFolder = new Folder(*folder);
-	else
-		m_pParentFolder = folder;
-}
 
 void File::setFileSize(quint64 size)
 {
 	m_ui64FileSize = size;
 }
 
-void File::setUploadDateTime(QDateTime time)
-{
-	m_uploadDateTime = time;
-}
-
 void File::clear()
 {
 	m_stFileMD5.clear();
 	FileObject::clear();
+}
+
+void File::setMd5(QString md5)
+{
+	m_stFileMD5 = md5;
 }
 
 QString File::md5()
@@ -78,9 +70,78 @@ quint64 File::fileSize() const
 	return m_ui64FileSize;
 }
 
-QDateTime File::uploadDateTime() const
+void File::getRemoteUrl()
 {
-	return m_uploadDateTime;
+	//向服务器发送请求
+
+}
+
+void File::setRemoteUrl(QString url)
+{
+	m_urlRemote.clear();
+	m_urlRemote.setUrl(url);
+}
+
+void File::setRemoteUrl(QString host, quint16 port, QString path)
+{
+	m_urlRemote.setHost(host);
+	m_urlRemote.setPort(port);
+	m_urlRemote.setPath(path);
+}
+
+QUrl File::remoteUrl()
+{
+	return m_urlRemote;
+}
+
+void File::setLocalUrl(QString path)
+{
+	QFileInfo fileinfo(path);
+	setFileName(fileinfo.fileName());
+
+	m_urlLocal.setPath(path);
+}
+
+QUrl File::localUrl()
+{
+	return m_urlLocal;
+}
+
+bool File::remove()
+{
+	QFile file(m_urlLocal.path());
+	return file.remove();
+}
+
+QString File::filePath()
+{
+	return m_pParentFolder->filePath();
+}
+
+bool File::download()
+{
+	//若文件url不存在
+	//生成url
+	//生成本地路径
+	//下载
+
+	return false;
+}
+
+bool File::upload()
+{
+	//计算文件md5
+	//查询服务器是否存在文件
+	//若存在取文件的前1024kb数据与服务器的进行比对
+	//若不存在直接上传
+
+
+	return false;
+}
+
+bool File::preview()
+{
+	return false;
 }
 
 File *File::createFile(const QString & filename)
@@ -108,24 +169,6 @@ File *File::createFile(const QString & filename)
 
 QString File::fromConfigFileGetSupportSuffix(const QString & key)
 {
-	QFile file(QDir::currentPath() + "/system/system_config.json");
-
-	if (!file.open(QIODevice::ReadOnly))
-	{
-		//文件不能打开，抛出异常
-		return false;
-	}
-
-	QJsonDocument document = QJsonDocument::fromJson(file.readAll());
-
-	file.close();
-
-	if (document.isNull())
-	{
-		//配置文件异常，抛出异常
-		return false;
-	}
-
-	QJsonObject jsonObject = document.object().take(QString("FileType")).toObject();
-	return jsonObject.take(key).toString();
+	JYunConfig *config = GlobalParameter::getInstance()->getConfig();
+	return config->getValue("file", key).toString();
 }

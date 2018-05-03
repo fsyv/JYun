@@ -25,6 +25,8 @@
 #include <chrono>
 #include <sstream>
 #include <functional>
+#include <iostream>
+#include <list>
 
 //linux
 #include <arpa/inet.h>
@@ -36,4 +38,6 @@
 #include <event2/event.h>
 #include <event2/bufferevent.h>
 
+//maria
+#include <mysql.h>
 #endif 

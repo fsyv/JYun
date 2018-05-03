@@ -5,7 +5,7 @@
 OtherFile::OtherFile() :
 	File(FileType::Other)
 {
-	init();
+	
 }
 
 
@@ -13,7 +13,8 @@ OtherFile::~OtherFile()
 {
 }
 
-void OtherFile::init()
+bool OtherFile::preview()
 {
-
+	return false;
 }
+

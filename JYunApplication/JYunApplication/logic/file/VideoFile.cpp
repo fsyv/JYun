@@ -5,7 +5,7 @@
 VideoFile::VideoFile():
 	File(FileType::Video)
 {
-	init();
+	
 }
 
 
@@ -13,8 +13,10 @@ VideoFile::~VideoFile()
 {
 }
 
-void VideoFile::init()
+bool VideoFile::preview()
 {
+	//��һҳͼƬ
+	return false;
 }
 
 bool VideoFile::isVideoFile(const QString & fileSuffix)

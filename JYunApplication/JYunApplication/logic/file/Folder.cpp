@@ -2,7 +2,6 @@
 #include "Folder.h"
 
 #include "database\Database.h"
-#include "logic\network\JYunHttp.h"
 
 Folder::Folder():
 	FileObject(FileType::Folder),
@@ -37,11 +36,6 @@ void Folder::setAbsolutePath(const QString & absolutePath)
 	m_stAbsolutePath = absolutePath;
 }
 
-void Folder::setParentFolder(Folder * parent)
-{
-	m_pParentFolder = parent;
-}
-
 void Folder::addFile(FileObject * file)
 {
 	QList<FileObject *> *files = fileList();
@@ -49,11 +43,6 @@ void Folder::addFile(FileObject * file)
 	files->append(file);
 
 	((Folder *)file)->setParentFolder(this);
-}
-
-Folder * Folder::parentFolder() const
-{
-	return m_pParentFolder;
 }
 
 QList<FileObject*> *Folder::fileList()
@@ -91,6 +80,35 @@ void Folder::update()
 QDateTime Folder::refreshDateTime() const
 {
 	return m_RefreshDateTime;
+}
+
+QString Folder::filePath()
+{
+	QString path = absolutePath();
+	return path.mid(path.indexOf(":") + 1);
+}
+
+bool Folder::download()
+{
+	//文件夹的下载方法
+	//下载文件夹内所有文件
+
+	for (FileObject *file : *m_pFileLists)
+		file->download();
+
+	return true;
+}
+
+bool Folder::upload()
+{
+	//文件夹的下载方法
+	//上传文件夹内所有文件
+	//不过好像这个方法没什么用 - -.
+
+	for (FileObject *file : *m_pFileLists)
+		file->upload();
+
+	return true;
 }
 
 Folder * Folder::createRootFolder(const QString &username)
@@ -137,6 +155,9 @@ void Folder::refresh()
 		files = getFilesFromServer();
 	}
 
+	for (auto file : files)
+		file->setParentFolder(this);
+
 	m_pFileLists->append(files);
 }
 
@@ -175,8 +196,8 @@ QList<FileObject *> Folder::getFilesFromServer()
 	//三级缓存
 	m_pFileLists->clear();
 
-	JYunHttp http;
-	QList<FileObject *> files = http.getFileList(m_stAbsolutePath);
+	/*JYunHttp http;*/
+	QList<FileObject *> files /*= http.getFileList(m_stAbsolutePath)*/;
 
 	sortFiles(files);
 

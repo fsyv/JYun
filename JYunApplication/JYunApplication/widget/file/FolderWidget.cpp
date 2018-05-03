@@ -84,15 +84,3 @@ void FolderWidget::connFiles(QList<FileObject*>& files)
 {
 	
 }
-
-void FolderWidget::mouseDoubleClicked()
-{
-	//文件夹双击事件
-	//--打开文件夹
-
-}
-
-void FolderWidget::openFolder(Folder * folder)
-{
-	
-}

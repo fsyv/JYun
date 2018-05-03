@@ -23,7 +23,7 @@ public:
 	ImageFile();
 	~ImageFile();
 
-	void init();
+	bool preview() override;
 
 	static bool isImageFile(const QString &fileSuffix);
 };

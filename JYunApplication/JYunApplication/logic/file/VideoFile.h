@@ -23,7 +23,7 @@ public:
 	VideoFile();
 	~VideoFile();
 
-	void init();
+	bool preview() override;
 	
 	static bool isVideoFile(const QString &fileSuffix);
 };

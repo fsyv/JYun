@@ -31,14 +31,17 @@ PCH=$(PCH_H).gch
 
 LIBEVENT=../lib/libevnt
 LOG4CPP=../lib/log4cpp
+MARIADB=../lib/mariadb-connector
 
 LIBS=-L$(LIBEVENT)/.libs -levent \
+     -L$(MARIADB)/libmariadb -lmariadb \
      -lpthread
 
-INC=-I$(LIBEVENT)/include
+INC=-I$(LIBEVENT)/include \
+    -I$(MARIADB)/include
 
 SRC=$(wildcard *.$(CXXSUFFIX))
-OBJS=$(patsubst %.$(CXXSUFFIX), %.o, $(SRC))
+OBJS=$(patsubst %.$(CXXSUFFIX), %.o, $(notdir $(SRC)))
 
 $(TARGET):$(OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(INC) $(LIBS)

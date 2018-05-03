@@ -140,8 +140,8 @@ void CloudDiskTopWidget::upload()
 	for (const auto &filepath : filepaths)
 	{
 		File *file = File::createFile(filepath);
-		file->setFileNamePath(filepath);
-		file->setUploadDateTime();
+		file->setLocalUrl(filepath);
+		file->setDateTime();
 
 		emit uploadFile(file);
 	}

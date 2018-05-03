@@ -194,15 +194,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_LoginMessageBox.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="logic\network\JYunHttp.cpp">
-      <Filter>logic\network</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_JYunHttp.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_JYunHttp.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="logic\JYunTools.cpp">
       <Filter>logic</Filter>
     </ClCompile>
@@ -380,8 +371,23 @@
     <ClCompile Include="GeneratedFiles\Release\moc_VideoFileWidget.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="logic\network\BasicNetwork.cpp">
+    <ClCompile Include="logic\JYunStringBuffer.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\GlobalParameter.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\JYunConfig.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="logic\network\JYunTcp.cpp">
       <Filter>logic\network</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_JYunTcp.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_JYunTcp.cpp">
+      <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -419,8 +425,17 @@
     <ClInclude Include="logic\network\MsgType.h">
       <Filter>logic\network</Filter>
     </ClInclude>
-    <ClInclude Include="logic\network\BasicNetwork.h">
+    <ClInclude Include="logic\network\Msg.h">
       <Filter>logic\network</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\JYunStringBuffer.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\GlobalParameter.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="logic\JYunConfig.h">
+      <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -465,9 +480,6 @@
     </CustomBuild>
     <CustomBuild Include="messagebox\LoginMessageBox.h">
       <Filter>messagebox</Filter>
-    </CustomBuild>
-    <CustomBuild Include="logic\network\JYunHttp.h">
-      <Filter>logic\network</Filter>
     </CustomBuild>
     <CustomBuild Include="basic\event\WidgetCreatedEvent.h">
       <Filter>basic\event</Filter>
@@ -531,6 +543,9 @@
     </CustomBuild>
     <CustomBuild Include="widget\file\VideoFileWidget.h">
       <Filter>widget\file</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\network\JYunTcp.h">
+      <Filter>logic\network</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

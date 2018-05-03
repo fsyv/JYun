@@ -17,11 +17,13 @@
 
 #include "basic/BasicWidget.h"
 
+class ImageFile;
+
 class JYunApplication : public BasicWidget
 {
 	Q_OBJECT
 public:
-	explicit JYunApplication(QString username);
+	explicit JYunApplication();
 	~JYunApplication();
 
 protected:
@@ -36,6 +38,8 @@ protected:
 	void setAvatar(const  QPixmap &pixmap);
 	//获取用户头像
 	void getUserAvatar();
+	//下载头像
+	void downloadHead();
 
 	void closeEvent(QCloseEvent *e) override;
 
@@ -48,6 +52,8 @@ public slots:
 	void startJYunBackup();
 	//托盘点击响应函数
 	void taryClick(QSystemTrayIcon::ActivationReason reason);
+	//下载头像响应函数
+	void updateHead(GetUserHead *gmsg);
 
 signals:
 	void logout();
@@ -59,6 +65,7 @@ private:
 
 	//托盘
 	QSystemTrayIcon *m_pSystemTrayIcon;
-	//用户名
-	QString m_stUsername;
+
+	//头像文件
+	ImageFile *m_pHeadImage;
 };

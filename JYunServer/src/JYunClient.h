@@ -14,11 +14,14 @@
 * @date : 2018/3/18
 **/
 
-#include "NetworkIO.h"
+#include "ThreadObject.h"
+
+#include "Msg.h"
 
 struct bufferevent;
+class JYunStringBuffer;
 
-class JYunClient : public NetworkIO{
+class JYunClient : public ThreadObject{
 public:
     explicit JYunClient(bufferevent *bev);
     ~JYunClient();
@@ -38,15 +41,30 @@ public:
     //刷新通信时间
     void refreshContactTime();
     void readMsgBuffer();
-private:
-    int sendMsg(Msg *msg) override ;
 
+    //先使用多继承，以后修改为函数
+    void run();
+
+protected:
+    int sendConfirmMsg();
+    int recvConfirmMsg(ConfirmMsg *msg);
+
+    int sendLoginMsg(std::string username, LoginMsg::LoginType loginType);
+    int recvLoginMsg(LoginMsg *msg);
+
+    int sendMsg(Msg *msg);
+    int readMsg(Msg *msg);
+
+private:
     // 客户端信息
     bufferevent *m_pBufferevent;
     unsigned int m_uiIP;
     unsigned short m_ui16Port;
     //客户端连接的状态，服务端会定期清理m_bState为false的客户端
     ConnectionState m_eState;
+    //消息缓存
+    JYunStringBuffer *m_pStringBuffer;
+    std::mutex m_StringBufferMutex;
 
     // 上次通信时间
     // 用于做session
@@ -55,8 +73,6 @@ private:
     // 未通过验证的连接有效期为1分钟
     // 通过验证的连接有效期为15分钟
     std::chrono::minutes m_SessionContactAction;
-
-    std::stringstream m_stringstream;
 };
 
 

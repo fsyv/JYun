@@ -27,6 +27,8 @@ public:
 	//设置最小工人数量
 	void setMinWorker(const int &workerNumber);
 
+
+	static ThreadPool *getInstance();
 private:
 	//成为老板
 	void createBoss();
@@ -89,6 +91,8 @@ private:
 	//老板视察工作最大时间差
 	//单位ms
 	int m_iMaxTimer;
+
+	static ThreadPool *m_pInstance;
 };
 
 #endif //THREADPOOL_H_H

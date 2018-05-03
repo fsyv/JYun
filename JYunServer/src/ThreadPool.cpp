@@ -5,6 +5,8 @@
 
 using namespace std;
 
+ThreadPool *ThreadPool::m_pInstance = nullptr;
+
 ThreadPool::ThreadPool(int minWorker, int maxWorker) :
 	m_iBossInspectionCycle(1000),
 	m_bRun(true),
@@ -14,6 +16,8 @@ ThreadPool::ThreadPool(int minWorker, int maxWorker) :
 {
 	//工作中的工人数量
 	m_iWorking = 0;
+
+    m_pInstance = this;
 
 	setScale();
 
@@ -28,6 +32,8 @@ ThreadPool::ThreadPool(int minWorker, int maxWorker) :
 ThreadPool::~ThreadPool()
 {
 	waitForAllFinished(0);
+
+    m_pInstance = nullptr;
 }
 
 //添加工作
@@ -275,5 +281,10 @@ void ThreadPool::workerJob()
 	serialMutex.lock();
 	workersSerialNumber.erase(this_thread::get_id());
 	serialMutex.unlock();
+}
+
+ThreadPool *ThreadPool::getInstance()
+{
+	return m_pInstance;
 }
 

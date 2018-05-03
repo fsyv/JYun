@@ -3,6 +3,7 @@
 
 #include "logic\JYunTools.h"
 #include "logic\file\FileObject.h"
+#include "logic\file\File.h"
 
 Database::Database()
 {
@@ -164,21 +165,21 @@ void Database::saveFilesToLocal(const QString & path, const QList<FileObject*>& 
 	);
 
 	QString file_list;
-	//{
-	//    [
-	//         {
-	//              "FileName": "XXX",
-	//              "FileType": XXX
-	//          }
-    //    ]
-	//}
 	QJsonArray jsonArray;
 
 	for (const FileObject *file : files)
 	{
 		QJsonObject jsonObject;
-		jsonObject.insert("FileName", file->fileName());
-		jsonObject.insert("FileType", (int)(file->fileType()));
+		jsonObject.insert("name", file->fileName());
+		jsonObject.insert("type", (int)(file->fileType()));
+		jsonObject.insert("date", file->dateTime().toSecsSinceEpoch());
+
+		if (file->fileType() != FileType::Folder)
+		{
+			jsonObject.insert("size", (qint64)((File *)file)->fileSize());
+			jsonObject.insert("md5", ((File *)file)->md5());
+		}
+
 		jsonArray.append(jsonObject);
 	}
 	QJsonDocument document(jsonArray);
@@ -211,11 +212,24 @@ QList<FileObject*> Database::getFilesFromLocal(const QString & path)
 		{
 			QJsonObject jsonObject = jsonValue.toObject();
 
-			QString name = jsonObject.value("FileName").toString();
-			int type = jsonObject.value("FileType").toInt();
+			int type = jsonObject.value("type").toInt();
 
 			FileObject *file = FileObject::createFile((FileType)type);
+
+			if (file->fileType() != FileType::Folder)
+			{
+				QString md5 = jsonObject.value("md5").toString();
+				quint64 size = jsonObject.value("size").toVariant().toULongLong();
+
+				((File *)file)->setMd5(md5);
+				((File *)file)->setFileSize(size);
+			}
+
+			QString name = jsonObject.value("name").toString();
+			QDateTime date = jsonObject.value("date").toVariant().toDateTime();
+
 			file->setFileName(name);
+			file->setDateTime(date);
 
 			files.append(file);
 		}

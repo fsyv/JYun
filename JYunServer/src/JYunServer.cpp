@@ -94,6 +94,8 @@ void JYunServer::accpet_cb(evutil_socket_t listener, short event, void *arg)
         return;
     }
 
+    fprintf(stderr, "New client\n");
+
     server->newConnect(fd);
 }
 
@@ -101,6 +103,8 @@ void JYunServer::read_cb(bufferevent *bev, void *arg)
 {
     JYunClient *client = (JYunClient *)arg;
     client->readMsgBuffer();
+
+    ThreadPool::getInstance()->addJob(client);
 }
 
 void JYunServer::write_cb(bufferevent *bev, void *arg)

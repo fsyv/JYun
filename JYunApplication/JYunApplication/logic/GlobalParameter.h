@@ -9,30 +9,36 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : 文件夹类
+* @brief : 全局变量，用于保存：用户，网络，配置文件信息
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/1/21
+* @date : 2018/4/6
 **/
 
-#include "FileObjectWidget.h"
+class User;
+class JYunTcp;
+class JYunConfig;
 
-class Folder;
-
-class FolderWidget : public FileObjectWidget
+class GlobalParameter
 {
-	Q_OBJECT
 public:
-	explicit FolderWidget(Folder *file, QWidget *parent = nullptr);
-	~FolderWidget();
+	static GlobalParameter *getInstance();
+	static void destroyInstance();
 
-protected:
-	void initMenu();
-	void initWidget();
-	void conn();
-	void initData();
-	void init();
-	
-	//文件列表信号槽绑定
-	void connFiles(QList<FileObject *> &files);
+	bool init();
+
+	User *getUser() const;
+	JYunTcp *getTcpNetwork() const;
+	JYunConfig *getConfig() const;
+private:
+	GlobalParameter();
+	~GlobalParameter();
+
+	JYunConfig *m_pConfig;
+	JYunTcp *m_pTcpNetwork;
+	User *m_pUser;
+
+	static GlobalParameter *m_pInstancer;
+	static QMutex mutex;
 };
+

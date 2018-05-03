@@ -223,3 +223,8 @@ void FileObjectWidget::mouseRightClicked()
 	m_pMenu->move(cursor().pos());
 	m_pMenu->show();
 }
+
+void FileObjectWidget::mouseDoubleClicked()
+{
+	emit doubleClick(m_pFile);
+}

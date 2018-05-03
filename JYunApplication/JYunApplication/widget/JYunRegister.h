@@ -30,6 +30,9 @@ protected:
 	void initData();
 	void init();
 
+	void checkUsername(RegisteredMsg::RegisteredResult result);
+	void registeredUser(RegisteredMsg::RegisteredResult result);
+
 	//用户名输入栏失去焦点
 	void usernameInputFocusOut();
 
@@ -39,6 +42,8 @@ protected:
 protected slots:
 	//注册按钮槽函数
 	void registered();
+	//注册结果
+	void registeredResult(RegisteredMsg *rmsg);
 
 private:
 	QLineEdit *m_pUsernameLabel;

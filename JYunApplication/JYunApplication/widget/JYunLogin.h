@@ -49,7 +49,7 @@ protected:
 	//登录成功
 	void loginSuccess();
 	//登录失败
-	void loginFailed();
+	void loginFailed(const LoginMsg::LoginType &type);
 	//用户名输入栏失去焦点
 	void usernameInputFocuOut();
 	//密码输入栏得到焦点
@@ -77,6 +77,8 @@ protected slots:
     void login();
 	//注册按钮响应函数
 	void registered();
+	//登录结果
+	void loginResult(LoginMsg *msg);
 
 private:
 	QComboBox *m_pUsernameInput;

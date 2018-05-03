@@ -57,6 +57,9 @@ public:
 
 	static FileObjectWidget *createWidget(FileObject *file);
 
+signals:
+	void doubleClick(FileObject *);
+
 protected:
 	void initWidget();
 	void conn();
@@ -75,7 +78,7 @@ protected:
 	//鼠标右键的点击事件响应函数
 	virtual void mouseRightClicked();
 	//鼠标双击事件响应函数
-	virtual void mouseDoubleClicked() = 0;
+	virtual void mouseDoubleClicked();
 
 	QCheckBox *m_pConfirmCheckBox;
 	QLabel *m_pPictureLabel;

@@ -23,6 +23,6 @@ public:
 	OtherFile();
 	~OtherFile();
 
-	void init();
+	bool preview() override;
 };
 

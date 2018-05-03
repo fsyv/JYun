@@ -1,6 +1,5 @@
-#ifndef NETWORKIO_H_H
-#define NETWORKIO_H_H
-
+#pragma once
+#pragma execution_character_set("utf-8")
 /******************************************************************************
 *                 JJJJJJJ   YY    YY                                          *
 *                   JJJ      YY  YY                                           *
@@ -9,32 +8,40 @@
 *             JJJ  JJJ         YY      uu   u u    nn     n                   *
 *               JJJJJ          YY       uuuu  u    n      n                   *
 *******************************************************************************
-* @brief : é¢„ç¼–è¯‘å¤´
+* @brief : ÏûÏ¢»º´æ
 * @author : fsyv
 * @email : fsyv@gmail.com
-* @date : 2018/3/17
+* @date : 2018/4/6
 **/
 
-#include "MsgType.h"
+typedef unsigned long long int memsize;
 
-typedef struct _Msg{
-    unsigned int m_uiBeginFlag;     //å¼€å§‹æ ¡éªŒä½ 0xAFAFAFCF
-    MsgType m_eMsgType;             //æ¶ˆæ¯ç±»å‹
-    int m_iMsgLen;                  //æ¶ˆæ¯é•¿åº¦
-    unsigned int m_uiEndFlag;       //ç»“æŸæ ¡éªŒä½ 0xCFCFCFAF
-    char m_aMsgData[0];             //æ¶ˆæ¯å†…å®¹
-} Msg, *pMsg;
+struct Msg;
 
-class NetworkIO{
+class JYunStringBuffer
+{
 public:
-    explicit NetworkIO();
-    virtual ~NetworkIO();
+	JYunStringBuffer(const memsize &size = 1024);
+	~JYunStringBuffer();
 
-    int sendConfirmMsg();
+	// \0 ½áÎ²µÄ´®
+	void append(const char *szbuf);
+	// ·Ç\0 ½áÎ²µÄ´®
+	void append(const char *buf, const int &len);
+	//±£Ö¤Ã¿´Î¶¼ÊÇÍ·²¿ÔÚÊ×Î²
+	void alignmentBuffer();
+	//µ÷ÕûÄÚ´æ
+	void adjustMemory();
+	memsize size() const;
 
-protected:
-    virtual int sendMsg(Msg *msg) = 0;
-    virtual int readMsg(Msg *msg);
+	Msg *getMsg();
+private:
+	char *m_pBuffer;
+
+	//×Ü³¤¶È
+	memsize m_allSize;
+	//µ±Ç°³¤¶È
+	memsize m_size;
+	//³õÊÔ³¤¶È
+	memsize m_initSize;
 };
-
-#endif //NETWORKIO_H_H

@@ -3,18 +3,19 @@
 
 #include "messagebox/ApplicationCloseDialog.h"
 
-#include "logic/network/JYunHttp.h"
-
 #include "widget/JYunSetup.h"
 #include "widget/JYunCloudDisk.h"
 #include "widget/JYunBackup.h"
+#include "logic/User.h"
+#include "logic/file/ImageFile.h"
+#include "logic/network/JYunTcp.h"
 
-JYunApplication::JYunApplication(QString username):
+JYunApplication::JYunApplication():
 	m_pSetupButton(nullptr),
 	m_pCloudDiskButton(nullptr),
 	m_pBackupButton(nullptr),
 	m_pSystemTrayIcon(nullptr),
-	m_stUsername(username)
+	m_pHeadImage(nullptr)
 {
 	changeWidgetSize(QSize(300, 400));
 
@@ -38,6 +39,10 @@ JYunApplication::~JYunApplication()
 	if (m_pSystemTrayIcon)
 		delete m_pSystemTrayIcon;
 	m_pSystemTrayIcon = nullptr;
+
+	if (m_pHeadImage)
+		delete m_pHeadImage;
+	m_pHeadImage = nullptr;
 }
 
 void JYunApplication::initWidget()
@@ -94,10 +99,16 @@ void JYunApplication::conn()
 
 	//ÍÐÅÌµã»÷ÐÅºÅ²Û°ó¶¨
 	connect(m_pSystemTrayIcon, &QSystemTrayIcon::activated, this, &JYunApplication::taryClick);
+
+	//×¢²áÍøÂçÊÂ¼þ°ó¶¨
+	JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
+	connect(network, &JYunTcp::getUserHeadMsg, this, &JYunApplication::updateHead);
 }
 
 void JYunApplication::initData()
 {
+	m_pHeadImage = new ImageFile;
+
 	getUserAvatar();
 }
 
@@ -163,16 +174,24 @@ void JYunApplication::setAvatar(const QPixmap & pixmap)
 */
 void JYunApplication::getUserAvatar()
 {
-	QString headPath = QDir::currentPath() + QString("/head/") + m_stUsername;
-	QFile head(headPath);
-	if (head.exists())
+	User *user = GlobalParameter::getInstance()->getUser();
+
+	QString headPath = QDir::currentPath() + QString("/head/") + user->getUsername();
+	m_pHeadImage->setLocalUrl(headPath);
+
+	QFileInfo fileinfo(headPath);
+	if (fileinfo.exists())
 		setAvatar(QPixmap(headPath));
 	else
-	{
-		JYunHttp http;
-		http.downloadHead(m_stUsername);
-		setAvatar(QPixmap(headPath));
-	}
+		downloadHead();
+}
+
+void JYunApplication::downloadHead()
+{
+	JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
+	User *user = GlobalParameter::getInstance()->getUser();
+
+	network->sendGetUserHead(user->getUsername());
 }
 
 void JYunApplication::closeEvent(QCloseEvent * e)
@@ -191,7 +210,7 @@ void JYunApplication::startJYunSetup()
 {
 	hide();
 
-	JYunSetup w(m_stUsername);
+	JYunSetup w;
 	w.show();
 
 	QEventLoop event_loop;
@@ -209,7 +228,7 @@ void JYunApplication::startJYunCloudDisk()
 {
 	hide();
 
-	JYunCloudDisk w(m_stUsername);
+	JYunCloudDisk w;
 	w.show();
 
 	QEventLoop event_loop;
@@ -261,4 +280,14 @@ void JYunApplication::taryClick(QSystemTrayIcon::ActivationReason reason)
 	default:
 		break;
 	}
+}
+
+void JYunApplication::updateHead(GetUserHead * gmsg)
+{
+	if (!gmsg)
+		return;
+
+	m_pHeadImage->setRemoteUrl(gmsg->m_aHeadUrl);
+
+	m_pHeadImage->download();
 }

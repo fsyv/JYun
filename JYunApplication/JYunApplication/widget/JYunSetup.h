@@ -23,7 +23,7 @@ class JYunSetup : public BasicWidget
 {
 	Q_OBJECT
 public:
-	explicit JYunSetup(QString username);
+	explicit JYunSetup();
 	~JYunSetup();
 
 	void setAvatar(const QPixmap &pixmap);
@@ -33,6 +33,10 @@ public slots:
     void changeHead();
 	//提交按钮响应函数
 	void commit();
+	//下载头像响应函数
+	void updateHead(GetUserHead *gmsg);
+	//md5
+	void headMd5(GetUserHeadMd5 *gmsg);
 
 protected:
 	void initWidget();
@@ -58,7 +62,6 @@ private:
 	QLineEdit *m_pUserpassLineEdit;
 	QPushButton *m_pCommitButton;
 
-	QString m_stUsername;
 	QString m_stRealPass;
 	QString m_stFakePass;
 

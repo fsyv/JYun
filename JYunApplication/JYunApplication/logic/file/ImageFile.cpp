@@ -5,7 +5,7 @@
 ImageFile::ImageFile() :
 	File(FileType::Image)
 {
-	init();
+	
 }
 
 
@@ -13,9 +13,10 @@ ImageFile::~ImageFile()
 {
 }
 
-void ImageFile::init()
+bool ImageFile::preview()
 {
-
+	//Àı–°Õº
+	return false;
 }
 
 bool ImageFile::isImageFile(const QString & fileSuffix)

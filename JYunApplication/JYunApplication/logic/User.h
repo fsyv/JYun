@@ -20,19 +20,14 @@
 class User
 {
 public:
-	static User *getInstance();
-	static void destroyInstance();
+	User();
+	virtual ~User();
 
 	void setUsername(const QString &username);
 
 	QString &getUsername();
+
 private:
-	User();
-	virtual ~User();
-
 	QString m_stUsername;
-
-	static User *m_pInstanceUser;
-	static QMutex mutex;
 };
 

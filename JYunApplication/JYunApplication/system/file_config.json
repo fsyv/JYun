@@ -1,0 +1,8 @@
+{
+    "name" : "file_config.json",
+	"version" : "0.01",
+	"DocumentFile" : "txt;doc;docx",
+	"ImageFile" : "png;gif;jpg;ico",
+	"MusicFile" : "mp3",
+	"VideoFile" : "mp4"
+}

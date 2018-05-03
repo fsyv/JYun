@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "JYunRegister.h"
 
-#include "logic/network/JYunHttp.h"
 #include "logic/JYunTools.h"
 #include "messagebox/JYunMessageBox.h"
+
+#include "logic/network/JYunTcp.h"
 
 JYunRegister::JYunRegister():
 	m_pUsernameLabel(nullptr),
@@ -80,6 +81,9 @@ void JYunRegister::conn()
 {
 	//注册按钮信号槽绑定
 	connect(m_pRegisterButton, &QPushButton::clicked, this, &JYunRegister::registered);
+	//注册网络事件绑定
+	JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
+	connect(network, &JYunTcp::registeredMsg, this, &JYunRegister::registeredResult);
 }
 
 void JYunRegister::initData()
@@ -95,6 +99,31 @@ void JYunRegister::init()
 	initData();
 }
 
+void JYunRegister::checkUsername(RegisteredMsg::RegisteredResult result)
+{
+	if (result == RegisteredMsg::UsernameExisted)
+	{
+		//用户名存在
+		JYunMessageBox::prompt("注册成功！");
+		close();
+	}
+}
+
+void JYunRegister::registeredUser(RegisteredMsg::RegisteredResult result)
+{
+	if (result == RegisteredMsg::RegisteredSucced)
+	{
+		//注册成功
+		JYunMessageBox::prompt("注册成功！");
+		close();
+	}
+	else
+	{
+		//注册失败
+		JYunMessageBox::prompt("注册失败！");
+	}
+}
+
 void JYunRegister::usernameInputFocusOut()
 {
 	QString username = m_pUsernameLineEdit->text();
@@ -102,13 +131,14 @@ void JYunRegister::usernameInputFocusOut()
 	if (username.isEmpty())
 		return;
 
-	JYunHttp http;
-	if (http.checkUsername(username))
-	{
-		//用户名已经存在
-		JYunMessageBox::prompt("用户名已经存在");
-		m_pUsernameLineEdit->setFocus();
-	}
+
+	RegisteredMsg rmsg;
+
+	rmsg.m_eMsgType = RegisteredMsg::CheckUsername;
+	strcpy(rmsg.m_aUsername, username.toUtf8().data());
+
+	JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
+	network->sendRegisteredMsg(rmsg);
 }
 
 void JYunRegister::resizeEvent(QResizeEvent * e)
@@ -150,27 +180,30 @@ void JYunRegister::registered()
 	QString username = m_pUsernameLineEdit->text();
 	QString userpass = JYunTools::stringMD5(m_pUserpassLineEdit->text());
 
-	JYunHttp http;
+	RegisteredMsg rmsg;
 
-	if (http.checkUsername(username))
-	{
-		//用户名已经存在
-		JYunMessageBox::prompt("用户名已经存在");
-		m_pUsernameLineEdit->setFocus();
+	rmsg.m_eMsgType = RegisteredMsg::Registered;
+	strcpy(rmsg.m_aUsername, username.toUtf8().data());
+	strcpy(rmsg.m_aPassword, userpass.toUtf8().data());
+
+	JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
+	network->sendRegisteredMsg(rmsg);
+}
+
+void JYunRegister::registeredResult(RegisteredMsg * rmsg)
+{
+	if (!rmsg)
 		return;
-	}
 
-	QMap<QString, QString> result = http.registered(username, userpass);
-
-	if (result.value("register_result") == QString("True"))
+	switch (rmsg->m_eMsgType)
 	{
-		//注册成功
-		JYunMessageBox::prompt("注册成功！");
-		close();
-	}
-	else
-	{
-		//注册失败
-		JYunMessageBox::prompt(result.value("register_error"));
+	case RegisteredMsg::CheckUsername:
+		checkUsername(rmsg->m_eResult);
+		break;
+	case RegisteredMsg::Registered:
+		registeredUser(rmsg->m_eResult);
+		break;
+	default:
+		break;
 	}
 }

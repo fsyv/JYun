@@ -27,19 +27,23 @@ public:
 
 	void setAbsolutePath(const Folder &folder);
 	void setAbsolutePath(const QString &absolutePath);
-	//设置父类文件夹
-	void setParentFolder(Folder *parent);
+
 	//添加文件
 	void addFile(FileObject *file);
 
-	Folder * parentFolder() const;
 	QList<FileObject *> *fileList();
 	QString absolutePath() const;
 	//获取根目录
 	Folder *getRootFolder();
 	//直接刷新，跳过从1级，2级缓存取数据
 	void update();
-	QDateTime refreshDateTime()const;
+	QDateTime refreshDateTime() const;
+
+	//文件路径
+	QString filePath() final;
+
+	bool download() final;
+	bool upload() final;
 
 	//创建根目录
 	static Folder *createRootFolder(const QString &username);
@@ -62,10 +66,6 @@ protected:
 	void sortFiles(QList<FileObject *> &files);
 
 private:
-	//父类文件夹对象
-	//如果父类是根目录
-	//则这个指针是它自己本身
-	Folder *m_pParentFolder;
 	//当前文件夹下文件和文件夹列表
 	//当前文件夹列表总共有三级缓存
 	// 一级缓存：从内存中获取（有效时间4个小时）

@@ -1,14 +1,18 @@
 #include "stdafx.h"
 #include "JYunLogin.h"
 
+#include "logic/GlobalParameter.h"
+
 #include "database/Database.h"
 #include "messagebox/JYunMessageBox.h"
 #include "messagebox/LoginMessageBox.h"
-#include "logic/network/JYunHttp.h"
 #include "logic/JYunTools.h"
 
 #include "widget/JYunApplication.h"
 #include "widget/JYunRegister.h"
+
+#include "logic/User.h"
+#include "logic\network\JYunTcp.h"
 
 JYunLogin::JYunLogin() :
 	m_pUsernameInput(nullptr),
@@ -135,6 +139,9 @@ void JYunLogin::conn()
 
 	//注册按钮事件绑定
 	connect(m_pRegisterButton, &QPushButton::clicked, this, &JYunLogin::registered);
+
+	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+	connect(tcp, &JYunTcp::loginMsg, this, &JYunLogin::loginResult);
 }
 
 /***************************************************
@@ -244,14 +251,13 @@ void JYunLogin::startJYunApplication()
 {
 	hide();
 
-	JYunApplication w(m_pUsernameInput->lineEdit()->text());
+	JYunApplication w;
 	w.show();
 
 	QEventLoop event_loop;
 	connect(&w, &JYunApplication::logout, &event_loop, &QEventLoop::quit);
 	connect(&w, &JYunApplication::logout, this, &JYunLogin::show);
 	event_loop.exec();
-
 }
 
 /***************************************************
@@ -261,7 +267,7 @@ void JYunLogin::startJYunApplication()
 void JYunLogin::loginSuccess()
 {
 	//设置全局用户变量
-	User *user = User::getInstance();
+	User *user = GlobalParameter::getInstance()->getUser();
 	QString username = m_pUsernameInput->lineEdit()->text();
 	user->setUsername(username);
 
@@ -276,8 +282,19 @@ void JYunLogin::loginSuccess()
 *登录失败
 ****************************************************
 */
-void JYunLogin::loginFailed()
+void JYunLogin::loginFailed(const LoginMsg::LoginType &type)
 {
+	switch (type){
+	case LoginMsg::UsernameNotExist:
+		JYunMessageBox::prompt("用户名不存在!");
+		break;
+	case LoginMsg::WrongPassword:
+		JYunMessageBox::prompt("密码错误!");
+		break;
+	default:
+		JYunMessageBox::prompt("未知错误!");
+		break;
+	}
 }
 
 /***************************************************
@@ -426,20 +443,8 @@ void JYunLogin::login()
 	QString username = m_pUsernameInput->lineEdit()->text();
 	QString userpass = m_stPassMd5;
 
-	JYunHttp http;
-	QMap<QString, QString> result = http.login(username, userpass);
-
-	if (result.value("login_result") == QString("True"))
-	{
-		//登录成功
-		loginSuccess();
-	}
-	else
-	{
-		//登录失败
-		JYunMessageBox::prompt(result.value("login_error"));
-		loginFailed();
-	}
+	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+	tcp->sendLoginMsg(username, userpass);
 }
 
 /***************************************************
@@ -457,4 +462,18 @@ void JYunLogin::registered()
 	temp_loop.exec();
 
 	show();
+}
+
+void JYunLogin::loginResult(LoginMsg *msg)
+{
+	if (msg->m_eLogin == LoginMsg::LoginSuccess)
+	{
+		//登录成功
+		loginSuccess();
+	}
+	else
+	{
+		//登录失败
+		loginFailed(msg->m_eLogin);
+	}
 }

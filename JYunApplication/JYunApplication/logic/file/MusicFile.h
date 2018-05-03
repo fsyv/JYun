@@ -23,7 +23,7 @@ public:
 	MusicFile();
 	~MusicFile();
 
-	void init();
+	bool preview() override;
 
 	static bool isMusicFile(const QString &fileSuffix);
 };

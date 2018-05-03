@@ -11,14 +11,13 @@
 #include "logic\file\File.h"
 #include "logic\file\Folder.h"
 
-JYunCloudDisk::JYunCloudDisk(const QString &username):
+JYunCloudDisk::JYunCloudDisk():
 	m_pTitle(nullptr),
 	m_pTopWidget(nullptr),
 	m_pLeftWidget(nullptr),
 	m_pStatusBar(nullptr),
 	m_pFileWidget(nullptr),
-	m_pSetup(nullptr),
-	m_stUsername(username)
+	m_pSetup(nullptr)
 {
 	changeWidgetSize(QSize(800, 600));
 
