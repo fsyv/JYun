@@ -17,10 +17,19 @@
 
 #include <QListWidget>
 
+class FileObject;
+
 class CloudDiskTaskList : public QListWidget
 {
+	Q_OBJECT
 public:
 	explicit CloudDiskTaskList(QWidget *parent = nullptr);
 	~CloudDiskTaskList();
+
+public slots:
+	void addTask(FileObject *file, bool status);
+
+private:
+	QList<FileObject *> m_tasks;
 };
 

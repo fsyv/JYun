@@ -22,6 +22,8 @@ struct bufferevent;
 class JYunStringBuffer;
 
 class JYunClient : public ThreadObject{
+    using string = std::string;
+
 public:
     explicit JYunClient(bufferevent *bev);
     ~JYunClient();
@@ -49,8 +51,20 @@ protected:
     int sendConfirmMsg();
     int recvConfirmMsg(ConfirmMsg *msg);
 
-    int sendLoginMsg(std::string username, LoginMsg::LoginType loginType);
+    int sendLoginMsg(string username, LoginMsg::LoginType loginType);
     int recvLoginMsg(LoginMsg *msg);
+
+	int sendRegisteredMsg(string username, RegisteredMsg::RegisteredType type, RegisteredMsg::RegisteredResult rusult);
+	int recvRegisteredMsg(RegisteredMsg *rmsg);
+
+	int sendGetUserHead(const string &username);
+	int recvGetUserHead(GetUserHead *gmsg);
+
+	int sendGetUserHeadMd5Msg(const string &username);
+	int recvGetUserHeadMd5Msg(GetUserHeadMd5 *gmsg);
+
+	int sendGetFileListsMsg(const string &path);
+	int recvGetFileListsMsg(GetFileListsMsg *gmsg);
 
     int sendMsg(Msg *msg);
     int readMsg(Msg *msg);

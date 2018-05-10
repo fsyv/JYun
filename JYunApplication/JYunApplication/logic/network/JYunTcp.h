@@ -44,11 +44,16 @@ public:
 	int sendGetUserHeadMd5Msg(const QString &username);
 	int recvGetUserHeadMd5Msg(GetUserHeadMd5 *gmsg);
 
+	QByteArray sendGetFileListsMsg(const QString &path);
+
+	QUrl url() const;
+
 signals:
 	void loginMsg(LoginMsg *msg);
 	void registeredMsg(RegisteredMsg *msg);
 	void getUserHeadMsg(GetUserHead *msg);
 	void getUserHeadMd5Msg(GetUserHeadMd5 *msg);
+	void getFileListsMsg(QByteArray &bytearray);
 
 protected:
 
@@ -64,5 +69,7 @@ protected slots:
 
 private:
 	JYunStringBuffer *m_pBuffer;
+
+	QUrl m_url;
 };
 

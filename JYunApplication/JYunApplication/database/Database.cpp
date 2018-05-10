@@ -196,61 +196,36 @@ void Database::saveFilesToLocal(const QString & path, const QList<FileObject*>& 
 	db.commit();
 }
 
-QList<FileObject*> Database::getFilesFromLocal(const QString & path)
+void Database::saveFilesToLocal(const QString & path, const QByteArray & bytearray)
 {
-	QByteArray json = filesJson(path);
+	if (!bytearray.isEmpty())
+		return;
 
-	QList<FileObject*> files;
+	QString file_path_md5 = JYunTools::stringMD5(path);
 
-	QJsonDocument jsonDocument = QJsonDocument::fromJson(json);
+	QSqlQuery query(db);
+	query.exec(QString("CREATE TABLE IF NOT EXISTS '%1'(%2, %3, %4);")\
+		.arg("TABLE_FILE_CHCHE")
+		.arg("file_path VARCHAR(32) PRIMARY KEY NOT NULL")
+		.arg("file_list TEXT NOT NULL")
+		.arg("keep_time DATETIME NOT NULL")
+	);
 
-	if (!json.isNull())
-	{
-		QJsonArray jsonArray = jsonDocument.array();
-		
-		for (const QJsonValue &jsonValue : jsonArray)
-		{
-			QJsonObject jsonObject = jsonValue.toObject();
+	//存在则更新，不存在则插入
+	query.prepare("REPLACE INTO TABLE_FILE_CHCHE(file_path, file_list, keep_time) VALUES(?, ?, ?)");
+	query.bindValue(0, file_path_md5);
+	query.bindValue(1, bytearray);
+	query.bindValue(2, QDateTime::currentDateTime());
+	query.exec();
 
-			int type = jsonObject.value("type").toInt();
-
-			FileObject *file = FileObject::createFile((FileType)type);
-
-			if (file->fileType() != FileType::Folder)
-			{
-				QString md5 = jsonObject.value("md5").toString();
-				quint64 size = jsonObject.value("size").toVariant().toULongLong();
-
-				((File *)file)->setMd5(md5);
-				((File *)file)->setFileSize(size);
-			}
-
-			QString name = jsonObject.value("name").toString();
-			QDateTime date = jsonObject.value("date").toVariant().toDateTime();
-
-			file->setFileName(name);
-			file->setDateTime(date);
-
-			files.append(file);
-		}
-	}
-
-	return files;
+	db.commit();
 }
 
-bool Database::isLocalCacheValid(const QString & path)
-{
-	QByteArray json = filesJson(path);
-	if (json.isEmpty())
-		return false;
-	return true;
-}
-
-QByteArray Database::filesJson(const QString & path)
+QByteArray Database::getFilesFromLocal(const QString & path)
 {
 	QString file_path_md5 = JYunTools::stringMD5(path);
 	QSqlQuery query(db);
-	QString str(QString("SELECT * FROM TABLE_FILE_CHCHE WHERE file_path='%1';")
+	QString str(QString("SELECT file_list FROM TABLE_FILE_CHCHE WHERE file_path='%1';")
 		.arg(file_path_md5)
 	);
 
@@ -262,12 +237,62 @@ QByteArray Database::filesJson(const QString & path)
 
 	query.first();
 
+	return query.value("file_list").toByteArray();
+}
+
+bool Database::isLocalCacheValid(const QString & path)
+{
+	QString file_path_md5 = JYunTools::stringMD5(path);
+	QSqlQuery query(db);
+	QString str(QString("SELECT keep_time FROM TABLE_FILE_CHCHE WHERE file_path='%1';")
+		.arg(file_path_md5)
+	);
+
+	if (!query.exec(str))
+		return false;
+
+	if (!query.size())
+		return false;
+
+	query.first();
+
 	QDateTime date = query.value("keep_time").toDateTime();
 
 	qint64 sec = QDateTime::currentSecsSinceEpoch() - date.toSecsSinceEpoch();
 
 	if (sec > 24 * 60 * 60)
-		return QByteArray();
+		return false;
 
-	return query.value("file_list").toByteArray();
+	return true;
 }
+
+void Database::setDownloadPath(const QString & path)
+{
+	QSqlQuery query(db);
+
+	query.exec(QString("CREATE TABLE IF NOT EXISTS '%1'(%2);")\
+		.arg("DOWNLOAD_PATH")
+		.arg("download_path TEXT PRIMARY KEY NOT NULL")
+	);
+
+	//存在则更新，不存在则插入
+	query.exec(QString("REPLACE INTO DOWNLOAD_PATH(download_path) VALUES('%1');")
+		.arg(path)
+	);
+
+	db.commit();
+}
+
+QString Database::getDownloadPath()
+{
+	QSqlQuery query(db);
+	QString str("SELECT download_path FROM DOWNLOAD_PATH;");
+	
+	if (!query.exec(str))
+		return QDir::currentPath();
+
+	query.first();
+
+	return query.value("download_path").toString();
+}
+

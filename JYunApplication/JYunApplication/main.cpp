@@ -26,6 +26,7 @@
 
 #include "widget\JYunApplication.h"
 #include "widget\JYunCloudDisk.h"
+#include "widget\JYunBackup.h"
 #include "widget\JYunSetup.h"
 #include "logic\file\FileObject.h"
 #include "logic\GlobalParameter.h"
@@ -57,7 +58,7 @@ int main(int argc, char *argv[])
 
 	param->getUser()->setUsername("fsyv");
 
-	JYunCloudDisk w;
+	JYunBackup w;
 	JYunSerious recall;
 	try {
 		security.check();

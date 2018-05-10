@@ -17,8 +17,8 @@
 
 #include "basic/BasicWidget.h"
 
-class BackupLeftWidget;
-class BackupFileListWidget;
+class QListWidget;
+class QPushButton;
 
 class JYunBackup : public BasicWidget
 {
@@ -29,9 +29,26 @@ public:
 
 protected:
 	void initWidget();
+	void conn();
+	void initData();
+	void init();
+
+	void resizeEvent(QResizeEvent *e) override;
+
 private:
-	QLabel *m_pTitle;
-	BackupLeftWidget *m_pLeftWidget;
-	BackupFileListWidget *m_pFileListWidget;
+	QListWidget *m_pListWidget;
+	QPushButton *m_pSetup;
+
+	QWidget *m_pWidget;
+
+	//备份时间
+	QLineEdit *m_label_date;
+	QLineEdit *m_line_date;
+	QPushButton *m_button_date;
+
+	//备份目录
+	QLineEdit *m_label_dir;
+	QLineEdit *m_line_dir;
+	QPushButton *m_button_dir;
 };
 

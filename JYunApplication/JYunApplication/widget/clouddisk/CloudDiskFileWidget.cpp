@@ -13,8 +13,9 @@
 #include "../file/FileObjectWidget.h"
 #include "../file/FolderWidget.h"
 #include "logic/User.h"
+#include "logic/network/JYunTcp.h"
 
-CloudDiskFileWidget::CloudDiskFileWidget(QWidget *parent):
+CloudDiskFileWidget::CloudDiskFileWidget(QWidget *parent) :
 	QListWidget(parent),
 	m_pCurrentFolder(nullptr),
 	m_iEcho(0)
@@ -130,6 +131,13 @@ void CloudDiskFileWidget::update()
 			connect(widget, &FileObjectWidget::doubleClick, this, &CloudDiskFileWidget::fileDoubleClick);
 			setItemWidget(item, widget);
 		}
+
+		if (object->fileType() == FileType::Folder)
+		{
+			connect((Folder *)object, &Folder::task, this, [this](FileObject *o, bool b) {
+				emit task(o, b);
+			});
+		}
 	}
 }
 
@@ -168,8 +176,11 @@ void CloudDiskFileWidget::uploadFile(File *file)
 	item->setSizeHint(QSize(125, 125));
 	setItemWidget(item, FileObjectWidget::createWidget(file));
 
-	//文件开始上传
-	file->upload();
+	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+	QUrl url = tcp->url();
+	file->setRemoteUrl(url.host(), 21, QString("/") + file->md5());
+
+	emit task(file, true);
 }
 
 void CloudDiskFileWidget::backward()
@@ -188,10 +199,78 @@ void CloudDiskFileWidget::refresh()
 
 void CloudDiskFileWidget::downloadFile()
 {
+	QList<FileObject *> lists;
+
+	for (int i = 0; i < count(); ++i)
+	{
+		FileObjectWidget *object = (FileObjectWidget *)itemWidget(item(i));
+		if (object->getConfirmCheckBoxStatus())
+			lists.push_back(object->file());
+	}
+
+	if (!lists.empty())
+	{
+		for (auto file : lists)
+			emit task(file, false);
+	}
+	else
+	{
+		QString md5 = QInputDialog::getText(nullptr, "请输入", "确定");
+		if (!md5.isEmpty())
+		{
+			OtherFile *file = new OtherFile;
+			file->setMd5(md5);
+
+			JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+			QUrl url = tcp->url();
+			file->setRemoteUrl(url.host(), 21, file->md5());
+			file->setLocalUrl(QDir::currentPath() + "/" + file->md5());
+			
+			emit task(file, false);
+		}
+	}
 }
 
 void CloudDiskFileWidget::shareFile()
 {
+	QList<FileObject *> lists;
+
+	for (int i = 0; i < count(); ++i)
+	{
+		FileObjectWidget *object = (FileObjectWidget *)itemWidget(item(i));
+		if (object->getConfirmCheckBoxStatus())
+			lists.push_back(object->file());
+	}
+
+	if (!lists.empty())
+	{
+		QString string;
+		for (auto file : lists)
+		{
+			if (file->fileType() != FileType::Folder)
+			{
+				string += QString("文件：") + file->fileName() + "\n";
+				string += QString("分享码：") + ((File *)file)->md5() + "\n";
+			}
+		}
+
+		if (!string.isEmpty())
+		{
+			QDialog dialog;
+			dialog.resize(400, 300);
+			QPlainTextEdit text(&dialog);
+			text.setReadOnly(true);
+			text.move(0, 0);
+			text.resize(dialog.size());
+			text.setPlainText(string);
+			dialog.show();
+			dialog.exec();
+
+			return;
+		}
+	}
+
+	QMessageBox::information(nullptr, "提示", "请选择文件");
 }
 
 void CloudDiskFileWidget::openFolder(Folder * folder)
@@ -260,11 +339,12 @@ void CloudDiskFileWidget::upload()
 
 void CloudDiskFileWidget::share()
 {
+
 }
 
 void CloudDiskFileWidget::selectAllClick(bool flag)
 {
 	QList<QListWidgetItem *> items = this->items();
-	for(QListWidgetItem *item : items)
+	for (QListWidgetItem *item : items)
 		((FileObjectWidget *)itemWidget(item))->setConfirmCheckBoxStatus(flag);
 }

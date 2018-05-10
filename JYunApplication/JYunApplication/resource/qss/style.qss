@@ -313,40 +313,50 @@ CloudDiskFileWidget{
     background-color: #FFFFFF;
 }
 
-/*********************JYunBackup***************/
 /*////////////////////BackupLeftWidget////////*/
-
-BackupLeftWidget{
-    background-color:#E8E8E8;
+CloudDiskSetup{
+    background-color: #FAFAFA;
+	border: 1px solid black;
 }
 
-QFrame#backup_left_sort{
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
+QPushButton#disk_setup_button{
+    background-color: #7EC0EE;
+    border-width: 1px;
+    border-radius: 15px;
+	border-color: beige;
 }
 
-QPushButton#backup_left_button{
-    background-color: #E8E8E8;
-	border-width: 1px;
-    border-radius: 0px;
+QPushButton#disk_setup_button:pressed{
+    background-color: #79CDCD;
+}
+
+QLineEdit#disk_setup_label{
+    background-color: #B3EE3A;
+    border-width: 1px;
+    border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+    border-color: #B3EE3A;
+}
+
+QLineEdit#disk_setup_line{
+    background-color: #B3EE3A;
+    border-width: 1px;
+    border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+    border-color: #B3EE3A;
+}
+
+/*********************JYunBackup***************/
+QPushButton#backup_setup {
+    background-color: #f0f4f8;
+    border-width: 1px;
+    border-radius: 20px;
     border-color: beige;
     font: 仿宋 20px;
     color:#0698f5;
 }
-
-QPushButton#backup_left_button:hover{
-    background-color: #0698f5;
-    color:#E8E8E8;
-}
-
-QPushButton#backup_left_button:pressed{
-    background-color: #FFFFFF;
-	color:#0698f5;
-}
-
-QPushButton#backup_left_button:checked{
-    background-color: #FFFFFF;
-	color:#0698f5;
+QPushButton#backup_setup:pressed{
+    background-color: rgb(226, 238, 246);
 }
 
 /*////////////////////BackupFileListWidget////////*/

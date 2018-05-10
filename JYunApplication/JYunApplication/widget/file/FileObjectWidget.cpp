@@ -61,6 +61,11 @@ void FileObjectWidget::setConfirmCheckBoxStatus(bool status)
 	m_pConfirmCheckBox->setVisible(status);
 }
 
+bool FileObjectWidget::getConfirmCheckBoxStatus()
+{
+	return m_pConfirmCheckBox->isChecked();
+}
+
 FileObject * FileObjectWidget::file() const
 {
 	return m_pFile;

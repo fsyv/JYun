@@ -1,4 +1,7 @@
 #include <exception>
+#include <future>
+#include <thread>
+#include <functional>
 
 #include <QtWidgets>
 #include <QDebug>
@@ -42,3 +45,4 @@
 #include "logic/GlobalParameter.h"
 #include "logic/file/FileType.h"
 #include "logic/network/Msg.h"
+

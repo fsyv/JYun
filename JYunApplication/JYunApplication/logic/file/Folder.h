@@ -48,6 +48,9 @@ public:
 	//创建根目录
 	static Folder *createRootFolder(const QString &username);
 
+signals:
+	void task(FileObject *, bool);
+
 protected:
 	void init();
 	//是否需要刷新列表
@@ -58,12 +61,14 @@ protected:
 	QList<FileObject *> getFilesFromLocal();
 	//保存二级缓存
 	void cacheFilesToLocal();
+	void cacheFilesToLocal(const QByteArray &byte);
 	//二级缓存是否有效
 	bool isLocalCacheValid();
 	//三级缓存获取方式
 	QList<FileObject *> getFilesFromServer();
 	//排序
 	void sortFiles(QList<FileObject *> &files);
+	QList<FileObject *> dumpFileLists(const QByteArray &byte);
 
 private:
 	//当前文件夹下文件和文件夹列表

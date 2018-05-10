@@ -33,5 +33,8 @@
         <file>resource/file/VIDEO.png</file>
         <file>resource/file/MUSIC.png</file>
         <file>resource/qss/CloudDiskStatusBarChildWidget.qss</file>
+        <file>resource/qss/progressbar.qss</file>
+        <file>resource/clouddisk/button/start.png</file>
+        <file>resource/clouddisk/button/stop.png</file>
     </qresource>
 </RCC>

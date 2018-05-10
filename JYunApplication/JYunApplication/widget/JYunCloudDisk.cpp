@@ -96,9 +96,14 @@ void JYunCloudDisk::conn()
 	//左边按钮信号槽绑定
 	connect(m_pLeftWidget, &CloudDiskLeftWidget::rootClicked, m_pFileWidget, &CloudDiskFileWidget::showRootDirectory);
 	connect(m_pLeftWidget, &CloudDiskLeftWidget::fileEchoChange, m_pFileWidget, &CloudDiskFileWidget::fileCategory);
-	connect(m_pLeftWidget, &CloudDiskLeftWidget::setupClicked, m_pSetup, &CloudDiskSetup::setVisible);
+	connect(m_pLeftWidget, &CloudDiskLeftWidget::setupClicked, m_pSetup, [this](bool b) {
+		m_pFileWidget->setVisible(!b);
+		m_pStatusBar->setVisible(!b);
+		m_pSetup->setVisible(b);
+	});
 	//文件展示界面信号槽绑定
 	connect(m_pFileWidget, &CloudDiskFileWidget::enterFolder, m_pStatusBar, &CloudDiskStatusBar::addFolder);
+	connect(m_pFileWidget, &CloudDiskFileWidget::task, m_pTaskList, &CloudDiskTaskList::addTask);
 
 	m_pFileWidget->afterConn();
 }

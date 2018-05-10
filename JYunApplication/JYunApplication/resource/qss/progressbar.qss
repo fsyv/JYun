@@ -1,0 +1,11 @@
+﻿QPushButton#tasklist_button {
+background-color: transparent;
+border-width: 0px;
+background-image: url(:/resource/clouddisk/button/stop.png) 
+}
+
+QPushButton#tasklist_button::checked {
+background-color: transparent;
+border-width: 0px;
+background-image: url(:/resource/clouddisk/button/start.png) 
+}

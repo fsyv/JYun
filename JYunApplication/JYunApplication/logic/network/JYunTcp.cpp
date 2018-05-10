@@ -3,6 +3,7 @@
 
 #include "logic/JYunStringBuffer.h"
 #include "logic/JYunConfig.h"
+#include "logic/JYunTools.h"
 
 JYunTcp::JYunTcp(QObject *parent):
 	QTcpSocket(parent),
@@ -39,6 +40,8 @@ bool JYunTcp::connectToServer()
 
 	QString host = document.object().value("host").toString();
 	quint16 port = document.object().value("port").toInt();
+	m_url.setHost(host);
+	m_url.setPort(port);
 
 	connectToHost(host, port);
 	return waitForConnected(1000);
@@ -146,7 +149,7 @@ int JYunTcp::sendGetUserHeadMd5Msg(const QString & username)
 	msg->m_MsgHead.m_eMsgType = Get_HeadMd5;
 	memcpy(msg->m_aMsgData, &gMsg, sizeof(GetUserHeadMd5));
 
-	return 0;
+	return sendMsg(msg);
 }
 
 int JYunTcp::recvGetUserHeadMd5Msg(GetUserHeadMd5 * gmsg)
@@ -158,6 +161,44 @@ int JYunTcp::recvGetUserHeadMd5Msg(GetUserHeadMd5 * gmsg)
 	return 0;
 }
 
+QByteArray JYunTcp::sendGetFileListsMsg(const QString & path)
+{
+	//关异步
+	disconnect(this, SIGNAL(readyRead()), this, SLOT(readMessage()));
+	
+	QString md5 = JYunTools::stringMD5(path);
+	int size = md5.size();
+
+	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(GetFileListsMsg) + size + 1];
+	memset(msg, 0, sizeof(Msg) + sizeof(GetFileListsMsg) + size + 1);
+
+	msg->m_MsgHead.m_iMsgLen = sizeof(GetFileListsMsg) + size;
+	msg->m_MsgHead.m_eMsgType = Get_FileLists;
+	memcpy(msg->m_aMsgData, md5.toUtf8().data(), sizeof(GetUserHeadMd5));
+
+	sendMsg(msg);
+	QByteArray byteArray;
+	if(waitForReadyRead(1000))
+	{
+		byteArray = readAll();
+		m_pBuffer->append(byteArray.data(), byteArray.size());
+		Msg *msg = m_pBuffer->getMsg();
+		
+		byteArray.clear();
+		byteArray = QByteArray(msg->m_aMsgData);
+	}
+		
+	//开异步
+	connect(this, SIGNAL(readyRead()), this, SLOT(readMessage()));
+	
+	return byteArray;
+}
+
+QUrl JYunTcp::url() const
+{
+	return m_url;
+}
+
 int JYunTcp::sendMsg(Msg * msg)
 {
 	msg->m_MsgHead.m_uiBeginFlag = 0xAFAFAFCF;
@@ -165,8 +206,6 @@ int JYunTcp::sendMsg(Msg * msg)
 	int ret = write((char *)msg, sizeof(Msg) + msg->m_MsgHead.m_iMsgLen);
 
 	waitForBytesWritten(1);
-
-	delete msg;
 
 	return ret;
 }

@@ -3,6 +3,9 @@
 
 #include "database\Database.h"
 
+#include "logic\network\JYunTcp.h"
+#include "logic\file\File.h"
+
 Folder::Folder():
 	FileObject(FileType::Folder),
 	m_pFileLists(nullptr)
@@ -93,8 +96,11 @@ bool Folder::download()
 	//文件夹的下载方法
 	//下载文件夹内所有文件
 
+	if (!m_pFileLists)
+		fileList();
+
 	for (FileObject *file : *m_pFileLists)
-		file->download();
+		emit task(file, false);
 
 	return true;
 }
@@ -156,7 +162,12 @@ void Folder::refresh()
 	}
 
 	for (auto file : files)
+	{
 		file->setParentFolder(this);
+		
+		if (file->fileType() != FileType::Folder)
+			((File *)file)->getRemoteUrl();
+	}
 
 	m_pFileLists->append(files);
 }
@@ -170,7 +181,8 @@ QList<FileObject *> Folder::getFilesFromLocal()
 	if (isLocalCacheValid())
 	{
 		Database db;
-		files = db.getFilesFromLocal(m_stAbsolutePath);
+		QByteArray json = db.getFilesFromLocal(m_stAbsolutePath);
+		files = dumpFileLists(json); 
 	}
 	else
 		files = getFilesFromServer();
@@ -185,6 +197,13 @@ void Folder::cacheFilesToLocal()
 	db.saveFilesToLocal(m_stAbsolutePath, *m_pFileLists);
 }
 
+void Folder::cacheFilesToLocal(const QByteArray & byte)
+{
+	//保存到本地
+	Database db;
+	db.saveFilesToLocal(m_stAbsolutePath, byte);
+}
+
 bool Folder::isLocalCacheValid()
 {
 	Database db;
@@ -196,13 +215,14 @@ QList<FileObject *> Folder::getFilesFromServer()
 	//三级缓存
 	m_pFileLists->clear();
 
-	/*JYunHttp http;*/
-	QList<FileObject *> files /*= http.getFileList(m_stAbsolutePath)*/;
+	JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
+	QByteArray byteArray = network->sendGetFileListsMsg(absolutePath());
+	QList<FileObject *> files = dumpFileLists(byteArray);
 
 	sortFiles(files);
 
 	//缓存到本地
-	cacheFilesToLocal();
+	cacheFilesToLocal(byteArray);
 	return files;
 }
 
@@ -212,5 +232,45 @@ void Folder::sortFiles(QList<FileObject *> &files)
 	//文件夹在前
 	//文件在后
 	//按字母顺序排序
+}
+
+QList<FileObject *> Folder::dumpFileLists(const QByteArray & byte)
+{
+	QList<FileObject*> files;
+
+	QJsonDocument jsonDocument = QJsonDocument::fromJson(byte);
+
+	if (!byte.isNull())
+	{
+		QJsonArray jsonArray = jsonDocument.array();
+
+		for (const QJsonValue &jsonValue : jsonArray)
+		{
+			QJsonObject jsonObject = jsonValue.toObject();
+
+			int type = jsonObject.value("type").toInt();
+
+			FileObject *file = FileObject::createFile((FileType)type);
+
+			if (file->fileType() != FileType::Folder)
+			{
+				QString md5 = jsonObject.value("md5").toString();
+				quint64 size = jsonObject.value("size").toVariant().toULongLong();
+
+				((File *)file)->setMd5(md5);
+				((File *)file)->setFileSize(size);
+			}
+
+			QString name = jsonObject.value("name").toString();
+			QDateTime date = jsonObject.value("date").toVariant().toDateTime();
+
+			file->setFileName(name);
+			file->setDateTime(date);
+
+			files.append(file);
+		}
+	}
+
+	return files;
 }
 

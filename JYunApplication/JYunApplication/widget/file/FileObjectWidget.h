@@ -40,6 +40,8 @@ public:
 	//…Ë÷√CheckBox∞¥≈•◊¥Ã¨
 	void setConfirmCheckBoxStatus(bool status);
 
+	bool getConfirmCheckBoxStatus();
+
 	FileObject *file() const;
 
 	//∏¥÷∆

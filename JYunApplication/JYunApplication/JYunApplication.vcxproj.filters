@@ -55,6 +55,9 @@
     <Filter Include="widget\file">
       <UniqueIdentifier>{9b6cdbbb-17f2-4c16-b8de-f1917cc99631}</UniqueIdentifier>
     </Filter>
+    <Filter Include="widget\clouddisk\tasklist">
+      <UniqueIdentifier>{66abd26f-a37f-4e22-8145-e5d5c4bcf85f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\qrc_JYunApplication.cpp">
@@ -389,6 +392,21 @@
     <ClCompile Include="GeneratedFiles\Release\moc_JYunTcp.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CloudDiskTaskList.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CloudDiskTaskList.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\clouddisk\tasklist\TaskListChild.cpp">
+      <Filter>widget\clouddisk\tasklist</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_TaskListChild.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_TaskListChild.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -415,9 +433,6 @@
     </ClInclude>
     <ClInclude Include="logic\file\VideoFile.h">
       <Filter>logic\file</Filter>
-    </ClInclude>
-    <ClInclude Include="widget\clouddisk\CloudDiskTaskList.h">
-      <Filter>widget\clouddisk</Filter>
     </ClInclude>
     <ClInclude Include="logic\file\FileType.h">
       <Filter>logic\file</Filter>
@@ -546,6 +561,12 @@
     </CustomBuild>
     <CustomBuild Include="logic\network\JYunTcp.h">
       <Filter>logic\network</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\clouddisk\CloudDiskTaskList.h">
+      <Filter>widget\clouddisk</Filter>
+    </CustomBuild>
+    <CustomBuild Include="widget\clouddisk\tasklist\TaskListChild.h">
+      <Filter>widget\clouddisk\tasklist</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

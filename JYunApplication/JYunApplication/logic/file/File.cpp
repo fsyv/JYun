@@ -11,11 +11,14 @@
 #include "Folder.h"
 
 #include "logic/JYunConfig.h"
+#include "logic/network/JYunTcp.h"
+
+using namespace std;
 
 File::File(const FileType &type):
 	FileObject(type)
 {
-
+	m_pManager = new QNetworkAccessManager(this);
 }
 
 File::File(const File & file):
@@ -33,7 +36,7 @@ File::~File()
 
 void File::calcFileMd5()
 {
-	m_stFileMD5 = JYunTools::fileMD5(fileNamePath());
+	m_stFileMD5 = JYunTools::fileMD5(m_urlLocal.path());
 }
 
 
@@ -73,7 +76,9 @@ quint64 File::fileSize() const
 void File::getRemoteUrl()
 {
 	//向服务器发送请求
-
+	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+	QUrl url = tcp->url();
+	setRemoteUrl(url.host(), 21, QString("/") + md5());
 }
 
 void File::setRemoteUrl(QString url)
@@ -125,7 +130,35 @@ bool File::download()
 	//生成本地路径
 	//下载
 
-	return false;
+	//future<bool> fun = async(launch::async, [this]()->bool {
+
+	//});
+
+	m_eTaskType = Download;
+	m_pFile = new QFile(m_urlLocal.path());
+	m_pFile->open(QIODevice::WriteOnly);
+
+	m_pManager->setNetworkAccessible(QNetworkAccessManager::Accessible);
+
+	QUrl url;
+	url.setScheme("ftp");
+	url.setHost(m_urlRemote.host());
+	url.setPath(QString("/home/fsyv_ftp/") + m_urlRemote.path());
+	url.setPort(21);
+	url.setUserName("fsyv_ftp");
+	url.setPassword("fswoshiCJY11pt");
+
+	QNetworkRequest request(url);
+	m_pReply = m_pManager->get(request);
+
+	connect(m_pReply, SIGNAL(readyRead()), this, SLOT(readContent()));
+	connect(m_pManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+	connect(m_pReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(loadError(QNetworkReply::NetworkError)));
+	connect(m_pReply, &QNetworkReply::downloadProgress, this, [this](qint64 c, qint64 t) {
+		emit loadProgress(c, t);
+	});
+
+	return true;
 }
 
 bool File::upload()
@@ -135,8 +168,56 @@ bool File::upload()
 	//若存在取文件的前1024kb数据与服务器的进行比对
 	//若不存在直接上传
 
+	m_eTaskType = Upload;
+	m_pFile = new QFile(m_urlLocal.path());
+	m_pFile->open(QIODevice::ReadOnly);
+	QByteArray byte_file = m_pFile->readAll();
 
-	return false;
+	m_pManager->setNetworkAccessible(QNetworkAccessManager::Accessible);
+	QUrl url;
+	url.setScheme("ftp");
+	url.setHost(m_urlRemote.host());
+	url.setPath(QString("/home/fsyv_ftp/") + m_urlRemote.path());
+	url.setPort(21);
+	url.setUserName("fsyv_ftp");
+	url.setPassword("fswoshiCJY11pt");
+
+	QNetworkRequest request(url);
+	m_pReply = m_pManager->put(request, byte_file);
+
+	connect(m_pManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+	connect(m_pReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(loadError(QNetworkReply::NetworkError)));
+	connect(m_pReply, &QNetworkReply::uploadProgress, this, [this](qint64 c, qint64 t) {
+		emit loadProgress(c, t);
+	});
+
+	return true;
+}
+
+void File::pause()
+{
+	if (m_pReply)
+	{
+		m_pReply->abort();
+		m_pReply->deleteLater();
+		m_pReply = nullptr;
+	}
+
+	if (m_pFile)
+	{
+		m_pFile->flush();
+		m_pFile->close();
+		delete m_pFile;
+		m_pFile = nullptr;
+	}
+}
+
+void File::restart()
+{
+	if (m_eTaskType == Download)
+		download();
+	else
+		upload();
 }
 
 bool File::preview()
@@ -171,4 +252,39 @@ QString File::fromConfigFileGetSupportSuffix(const QString & key)
 {
 	JYunConfig *config = GlobalParameter::getInstance()->getConfig();
 	return config->getValue("file", key).toString();
+}
+
+void File::readContent()
+{
+	m_pFile->write(m_pReply->readAll());
+}
+
+void File::replyFinished(QNetworkReply * reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		reply->deleteLater();
+		m_pReply = nullptr;
+
+		if (m_pFile)
+		{
+			m_pFile->flush();
+			m_pFile->close();
+			delete m_pFile;
+			m_pFile = nullptr;
+		}
+	}
+}
+
+void File::loadError(QNetworkReply::NetworkError)
+{
+	QMessageBox::critical(nullptr, "错误", m_pReply->errorString());
+}
+
+void File::taskStatus(bool b)
+{
+	if (b)
+		pause();
+	else
+		restart();
 }

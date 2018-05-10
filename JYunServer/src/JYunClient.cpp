@@ -161,3 +161,22 @@ int JYunClient::readMsg(Msg *msg) {
     return ret;
 }
 
+int JYunClient::sendRegisteredMsg(string username, RegisteredMsg::RegisteredType type,
+                                  RegisteredMsg::RegisteredResult rusult) {
+    return 0;
+}
+
+int JYunClient::recvRegisteredMsg(RegisteredMsg *rmsg)
+{
+    if(!rmsg)
+        return 0;
+
+    switch (rmsg->m_eMsgType){
+        case RegisteredMsg::CheckUsername:
+            break;
+        case RegisteredMsg::Registered:
+            break;
+    }
+    return 0;
+}
+

@@ -15,7 +15,7 @@
 * @date : 2018/1/25
 **/
 
-#include <QFrame>
+#include <QWidget>
 
 class CloudDiskSetup : public QFrame
 {
@@ -23,5 +23,19 @@ class CloudDiskSetup : public QFrame
 public:
 	explicit CloudDiskSetup(QWidget *parent = nullptr);
 	~CloudDiskSetup();
+
+protected:
+	void initWidget();
+	void conn();
+	void initData();
+	void init();
+
+protected slots:
+	void clicked();
+
+private:
+	QLineEdit *m_label;
+	QLineEdit *m_line;
+	QPushButton *m_button;
 };
 

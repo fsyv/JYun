@@ -89,3 +89,7 @@ struct GetUserHeadMd5 {
 	char m_aUsername[32];
 	char m_aMd5[128];
 };
+
+struct GetFileListsMsg {
+	char m_aData[0];
+};

@@ -27,7 +27,11 @@ public:
 
 	QString &getUsername();
 
+	void setDownloadPath(const QString &path);
+	QString &getDownloadPath();
+
 private:
 	QString m_stUsername;
+	QString m_strDownloadPath;
 };
 

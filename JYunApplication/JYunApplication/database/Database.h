@@ -40,13 +40,14 @@ public:
 	QString getPassByUsername(QString username);
 	//保存文件列表到本地
 	void saveFilesToLocal(const QString &path, const QList<FileObject *> &files);
+	void saveFilesToLocal(const QString &path, const QByteArray &bytearray);
 	//从本地缓存获取文件列表
-	QList<FileObject *> getFilesFromLocal(const QString &path);
+	QByteArray getFilesFromLocal(const QString &path);
 	//文件缓存是否有效
 	bool isLocalCacheValid(const QString &path);
 
-protected:
-	QByteArray filesJson(const QString &path);
+	void setDownloadPath(const QString &path);
+	QString getDownloadPath();
 private:
 	QSqlDatabase db;
 };

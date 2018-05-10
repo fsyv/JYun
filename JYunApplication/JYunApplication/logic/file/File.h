@@ -23,6 +23,11 @@ class File : public FileObject
 {
 	Q_OBJECT
 public:
+	enum TaskType{
+		Download,
+		Upload
+	};
+
 	explicit File(const FileType &type = FileType::Other);
 	explicit File(const File &file);
 	~File();
@@ -51,6 +56,9 @@ public:
 	bool download() final;
 	bool upload() final;
 
+	void pause();
+	void restart();
+
 	//文件的预览方法
 	virtual bool preview();
 
@@ -58,6 +66,17 @@ public:
 
 protected:
 	static QString fromConfigFileGetSupportSuffix(const QString &ksy);
+
+protected slots:
+	void readContent();
+	void replyFinished(QNetworkReply *reply);
+	void loadError(QNetworkReply::NetworkError);
+
+public slots:
+	void taskStatus(bool b);
+
+signals:
+	void loadProgress(qint64, qint64);
 
 private:
 	QString m_stFileMD5;
@@ -68,6 +87,11 @@ private:
 	QUrl m_urlRemote;
 	//本地文件定位
 	QUrl m_urlLocal;
+
+	QNetworkReply *m_pReply;
+	QNetworkAccessManager * m_pManager;
+	QFile *m_pFile;
+	TaskType m_eTaskType;
 };
 
 Q_DECLARE_METATYPE(File)
