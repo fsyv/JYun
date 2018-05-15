@@ -65,7 +65,7 @@ void CloudDiskSetup::clicked()
 {
 	QString path = QFileDialog::getExistingDirectory(
 		this,
-		QString("选择文件"),
+		QString("选择文件夹"),
 		QDir::homePath().append("/Desktop")
 	);
 

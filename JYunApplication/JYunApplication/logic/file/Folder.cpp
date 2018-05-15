@@ -58,6 +58,51 @@ QList<FileObject*> *Folder::fileList()
 	return m_pFileLists;
 }
 
+QList<FileObject *> Folder::dumpFileLists(const QByteArray & byte)
+{
+	QList<FileObject*> files;
+
+	QJsonDocument jsonDocument = QJsonDocument::fromJson(byte);
+
+	if (!byte.isNull())
+	{
+		QJsonArray jsonArray = jsonDocument.array();
+
+		for (const QJsonValue &jsonValue : jsonArray)
+		{
+			QJsonObject jsonObject = jsonValue.toObject();
+
+			int type = jsonObject.value("type").toInt();
+
+			FileObject *file = FileObject::createFile((FileType)type);
+
+			if (file->fileType() != FileType::Folder)
+			{
+				QString md5 = jsonObject.value("md5").toString();
+				quint64 size = jsonObject.value("size").toVariant().toULongLong();
+
+				((File *)file)->setMd5(md5);
+				((File *)file)->setFileSize(size);
+			}
+
+			QString name = jsonObject.value("name").toString();
+			QDateTime date = jsonObject.value("date").toVariant().toDateTime();
+
+			file->setFileName(name);
+			file->setDateTime(date);
+
+			files.append(file);
+		}
+	}
+
+	return files;
+}
+
+QByteArray Folder::filesToJson()
+{
+	return QByteArray();
+}
+
 QString Folder::absolutePath() const
 {
 	return m_stAbsolutePath;
@@ -113,6 +158,45 @@ bool Folder::upload()
 
 	for (FileObject *file : *m_pFileLists)
 		file->upload();
+
+	return true;
+}
+
+bool Folder::deleted()
+{
+	if (!m_pFileLists)
+		fileList();
+
+	for (FileObject *file : *m_pFileLists)
+		file->deleted();
+
+	return true;
+}
+
+bool Folder::delect(FileObject * file)
+{
+	file->deleted();
+
+	QList<FileObject*> *files = fileList();
+
+	files->removeOne(file);
+
+	return true;
+}
+
+bool Folder::rename(QString name)
+{
+	setFileName(name);
+	uploadFils();
+	return true;
+}
+
+bool Folder::uploadFils()
+{
+	QByteArray json = filesToJson();
+
+	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+	tcp->sendPutFileListMsg(absolutePath(), json);
 
 	return true;
 }
@@ -234,43 +318,4 @@ void Folder::sortFiles(QList<FileObject *> &files)
 	//°´×ÖÄ¸Ë³ÐòÅÅÐò
 }
 
-QList<FileObject *> Folder::dumpFileLists(const QByteArray & byte)
-{
-	QList<FileObject*> files;
-
-	QJsonDocument jsonDocument = QJsonDocument::fromJson(byte);
-
-	if (!byte.isNull())
-	{
-		QJsonArray jsonArray = jsonDocument.array();
-
-		for (const QJsonValue &jsonValue : jsonArray)
-		{
-			QJsonObject jsonObject = jsonValue.toObject();
-
-			int type = jsonObject.value("type").toInt();
-
-			FileObject *file = FileObject::createFile((FileType)type);
-
-			if (file->fileType() != FileType::Folder)
-			{
-				QString md5 = jsonObject.value("md5").toString();
-				quint64 size = jsonObject.value("size").toVariant().toULongLong();
-
-				((File *)file)->setMd5(md5);
-				((File *)file)->setFileSize(size);
-			}
-
-			QString name = jsonObject.value("name").toString();
-			QDateTime date = jsonObject.value("date").toVariant().toDateTime();
-
-			file->setFileName(name);
-			file->setDateTime(date);
-
-			files.append(file);
-		}
-	}
-
-	return files;
-}
 

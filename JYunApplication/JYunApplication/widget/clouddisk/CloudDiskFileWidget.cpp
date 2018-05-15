@@ -116,20 +116,12 @@ void CloudDiskFileWidget::update()
 		{
 			if ((m_iEcho | (int)(FileType::Folder)) & (int)object->fileType())
 			{
-				QListWidgetItem *item = new QListWidgetItem(this);
-				item->setSizeHint(QSize(125, 125));
-				FileObjectWidget *widget = FileObjectWidget::createWidget(object);
-				connect(widget, &FileObjectWidget::doubleClick, this, &CloudDiskFileWidget::fileDoubleClick);
-				setItemWidget(item, widget);
+				newFileWidget(object);
 			}
 		}
 		else
 		{
-			QListWidgetItem *item = new QListWidgetItem(this);
-			item->setSizeHint(QSize(125, 125));
-			FileObjectWidget *widget = FileObjectWidget::createWidget(object);
-			connect(widget, &FileObjectWidget::doubleClick, this, &CloudDiskFileWidget::fileDoubleClick);
-			setItemWidget(item, widget);
+			newFileWidget(object);
 		}
 
 		if (object->fileType() == FileType::Folder)
@@ -156,6 +148,18 @@ void CloudDiskFileWidget::contextMenuEvent(QContextMenuEvent * e)
 {
 	m_pMenu->move(e->globalPos());
 	m_pMenu->show();
+}
+
+FileObjectWidget* CloudDiskFileWidget::newFileWidget(FileObject * file)
+{
+	QListWidgetItem *item = new QListWidgetItem(this);
+	item->setSizeHint(QSize(125, 125));
+	FileObjectWidget *widget = FileObjectWidget::createWidget(file);
+	connect(widget, &FileObjectWidget::doubleClick, this, &CloudDiskFileWidget::fileDoubleClick);
+	connect(widget, &FileObjectWidget::delect, this, &CloudDiskFileWidget::delect);
+	setItemWidget(item, widget);
+
+	return widget;
 }
 
 void CloudDiskFileWidget::fileCategory(int echo)
@@ -309,11 +313,10 @@ void CloudDiskFileWidget::newFolder()
 	Folder *folder = new Folder();
 	folder->setFileName("新建文件夹");
 	m_pCurrentFolder->addFile(folder);
-	QListWidgetItem *item = new QListWidgetItem(this);
-	item->setSizeHint(QSize(125, 125));
-	FileObjectWidget *widget = new FolderWidget(folder);
-	connect(widget, &FileObjectWidget::doubleClick, this, &CloudDiskFileWidget::fileDoubleClick);
-	setItemWidget(item, widget);
+
+	FileObjectWidget *widget = newFileWidget(folder);
+
+	widget->rename();
 }
 
 void CloudDiskFileWidget::upload()
@@ -340,6 +343,11 @@ void CloudDiskFileWidget::upload()
 void CloudDiskFileWidget::share()
 {
 
+}
+
+void CloudDiskFileWidget::delect()
+{
+	update();
 }
 
 void CloudDiskFileWidget::selectAllClick(bool flag)

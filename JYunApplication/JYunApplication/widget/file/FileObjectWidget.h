@@ -44,23 +44,31 @@ public:
 
 	FileObject *file() const;
 
-	//复制
-	virtual void copy();
-	//移动
-	virtual void move();
 	//重命名
 	virtual void rename();
 	//上传
 	virtual void upload();
 	//下载
 	virtual void download();
+	//删除
+	virtual void deleted();
 	//清空
 	virtual void clear();
+	//分享
+	virtual void share();
+	//复制
+	virtual void copy();
+	//剪切
+	virtual void cut();
 
 	static FileObjectWidget *createWidget(FileObject *file);
 
 signals:
 	void doubleClick(FileObject *);
+	void delect();
+	void shared();
+	void downloadd();
+	void uploadd();
 
 protected:
 	void initWidget();
@@ -69,6 +77,10 @@ protected:
 	void init();
 
 	void destroyWidget();
+	//密码输入栏得到焦点
+	void nameInputFocusIn();
+	//密码输入栏失去焦点
+	void nameInputFocusOut();
 
 	void enterEvent(QEvent *e) override;
 	void leaveEvent(QEvent *e) override;
@@ -81,10 +93,13 @@ protected:
 	virtual void mouseRightClicked();
 	//鼠标双击事件响应函数
 	virtual void mouseDoubleClicked();
+	//重写父类事件过滤器
+	bool eventFilter(QObject *object, QEvent *e) override;
 
 	QCheckBox *m_pConfirmCheckBox;
 	QLabel *m_pPictureLabel;
 	QLabel *m_pNameLabel;
+	QLineEdit *m_pNameInput;
 	//右键菜单
 	QMenu *m_pMenu;
 

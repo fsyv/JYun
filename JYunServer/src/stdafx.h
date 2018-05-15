@@ -27,6 +27,7 @@
 #include <functional>
 #include <iostream>
 #include <list>
+#include <algorithm>
 
 //linux
 #include <arpa/inet.h>

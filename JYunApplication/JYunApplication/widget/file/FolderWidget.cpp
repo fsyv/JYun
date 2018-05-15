@@ -26,34 +26,32 @@ void FolderWidget::initMenu()
 	// 7.删除
 	// 8.属性
 	QAction *openAct = new QAction("打开", this);
+	connect(openAct, &QAction::triggered, this, [this]() {
+		mouseDoubleClicked();
+	});
 	m_pMenu->addAction(openAct);
 
 	m_pMenu->addSeparator();
 
 	QAction *downloadAct = new QAction("下载", this);
+	connect(downloadAct, &QAction::triggered, this, [this]() {
+		download();
+	});
 	m_pMenu->addAction(downloadAct);
-
-	QAction *shareAct = new QAction("分享", this);
-	m_pMenu->addAction(shareAct);
-
-	m_pMenu->addSeparator();
-
-	QAction *copyAct = new QAction("复制", this);
-	m_pMenu->addAction(copyAct);
-
-	QAction *cutAct = new QAction("剪切", this);
-	m_pMenu->addAction(cutAct);
 
 	m_pMenu->addSeparator();
 
 	QAction *renameAct = new QAction("改名", this);
+	connect(renameAct, &QAction::triggered, this, [this]() {
+		rename();
+	});
 	m_pMenu->addAction(renameAct);
 
 	QAction *delectAct = new QAction("删除", this);
+	connect(delectAct, &QAction::triggered, this, [this]() {
+		deleted();
+	});
 	m_pMenu->addAction(delectAct);
-
-	QAction *propertyAct = new QAction("属性", this);
-	m_pMenu->addAction(propertyAct);
 }
 
 void FolderWidget::initWidget()

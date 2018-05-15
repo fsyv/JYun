@@ -54,6 +54,10 @@ public:
 	virtual bool download() = 0;
 	//上传方法
 	virtual bool upload() = 0;
+	//删除方法
+	virtual bool deleted() = 0;
+	//改名方法
+	virtual bool rename(QString name) = 0;
 
 	static FileObject *createFile(const FileType &type);
 

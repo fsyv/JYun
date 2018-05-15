@@ -104,13 +104,13 @@ void JYunServer::read_cb(bufferevent *bev, void *arg)
     JYunClient *client = (JYunClient *)arg;
     client->readMsgBuffer();
 
-    ThreadPool::getInstance()->addJob(client);
+    //ThreadPool::getInstance()->addJob(client);
 }
 
 void JYunServer::write_cb(bufferevent *bev, void *arg)
 {
-    JYunClient *client = (JYunClient *)arg;
-    client->refreshContactTime();
+//    JYunClient *client = (JYunClient *)arg;
+//    client->refreshContactTime();
 }
 
 void JYunServer::error_cb(bufferevent *bev, short event, void *arg)
@@ -131,6 +131,7 @@ void JYunServer::error_cb(bufferevent *bev, short event, void *arg)
 
 void JYunServer::newConnect(evutil_socket_t sockfd)
 {
+    evutil_make_socket_nonblocking(sockfd);
     struct bufferevent *bev = bufferevent_socket_new(m_pBase, sockfd, BEV_OPT_CLOSE_ON_FREE);
 
     //保存客户端信息

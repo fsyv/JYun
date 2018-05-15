@@ -20,6 +20,7 @@
 class File;
 class Folder;
 class FileObject;
+class FileObjectWidget;
 
 class CloudDiskFileWidget: public QListWidget
 {
@@ -45,6 +46,7 @@ protected:
 	QList<QListWidgetItem *> items();
 
 	void contextMenuEvent(QContextMenuEvent *e) override;
+	FileObjectWidget* newFileWidget(FileObject *file);
 
 public slots:
 	//全选按钮响应函数
@@ -77,6 +79,9 @@ public slots:
 	void upload();
 	//分享
 	void share();
+
+	//文件视图响应
+	void delect();
 
 signals:
 	void enterFolder(Folder *folder);

@@ -38,8 +38,6 @@ protected:
 	void setAvatar(const  QPixmap &pixmap);
 	//获取用户头像
 	void getUserAvatar();
-	//下载头像
-	void downloadHead();
 
 	void closeEvent(QCloseEvent *e) override;
 
@@ -53,7 +51,7 @@ public slots:
 	//托盘点击响应函数
 	void taryClick(QSystemTrayIcon::ActivationReason reason);
 	//下载头像响应函数
-	void updateHead(GetUserHead *gmsg);
+	void updateHead(GetUserHeadMd5 *gmsg);
 
 signals:
 	void logout();

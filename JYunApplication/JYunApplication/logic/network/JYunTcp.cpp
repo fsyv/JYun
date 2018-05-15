@@ -5,7 +5,7 @@
 #include "logic/JYunConfig.h"
 #include "logic/JYunTools.h"
 
-JYunTcp::JYunTcp(QObject *parent):
+JYunTcp::JYunTcp(QObject *parent) :
 	QTcpSocket(parent),
 	m_pBuffer(nullptr)
 {
@@ -113,30 +113,6 @@ int JYunTcp::recvRegisteredMsg(RegisteredMsg * rmsg)
 	return 0;
 }
 
-int JYunTcp::sendGetUserHead(const QString & username)
-{
-	GetUserHead gMsg;
-	strncpy(gMsg.m_aUsername, username.toUtf8().data(), sizeof(gMsg.m_aUsername) - 1);
-
-	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(GetUserHead) + 1];
-	memset(msg, 0, sizeof(Msg) + sizeof(GetUserHead) + 1);
-
-	msg->m_MsgHead.m_iMsgLen = sizeof(GetUserHead);
-	msg->m_MsgHead.m_eMsgType = Get_UserHead;
-	memcpy(msg->m_aMsgData, &gMsg, sizeof(GetUserHead));
-
-	return sendMsg(msg);
-}
-
-int JYunTcp::recvGetUserHead(GetUserHead * gmsg)
-{
-	GetUserHead *msg = new GetUserHead;
-	memcpy(msg, gmsg, sizeof(GetUserHead));
-	emit getUserHeadMsg(gmsg);
-
-	return 0;
-}
-
 int JYunTcp::sendGetUserHeadMd5Msg(const QString & username)
 {
 	GetUserHeadMd5 gMsg;
@@ -156,7 +132,33 @@ int JYunTcp::recvGetUserHeadMd5Msg(GetUserHeadMd5 * gmsg)
 {
 	GetUserHeadMd5 *msg = new GetUserHeadMd5;
 	memcpy(msg, gmsg, sizeof(GetUserHeadMd5));
-	emit getUserHeadMd5Msg(gmsg);
+	emit getUserHeadMd5Msg(msg);
+
+	return 0;
+}
+
+int JYunTcp::sendModifypassMsg(const QString & username, const QString & userpass, const QString head_md5)
+{
+	ModifypassMsg mMsg;
+	strncpy(mMsg.m_aUsername, username.toUtf8().data(), sizeof(mMsg.m_aUsername) - 1);
+	strncpy(mMsg.m_aPassword, userpass.toUtf8().data(), sizeof(mMsg.m_aPassword) - 1);
+	strncpy(mMsg.m_aMd5, head_md5.toUtf8().data(), sizeof(mMsg.m_aMd5) - 1);
+
+	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(ModifypassMsg) + 1];
+	memset(msg, 0, sizeof(Msg) + sizeof(ModifypassMsg) + 1);
+
+	msg->m_MsgHead.m_iMsgLen = sizeof(ModifypassMsg);
+	msg->m_MsgHead.m_eMsgType = Put_Modifypass;
+	memcpy(msg->m_aMsgData, &mMsg, sizeof(ModifypassMsg));
+
+	return sendMsg(msg);
+}
+
+int JYunTcp::recvModifypassMsg(ModifypassMsg * gmsg)
+{
+	ModifypassMsg *msg = new ModifypassMsg;
+	memcpy(msg, gmsg, sizeof(ModifypassMsg));
+	emit modifypassMsg(msg);
 
 	return 0;
 }
@@ -165,33 +167,69 @@ QByteArray JYunTcp::sendGetFileListsMsg(const QString & path)
 {
 	//关异步
 	disconnect(this, SIGNAL(readyRead()), this, SLOT(readMessage()));
-	
-	QString md5 = JYunTools::stringMD5(path);
-	int size = md5.size();
 
-	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(GetFileListsMsg) + size + 1];
-	memset(msg, 0, sizeof(Msg) + sizeof(GetFileListsMsg) + size + 1);
+	QString path_upper = path.toUpper();
 
-	msg->m_MsgHead.m_iMsgLen = sizeof(GetFileListsMsg) + size;
+	QString md5 = JYunTools::stringMD5(path_upper);
+
+	Msg *msg = (Msg *)new char[sizeof(Msg) + md5.size() + 1];
+	memset(msg, 0, sizeof(Msg) + md5.size() + 1);
+
+	msg->m_MsgHead.m_iMsgLen = md5.size();
 	msg->m_MsgHead.m_eMsgType = Get_FileLists;
-	memcpy(msg->m_aMsgData, md5.toUtf8().data(), sizeof(GetUserHeadMd5));
+	memcpy(msg->m_aMsgData, md5.toUtf8().data(), msg->m_MsgHead.m_iMsgLen);
 
 	sendMsg(msg);
 	QByteArray byteArray;
-	if(waitForReadyRead(1000))
+	if (waitForReadyRead(1000))
 	{
 		byteArray = readAll();
 		m_pBuffer->append(byteArray.data(), byteArray.size());
-		Msg *msg = m_pBuffer->getMsg();
-		
+
+		Msg *msg = nullptr;
+
+		while ((msg = m_pBuffer->getMsg()) != nullptr)
+		{
+			if (msg->m_MsgHead.m_eMsgType != Get_FileLists)
+			{
+				recvMsg(msg);
+				delete msg;
+				msg = nullptr;
+			}
+			else
+				break;
+		}
+
 		byteArray.clear();
 		byteArray = QByteArray(msg->m_aMsgData);
 	}
-		
+
 	//开异步
 	connect(this, SIGNAL(readyRead()), this, SLOT(readMessage()));
-	
+
 	return byteArray;
+}
+
+int JYunTcp::sendPutFileListMsg(const QString & path, const QString & json)
+{
+	QString path_upper = path.toUpper();
+
+	QString md5 = JYunTools::stringMD5(path_upper);
+
+	PutFileListsMsg *pMsg = (PutFileListsMsg *)new char[sizeof(PutFileListsMsg) + json.size() + 1];
+	strncpy(pMsg->m_aPath, md5.toUtf8().data(), sizeof(pMsg->m_aPath) - 1);
+	strncpy(pMsg->m_aData, json.toUtf8().data(), json.length());
+
+	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(PutFileListsMsg) + json.size() + 1];
+	memset(msg, 0, sizeof(Msg) + sizeof(PutFileListsMsg) + json.size() + 1);
+
+	msg->m_MsgHead.m_iMsgLen = sizeof(PutFileListsMsg) + json.size();
+	msg->m_MsgHead.m_eMsgType = Put_FileLists;
+	memcpy(msg->m_aMsgData, &pMsg, msg->m_MsgHead.m_iMsgLen);
+
+	delete pMsg;
+
+	return sendMsg(msg);
 }
 
 QUrl JYunTcp::url() const
@@ -202,6 +240,9 @@ QUrl JYunTcp::url() const
 int JYunTcp::sendMsg(Msg * msg)
 {
 	msg->m_MsgHead.m_uiBeginFlag = 0xAFAFAFCF;
+
+	if (state() != ConnectedState)
+		connectToServer();
 
 	int ret = write((char *)msg, sizeof(Msg) + msg->m_MsgHead.m_iMsgLen);
 
@@ -218,6 +259,10 @@ void JYunTcp::recvMsg(Msg * msg)
 		break;
 	case Put_Login:
 		recvLoginMsg((LoginMsg *)msg->m_aMsgData);
+	case Put_Registered:
+		recvRegisteredMsg((RegisteredMsg *)msg->m_aMsgData);
+	case Get_HeadMd5:
+		recvGetUserHeadMd5Msg((GetUserHeadMd5 *)msg->m_aMsgData);
 	default:
 		break;
 	}

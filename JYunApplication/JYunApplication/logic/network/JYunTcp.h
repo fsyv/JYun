@@ -38,21 +38,23 @@ public:
 	int sendRegisteredMsg(const RegisteredMsg &rmsg);
 	int recvRegisteredMsg(RegisteredMsg *rmsg);
 
-	int sendGetUserHead(const QString &username);
-	int recvGetUserHead(GetUserHead *gmsg);
-
 	int sendGetUserHeadMd5Msg(const QString &username);
 	int recvGetUserHeadMd5Msg(GetUserHeadMd5 *gmsg);
 
+	int sendModifypassMsg(const QString &username, const QString &userpass, const QString head_md5);
+	int recvModifypassMsg(ModifypassMsg *mmsg);
+
 	QByteArray sendGetFileListsMsg(const QString &path);
+
+	int sendPutFileListMsg(const QString &path, const QString &json);
 
 	QUrl url() const;
 
 signals:
 	void loginMsg(LoginMsg *msg);
 	void registeredMsg(RegisteredMsg *msg);
-	void getUserHeadMsg(GetUserHead *msg);
 	void getUserHeadMd5Msg(GetUserHeadMd5 *msg);
+	void modifypassMsg(ModifypassMsg *gmsg);
 	void getFileListsMsg(QByteArray &bytearray);
 
 protected:

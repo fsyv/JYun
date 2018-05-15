@@ -104,8 +104,8 @@ void JYunRegister::checkUsername(RegisteredMsg::RegisteredResult result)
 	if (result == RegisteredMsg::UsernameExisted)
 	{
 		//用户名存在
-		JYunMessageBox::prompt("注册成功！");
-		close();
+		JYunMessageBox::prompt("用户名存在！");
+		m_pUsernameLineEdit->setFocus();
 	}
 }
 

@@ -32,6 +32,8 @@ public:
 	void addFile(FileObject *file);
 
 	QList<FileObject *> *fileList();
+	QList<FileObject *> dumpFileLists(const QByteArray &byte);
+	QByteArray filesToJson();
 	QString absolutePath() const;
 	//获取根目录
 	Folder *getRootFolder();
@@ -44,6 +46,11 @@ public:
 
 	bool download() final;
 	bool upload() final;
+	//删除方法
+	bool deleted() final;
+	bool delect(FileObject *file);
+	bool rename(QString name) final;
+	bool uploadFils();
 
 	//创建根目录
 	static Folder *createRootFolder(const QString &username);
@@ -68,7 +75,6 @@ protected:
 	QList<FileObject *> getFilesFromServer();
 	//排序
 	void sortFiles(QList<FileObject *> &files);
-	QList<FileObject *> dumpFileLists(const QByteArray &byte);
 
 private:
 	//当前文件夹下文件和文件夹列表

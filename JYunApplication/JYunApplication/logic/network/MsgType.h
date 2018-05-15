@@ -24,7 +24,6 @@ enum MsgType {
 	Get_SystemConfig,       //获取系统配置
 	Get_CheckUsername,      //检测用户名是否存在
 	Get_UserInfo,           //获取用户信息
-	Get_UserHead,			//获取用户头像
 	Get_HeadMd5,            //获取头像的Md5
 	Get_FileMd5,            //获取文件Md5
 	Get_DownloadFile,		//下载文件
@@ -34,7 +33,8 @@ enum MsgType {
 	Put_Registered,         //注册
 	Put_Modifypass,         //修改密码
 	Put_UploadHead,         //上传头像
-	Put_UploadFile			//上传
+	Put_UploadFile,			//上传
+	Put_FileLists			//上传文件列表
 };
 
 //连接校验
@@ -68,11 +68,11 @@ struct RegisteredMsg {
 	char m_aUsername[32];		//用户名
 	char m_aPassword[128];		//密码
 	enum RegisteredType {
-		CheckUsername,			//检查用户名
+		CheckUsername = 0,			//检查用户名
 		Registered				//注册
 	}m_eMsgType;	
 	enum RegisteredResult {
-		UsernameExisted,		//用户名存在
+		UsernameExisted = 0,		//用户名存在
 		UsernameNotExisted,		//用户名不存在
 
 		RegisteredSucced,		//注册成功
@@ -80,16 +80,27 @@ struct RegisteredMsg {
 	}m_eResult;
 };
 
-struct GetUserHead {
-	char m_aUsername[32];
-	char m_aHeadUrl[512];
-};
-
 struct GetUserHeadMd5 {
 	char m_aUsername[32];
 	char m_aMd5[128];
 };
 
+struct ModifypassMsg {
+	char m_aUsername[32];		//用户名
+	char m_aPassword[128];		//密码
+	char m_aMd5[128];           //头像
+	enum ModifyResult {
+		Not = 0,
+		Succed,		//注册成功
+		Failed		//注册失败
+	}m_eResult;
+};
+
 struct GetFileListsMsg {
+	char m_aData[0];
+};
+
+struct PutFileListsMsg {
+	char m_aPath[128];
 	char m_aData[0];
 };

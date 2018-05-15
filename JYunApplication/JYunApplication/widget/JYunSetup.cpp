@@ -62,6 +62,11 @@ void JYunSetup::setAvatar(const QPixmap & pixmap)
 	m_pChangeAvatarButton->setIconSize(m_pChangeAvatarButton->size());
 }
 
+void JYunSetup::setHeadMd5(QString md5)
+{
+	m_strHeadMd5 = md5;
+}
+
 /***************************************************
 *更换头像按钮响应函数
 ****************************************************
@@ -85,6 +90,7 @@ void JYunSetup::changeHead()
 		//更换界面显示头像
 		m_pHeadImage->clear();
 		m_pHeadImage->setLocalUrl(file.filePath());
+		m_pHeadImage->md5();
 		setAvatar(QPixmap(m_pHeadImage->localUrl().path()));
 	}
 	else
@@ -100,31 +106,23 @@ void JYunSetup::commit()
 	//检测头像是否改变
 	//检测密码是否改变
 
+	User *user = GlobalParameter::getInstance()->getUser();
+	JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
+	network->sendModifypassMsg(user->getUsername(), JYunTools::stringMD5(m_stRealPass), m_pHeadImage->md5());
+	m_pHeadImage->getRemoteUrl();
+	m_pHeadImage->upload();
 }
 
-void JYunSetup::updateHead(GetUserHead * gmsg)
+void JYunSetup::modify(ModifypassMsg * mmsg)
 {
-	if (!gmsg)
-		return;
-
-	m_pHeadImage->setRemoteUrl(gmsg->m_aHeadUrl);
-
-	m_pHeadImage->download();
-}
-
-void JYunSetup::headMd5(GetUserHeadMd5 * gmsg)
-{
-	if (!gmsg)
-		return;
-
-	if (m_pHeadImage->md5() != QString(gmsg->m_aMd5))
+	if (mmsg->m_eResult == ModifypassMsg::Succed)
 	{
-		m_pHeadImage->remove();
-
-		JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
-		User *user = GlobalParameter::getInstance()->getUser();
-
-		network->sendGetUserHead(user->getUsername());
+		JYunMessageBox::prompt("修改成功！");
+		close();
+	}
+	else if (mmsg->m_eResult == ModifypassMsg::Failed)
+	{
+		JYunMessageBox::prompt("修改失败！");
 	}
 }
 
@@ -180,8 +178,7 @@ void JYunSetup::conn()
 
 	//注册网络事件绑定
 	JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
-	connect(network, &JYunTcp::getUserHeadMsg, this, &JYunSetup::updateHead);
-	connect(network, &JYunTcp::getUserHeadMd5Msg, this, &JYunSetup::headMd5);
+	connect(network, &JYunTcp::modifypassMsg, this, &JYunSetup::modify);
 }
 
 void JYunSetup::initData()
@@ -239,8 +236,9 @@ void JYunSetup::updateAvatar()
 
 	//本地头像对象
 	m_pHeadImage = new ImageFile;
-	QString headPath = QDir::currentPath() + QString("/head/") + user->getUsername();
+	QString headPath = QDir::currentPath() + QString("/head/") + m_strHeadMd5;
 	m_pHeadImage->setLocalUrl(headPath);
+	m_pHeadImage->setMd5(m_strHeadMd5);
 
 	setAvatar(QPixmap(headPath));
 }

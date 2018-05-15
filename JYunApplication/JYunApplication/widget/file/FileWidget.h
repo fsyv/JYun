@@ -27,7 +27,4 @@ public:
 	~FileWidget();
 
 	void mouseDoubleClicked() override;
-	void upload() override;
-	void download() override;
-	void clear() override;
 };

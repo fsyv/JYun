@@ -194,6 +194,19 @@ bool File::upload()
 	return true;
 }
 
+bool File::deleted()
+{
+	return false;
+}
+
+bool File::rename(QString name)
+{
+	setFileName(name);
+	parentFolder()->uploadFils();
+
+	return true;
+}
+
 void File::pause()
 {
 	if (m_pReply)
@@ -273,6 +286,8 @@ void File::replyFinished(QNetworkReply * reply)
 			delete m_pFile;
 			m_pFile = nullptr;
 		}
+
+		emit finished();
 	}
 }
 

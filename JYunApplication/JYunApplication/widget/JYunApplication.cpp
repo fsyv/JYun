@@ -10,7 +10,7 @@
 #include "logic/file/ImageFile.h"
 #include "logic/network/JYunTcp.h"
 
-JYunApplication::JYunApplication():
+JYunApplication::JYunApplication() :
 	m_pSetupButton(nullptr),
 	m_pCloudDiskButton(nullptr),
 	m_pBackupButton(nullptr),
@@ -102,7 +102,7 @@ void JYunApplication::conn()
 
 	//×¢²áÍøÂçÊÂ¼þ°ó¶¨
 	JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
-	connect(network, &JYunTcp::getUserHeadMsg, this, &JYunApplication::updateHead);
+	connect(network, &JYunTcp::getUserHeadMd5Msg, this, &JYunApplication::updateHead);
 }
 
 void JYunApplication::initData()
@@ -174,24 +174,10 @@ void JYunApplication::setAvatar(const QPixmap & pixmap)
 */
 void JYunApplication::getUserAvatar()
 {
-	User *user = GlobalParameter::getInstance()->getUser();
-
-	QString headPath = QDir::currentPath() + QString("/head/") + user->getUsername();
-	m_pHeadImage->setLocalUrl(headPath);
-
-	QFileInfo fileinfo(headPath);
-	if (fileinfo.exists())
-		setAvatar(QPixmap(headPath));
-	else
-		downloadHead();
-}
-
-void JYunApplication::downloadHead()
-{
 	JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
 	User *user = GlobalParameter::getInstance()->getUser();
 
-	network->sendGetUserHead(user->getUsername());
+	network->sendGetUserHeadMd5Msg(user->getUsername());
 }
 
 void JYunApplication::closeEvent(QCloseEvent * e)
@@ -211,6 +197,7 @@ void JYunApplication::startJYunSetup()
 	hide();
 
 	JYunSetup w;
+	w.setHeadMd5(m_pHeadImage->md5());
 	w.show();
 
 	QEventLoop event_loop;
@@ -282,12 +269,28 @@ void JYunApplication::taryClick(QSystemTrayIcon::ActivationReason reason)
 	}
 }
 
-void JYunApplication::updateHead(GetUserHead * gmsg)
+void JYunApplication::updateHead(GetUserHeadMd5 * gmsg)
 {
 	if (!gmsg)
 		return;
 
-	m_pHeadImage->setRemoteUrl(gmsg->m_aHeadUrl);
+	QString md5 = gmsg->m_aMd5;
 
-	m_pHeadImage->download();
+	m_pHeadImage->setMd5(md5);
+
+	QString headPath = QDir::currentPath() + QString("/head/") + md5;
+	m_pHeadImage->setLocalUrl(headPath);
+
+	QFileInfo fileinfo(headPath);
+	if (fileinfo.exists())
+		setAvatar(QPixmap(headPath));
+	else
+	{
+		m_pHeadImage->getRemoteUrl();
+		m_pHeadImage->download();
+
+		connect(m_pHeadImage, &ImageFile::finished, this, [this]() {
+			setAvatar(QPixmap(m_pHeadImage->fileNamePath()));
+		});
+	}
 }

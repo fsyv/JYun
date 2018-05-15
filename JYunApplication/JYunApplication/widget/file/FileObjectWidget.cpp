@@ -2,6 +2,7 @@
 #include "FileObjectWidget.h"
 
 #include "logic\file\FileObject.h"
+#include "logic\file\Folder.h"
 
 #include "FolderWidget.h"
 #include "DocumentFileWidget.h"
@@ -71,27 +72,46 @@ FileObject * FileObjectWidget::file() const
 	return m_pFile;
 }
 
-void FileObjectWidget::copy()
-{
-}
-
-void FileObjectWidget::move()
-{
-}
-
 void FileObjectWidget::rename()
 {
+	m_pNameLabel->hide();
+
+	m_pNameInput->setFocus();
+	m_pNameInput->show();
 }
 
 void FileObjectWidget::upload()
 {
+	emit uploadd();
 }
 
 void FileObjectWidget::download()
 {
+	emit downloadd();
+}
+
+void FileObjectWidget::deleted()
+{
+	m_pFile->parentFolder()->delect(m_pFile);
+
+	emit delect();
 }
 
 void FileObjectWidget::clear()
+{
+	m_pFile->clear();
+}
+
+void FileObjectWidget::share()
+{
+	emit shared();
+}
+
+void FileObjectWidget::copy()
+{
+}
+
+void FileObjectWidget::cut()
 {
 }
 
@@ -145,6 +165,15 @@ void FileObjectWidget::initWidget()
 	m_pNameLabel->move(0, 74);
 	m_pNameLabel->setAlignment(Qt::AlignCenter);
 
+	//改名
+	m_pNameInput = new QLineEdit(m_pFile->fileName(), this);
+	m_pNameInput->setObjectName("fileobject_namelabel");
+	m_pNameInput->resize(125, 51);
+	m_pNameInput->move(0, 74);
+	m_pNameInput->setAlignment(Qt::AlignCenter);
+	m_pNameInput->hide();
+	m_pNameInput->installEventFilter(this);
+
 	//初始化菜单
 	m_pMenu = new QMenu(this);
 }
@@ -186,6 +215,26 @@ void FileObjectWidget::destroyWidget()
 	m_pMenu = nullptr;
 }
 
+void FileObjectWidget::nameInputFocusIn()
+{
+	m_pNameInput->selectAll();
+}
+
+void FileObjectWidget::nameInputFocusOut()
+{
+	QString name = m_pFile->fileName();
+	QString new_name = m_pNameInput->text();
+
+	if (name != new_name && !new_name.isEmpty())
+	{
+		m_pFile->setFileName(new_name);
+		setNameLabel(new_name);
+	}
+
+	m_pNameInput->hide();
+	m_pNameLabel->show();
+}
+
 void FileObjectWidget::enterEvent(QEvent * e)
 {
 	m_pConfirmCheckBox->show();
@@ -225,6 +274,7 @@ void FileObjectWidget::mouseRightClicked()
 	if (m_pMenu->isEmpty())
 		return;
 
+	m_pConfirmCheckBox->setChecked(true);
 	m_pMenu->move(cursor().pos());
 	m_pMenu->show();
 }
@@ -232,4 +282,17 @@ void FileObjectWidget::mouseRightClicked()
 void FileObjectWidget::mouseDoubleClicked()
 {
 	emit doubleClick(m_pFile);
+}
+
+bool FileObjectWidget::eventFilter(QObject * object, QEvent * e)
+{
+	if (object == m_pNameInput)
+	{
+		if (e->type() == QEvent::FocusIn)
+			nameInputFocusIn();
+		else if (e->type() == QEvent::FocusOut)
+			nameInputFocusOut();
+	}
+
+	return QFrame::eventFilter(object, e);
 }

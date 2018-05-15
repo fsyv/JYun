@@ -55,6 +55,9 @@ public:
 
 	bool download() final;
 	bool upload() final;
+	//É¾³ý·½·¨
+	bool deleted() final;
+	bool rename(QString name) final;
 
 	void pause();
 	void restart();
@@ -77,6 +80,7 @@ public slots:
 
 signals:
 	void loadProgress(qint64, qint64);
+	void finished();
 
 private:
 	QString m_stFileMD5;

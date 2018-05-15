@@ -27,16 +27,15 @@ public:
 	~JYunSetup();
 
 	void setAvatar(const QPixmap &pixmap);
+	void setHeadMd5(QString md5);
 
 public slots:
     //更换头像按钮响应函数
     void changeHead();
 	//提交按钮响应函数
 	void commit();
-	//下载头像响应函数
-	void updateHead(GetUserHead *gmsg);
-	//md5
-	void headMd5(GetUserHeadMd5 *gmsg);
+	//修改
+	void modify(ModifypassMsg *mmsg);
 
 protected:
 	void initWidget();
@@ -64,6 +63,7 @@ private:
 
 	QString m_stRealPass;
 	QString m_stFakePass;
+	QString m_strHeadMd5;
 
 	ImageFile *m_pHeadImage;
 };

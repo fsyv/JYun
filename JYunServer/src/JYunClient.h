@@ -18,8 +18,11 @@
 
 #include "Msg.h"
 
+#include "tc_mysql.h"
+
 struct bufferevent;
 class JYunStringBuffer;
+
 
 class JYunClient : public ThreadObject{
     using string = std::string;
@@ -37,6 +40,7 @@ public:
     };
 
     void init();
+    void initDB();
     void close();
     void checkState();
     ConnectionState state();
@@ -48,6 +52,10 @@ public:
     void run();
 
 protected:
+    void registered(string username, string userpass);
+    void checkUsername(string username);
+
+protected:
     int sendConfirmMsg();
     int recvConfirmMsg(ConfirmMsg *msg);
 
@@ -57,11 +65,11 @@ protected:
 	int sendRegisteredMsg(string username, RegisteredMsg::RegisteredType type, RegisteredMsg::RegisteredResult rusult);
 	int recvRegisteredMsg(RegisteredMsg *rmsg);
 
-	int sendGetUserHead(const string &username);
-	int recvGetUserHead(GetUserHead *gmsg);
-
-	int sendGetUserHeadMd5Msg(const string &username);
+	int sendGetUserHeadMd5Msg(string username, string headMd5);
 	int recvGetUserHeadMd5Msg(GetUserHeadMd5 *gmsg);
+
+    int sendModifypassMsg(string username, ModifypassMsg::ModifyResult result);
+    int recvModifypassMsg(ModifypassMsg *mmsg);
 
 	int sendGetFileListsMsg(const string &path);
 	int recvGetFileListsMsg(GetFileListsMsg *gmsg);
@@ -87,6 +95,9 @@ private:
     // 未通过验证的连接有效期为1分钟
     // 通过验证的连接有效期为15分钟
     std::chrono::minutes m_SessionContactAction;
+
+    string m_strUsername;
+    tars::TC_Mysql *m_pMysql;
 };
 
 

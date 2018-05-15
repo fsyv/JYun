@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
 	param->getUser()->setUsername("fsyv");
 
-	JYunBackup w;
+	JYunCloudDisk w;
 	JYunSerious recall;
 	try {
 		security.check();

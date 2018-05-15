@@ -51,7 +51,7 @@ void JYunStringBuffer::alignmentBuffer()
 {
 	char *p = m_pBuffer;
 
-	while ((p = (char *)memchr(p, 0xAF, m_size)) != nullptr)
+	while ((p = (char *)memchr(p, 0xCF, m_size)) != nullptr)
 	{
 		int index = p - m_pBuffer;
 

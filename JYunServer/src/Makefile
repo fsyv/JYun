@@ -29,16 +29,16 @@ CXXFLAGS=-g -Wall -std=c++11
 PCH_H=stdafx.h
 PCH=$(PCH_H).gch
 
-LIBEVENT=../lib/libevnt
+LIBEVENT=../lib/libevent
 LOG4CPP=../lib/log4cpp
 MARIADB=../lib/mariadb-connector
 
 LIBS=-L$(LIBEVENT)/.libs -levent \
-     -L$(MARIADB)/libmariadb -lmariadb \
-     -lpthread
+     -lpthread \
+     -L/usr/lib64 -lmysqlclient
 
 INC=-I$(LIBEVENT)/include \
-    -I$(MARIADB)/include
+    -I/usr/include/mysql
 
 SRC=$(wildcard *.$(CXXSUFFIX))
 OBJS=$(patsubst %.$(CXXSUFFIX), %.o, $(notdir $(SRC)))

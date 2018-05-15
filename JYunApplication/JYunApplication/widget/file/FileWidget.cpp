@@ -15,19 +15,5 @@ FileWidget::~FileWidget()
 
 void FileWidget::mouseDoubleClicked()
 {
-}
-
-void FileWidget::upload()
-{
-
-}
-
-void FileWidget::download()
-{
-	m_pFile->download();
-}
-
-void FileWidget::clear()
-{
-	m_pFile->upload();
+	((File *)m_pFile)->preview();
 }

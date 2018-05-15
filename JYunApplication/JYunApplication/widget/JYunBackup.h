@@ -35,6 +35,9 @@ protected:
 
 	void resizeEvent(QResizeEvent *e) override;
 
+protected slots:
+	void chooseDir();
+
 private:
 	QListWidget *m_pListWidget;
 	QPushButton *m_pSetup;

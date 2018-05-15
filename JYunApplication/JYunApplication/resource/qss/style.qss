@@ -359,6 +359,49 @@ QPushButton#backup_setup:pressed{
     background-color: rgb(226, 238, 246);
 }
 
+QLineEdit#backup_setup_label_date{
+    background-color: #B3EE3A;
+    border-width: 1px;
+    border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+    border-color: #B3EE3A;
+}
+
+QLineEdit#backup_setup_line_date{
+    background-color: #B3EE3A;
+    border-width: 1px;
+    border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+    border-color: #B3EE3A;
+}
+
+QLineEdit#backup_setup_label_dir{
+    background-color: #B3EE3A;
+    border-width: 1px;
+    border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+    border-color: #B3EE3A;
+}
+
+QLineEdit#backup_setup_line_dir{
+    background-color: #B3EE3A;
+	border-width: 1px;
+	border-radius: 1px;
+	border-color: #B3EE3A;
+}
+
+QPushButton#backup_setup_button_dir{
+    background-color: #7EC0EE;
+    border-width: 1px;
+    border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+	border-color: beige;
+}
+
+QPushButton#backup_setup_button_dir:pressed{
+    background-color: #79CDCD;
+}
+
 /*////////////////////BackupFileListWidget////////*/
 BackupFileListWidget{
     background-color: #FFFFFF;
