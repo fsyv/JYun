@@ -15,8 +15,10 @@
 * @date : 2018/04/05
 **/
 
-#define SERVER_HOST "119.29.157.226"
-#define SERVER_PORT 65530
+//接收Buf最大缓存
+#define RECV_BUF_MAX_SIZE 64 * 1024
+//发送Buf最大缓存
+#define SEND_BUF_MAX_SIZE RECV_BUF_MAX_SIZE
 
 class JYunStringBuffer;
 
@@ -71,6 +73,11 @@ protected slots:
 
 private:
 	JYunStringBuffer *m_pBuffer;
+
+	char *p_aRecvBuf;
+	char *p_cRearBuf;
+	char *p_cHeadBuf;
+	int m_iMsgLen;
 
 	QUrl m_url;
 };

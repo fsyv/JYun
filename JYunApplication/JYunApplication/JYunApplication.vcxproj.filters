@@ -575,4 +575,7 @@
   <ItemGroup>
     <Image Include="resource\logo\logo.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
 </Project>

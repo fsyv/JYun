@@ -219,7 +219,7 @@ void CloudDiskFileWidget::downloadFile()
 	}
 	else
 	{
-		QString md5 = QInputDialog::getText(nullptr, "请输入", "确定");
+		QString md5 = QInputDialog::getText(nullptr, "文件共享", "请输入分享码");
 		if (!md5.isEmpty())
 		{
 			OtherFile *file = new OtherFile;

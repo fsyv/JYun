@@ -120,7 +120,10 @@ bool File::remove()
 
 QString File::filePath()
 {
-	return m_pParentFolder->filePath();
+	if (m_pParentFolder)
+		return m_pParentFolder->filePath();
+	else
+		return QDir::currentPath();
 }
 
 bool File::download()
@@ -293,6 +296,8 @@ void File::replyFinished(QNetworkReply * reply)
 
 void File::loadError(QNetworkReply::NetworkError)
 {
+	if (!m_pReply)
+		return;
 	QMessageBox::critical(nullptr, "´íÎó", m_pReply->errorString());
 }
 

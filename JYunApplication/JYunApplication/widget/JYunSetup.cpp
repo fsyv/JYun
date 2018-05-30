@@ -65,6 +65,8 @@ void JYunSetup::setAvatar(const QPixmap & pixmap)
 void JYunSetup::setHeadMd5(QString md5)
 {
 	m_strHeadMd5 = md5;
+
+	updateAvatar();
 }
 
 /***************************************************
@@ -190,8 +192,6 @@ void JYunSetup::initData()
 	//设置用户名和假密码
 	m_pUsernameLineEdit->setText(user->getUsername());
 	m_pUserpassLineEdit->setText(m_stFakePass);
-
-	updateAvatar();
 }
 
 void JYunSetup::init()
@@ -238,7 +238,6 @@ void JYunSetup::updateAvatar()
 	m_pHeadImage = new ImageFile;
 	QString headPath = QDir::currentPath() + QString("/head/") + m_strHeadMd5;
 	m_pHeadImage->setLocalUrl(headPath);
-	m_pHeadImage->setMd5(m_strHeadMd5);
 
 	setAvatar(QPixmap(headPath));
 }

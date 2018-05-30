@@ -1,6 +1,6 @@
 {
     "name" : "network_config.json",
 	"version" : "0.01",
-	"host" : "192.168.41.128",
+	"host" : "192.168.3.69",
     "port" : 65530
 }

@@ -58,12 +58,12 @@ int main(int argc, char *argv[])
 
 	param->getUser()->setUsername("fsyv");
 
-	JYunCloudDisk w;
+	JYunLogin w;
 	JYunSerious recall;
 	try {
 		security.check();
-		//w.showWidget();
-		w.show();
+		w.showWidget();
+		//w.show();
 	}
 	catch (Exception e) {
 		recall.show();

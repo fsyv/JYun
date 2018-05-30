@@ -197,7 +197,7 @@ void JYunApplication::startJYunSetup()
 	hide();
 
 	JYunSetup w;
-	w.setHeadMd5(m_pHeadImage->md5());
+	w.setHeadMd5(m_pHeadImage->fileName());
 	w.show();
 
 	QEventLoop event_loop;
@@ -290,7 +290,8 @@ void JYunApplication::updateHead(GetUserHeadMd5 * gmsg)
 		m_pHeadImage->download();
 
 		connect(m_pHeadImage, &ImageFile::finished, this, [this]() {
-			setAvatar(QPixmap(m_pHeadImage->fileNamePath()));
+			QString head = QDir::currentPath() + "/head/" + m_pHeadImage->fileName();
+			setAvatar(QPixmap(head));
 		});
 	}
 }

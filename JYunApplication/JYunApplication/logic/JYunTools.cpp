@@ -131,3 +131,8 @@ void JYunTools::byteToLocalImage(const QString &filePath, const QByteArray & byt
 	file.write(byte);
 	file.close();
 }
+
+void * JYunTools::memstr(const void * src, quint64 src_len, const void * des)
+{
+	return nullptr;
+}

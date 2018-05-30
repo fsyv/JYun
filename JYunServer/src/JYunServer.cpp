@@ -109,8 +109,8 @@ void JYunServer::read_cb(bufferevent *bev, void *arg)
 
 void JYunServer::write_cb(bufferevent *bev, void *arg)
 {
-//    JYunClient *client = (JYunClient *)arg;
-//    client->refreshContactTime();
+    JYunClient *client = (JYunClient *)arg;
+    client->refreshContactTime();
 }
 
 void JYunServer::error_cb(bufferevent *bev, short event, void *arg)
@@ -139,6 +139,7 @@ void JYunServer::newConnect(evutil_socket_t sockfd)
 
     bufferevent_setcb(bev, read_cb, write_cb, error_cb, (void *)client);
     bufferevent_enable(bev, EV_READ | EV_WRITE | EV_PERSIST);
+    bufferevent_setwatermark(bev, EV_WRITE, 1024, 1024);
 
     client->init();
     m_pClientLists->push_back(client);

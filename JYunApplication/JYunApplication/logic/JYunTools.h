@@ -31,5 +31,7 @@ public:
 	static QByteArray stringMD5(QString string);
 	//字节码保存为本地图片
 	static void byteToLocalImage(const QString &filePath, const QByteArray &byte);
+	//内存字符串查着
+	static void *memstr(const void *src, quint64 src_len, const void *des);
 };
 

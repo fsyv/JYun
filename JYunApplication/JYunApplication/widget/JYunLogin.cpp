@@ -251,13 +251,16 @@ void JYunLogin::startJYunApplication()
 {
 	hide();
 
-	JYunApplication w;
-	w.show();
+	JYunApplication *w = new JYunApplication;
+	w->show();
+	connect(w, &JYunApplication::logout, this, [this]() {
+		show();
+	});
 
-	QEventLoop event_loop;
-	connect(&w, &JYunApplication::logout, &event_loop, &QEventLoop::quit);
-	connect(&w, &JYunApplication::logout, this, &JYunLogin::show);
-	event_loop.exec();
+	//QEventLoop event_loop;
+	//connect(&w, &JYunApplication::logout, &event_loop, &QEventLoop::quit);
+	//connect(&w, &JYunApplication::logout, this, &JYunLogin::show);
+	//event_loop.exec();
 }
 
 /***************************************************

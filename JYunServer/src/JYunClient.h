@@ -20,6 +20,10 @@
 
 #include "tc_mysql.h"
 
+//接收Buf最大缓存
+#define RECV_BUF_MAX_SIZE 64 * 1024
+
+
 struct bufferevent;
 class JYunStringBuffer;
 
