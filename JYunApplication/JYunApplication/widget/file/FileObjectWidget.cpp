@@ -92,7 +92,7 @@ void FileObjectWidget::download()
 
 void FileObjectWidget::deleted()
 {
-	m_pFile->parentFolder()->delect(m_pFile);
+	m_pFile->parentFolder()->delecteFile(m_pFile);
 
 	emit delect();
 }
@@ -227,7 +227,7 @@ void FileObjectWidget::nameInputFocusOut()
 
 	if (name != new_name && !new_name.isEmpty())
 	{
-		m_pFile->setFileName(new_name);
+		m_pFile->rename(new_name);
 		setNameLabel(new_name);
 	}
 

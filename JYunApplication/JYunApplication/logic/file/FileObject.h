@@ -27,7 +27,7 @@ class FileObject : public QObject
 {
 	Q_OBJECT
 public:
-	explicit FileObject(const FileType &type = FileType::Other);
+	explicit FileObject(const FileType &type = FileType::Other, Folder *parent = nullptr);
 	explicit FileObject(const FileObject &file);
 	virtual ~FileObject();
 
@@ -61,6 +61,9 @@ public:
 
 	static FileObject *createFile(const FileType &type);
 
+signals:
+	void fileStatusChange(FileObject *);
+
 protected:
 	//文件名字
 	QString m_stFileName;
@@ -68,8 +71,7 @@ protected:
 	//文件时间
 	QDateTime m_FileDateTime;
 	//父类文件夹对象
-	//如果父类是根目录
-	//则这个指针是它自己本身
+	//根目录的父类为nullptr
 	Folder *m_pParentFolder;
 };
 

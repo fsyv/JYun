@@ -44,9 +44,6 @@ public:
 protected:
 	void initData();
 	void initWidget();
-	void initRootPath();
-	void initOtherPath();
-	void initPath();
 	void adjustLabelWidth();
 
 	void setStyleSheetFromFile(QString filename);
@@ -66,7 +63,6 @@ private:
 	int m_iRriangleHight;
 	int m_iTextWidth;
 	FolderRole m_eRole;
-	QPainterPath m_PainterPath;
 
 	Folder *m_pCurrentFolder;
 };

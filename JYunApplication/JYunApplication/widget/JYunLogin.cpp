@@ -253,8 +253,9 @@ void JYunLogin::startJYunApplication()
 
 	JYunApplication *w = new JYunApplication;
 	w->show();
-	connect(w, &JYunApplication::logout, this, [this]() {
+	connect(w, &JYunApplication::logout, this, [this, w]() {
 		show();
+		w->deleteLater();
 	});
 
 	//QEventLoop event_loop;

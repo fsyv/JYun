@@ -48,15 +48,18 @@ public:
 
 	void setLocalUrl(QString path);
 	QUrl localUrl();
+	//移除本地文件
 	bool remove();
 
 	//文件路径
 	virtual QString filePath() final;
 
 	bool download() final;
+	//增
 	bool upload() final;
-	//删除方法
+	//删
 	bool deleted() final;
+	//改
 	bool rename(QString name) final;
 
 	void pause();

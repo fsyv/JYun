@@ -36,7 +36,7 @@ void CloudDiskStatusBarChildWidget::setName(const QString & name)
 	
 	setToolTip(name);
 
-	initPath();
+	update();
 }
 
 void CloudDiskStatusBarChildWidget::setFolderRole(const FolderRole & name)
@@ -44,16 +44,16 @@ void CloudDiskStatusBarChildWidget::setFolderRole(const FolderRole & name)
 	m_eRole = name;
 
 	if (m_eRole == FolderRole::NotShow)
-		setVisible(false);
+		hide();
 	else
-		setVisible(true);
+		show();
 
 	if (m_eRole == FolderRole::Root)
 		m_pNameLabel->move(5, 0);
 	else if (m_eRole == FolderRole::Other)
 		m_pNameLabel->move(m_iRriangleHight + 1, 0);
 
-	initPath();
+	update();
 }
 
 void CloudDiskStatusBarChildWidget::setFolder(Folder * folder)
@@ -86,7 +86,7 @@ Folder * CloudDiskStatusBarChildWidget::folder() const
 void CloudDiskStatusBarChildWidget::initData()
 {
 	m_iRriangleHight = 28;
-	m_iMaxTextWidth = 60;
+	m_iMaxTextWidth = 75;
 	m_iMinTextWidth = 40;
 	m_iTextWidth = 45;
 }
@@ -95,42 +95,6 @@ void CloudDiskStatusBarChildWidget::initWidget()
 {
 	m_pNameLabel = new QLabel(this);
 	m_pNameLabel->setAlignment(Qt::AlignVCenter);
-}
-
-void CloudDiskStatusBarChildWidget::initRootPath()
-{
-	m_PainterPath = QPainterPath();
-	m_PainterPath.moveTo(0, 0);
-	m_PainterPath.lineTo(m_iTextWidth, 0);
-	m_PainterPath.lineTo(m_iTextWidth + m_iRriangleHight, 20);
-	m_PainterPath.lineTo(m_iTextWidth, 40);
-	m_PainterPath.lineTo(0, 40);
-	m_PainterPath.lineTo(0, 0);
-	m_PainterPath.closeSubpath();
-}
-
-void CloudDiskStatusBarChildWidget::initOtherPath()
-{
-	m_PainterPath = QPainterPath();
-	m_PainterPath.moveTo(0, 0);
-	m_PainterPath.lineTo(m_iRriangleHight + m_iTextWidth, 0);
-	m_PainterPath.lineTo(m_iRriangleHight + m_iTextWidth + m_iRriangleHight, 20);
-	m_PainterPath.lineTo(m_iRriangleHight + m_iTextWidth, 40);
-	m_PainterPath.lineTo(0, 40);
-	m_PainterPath.lineTo(m_iRriangleHight, 20);
-	m_PainterPath.lineTo(0, 0);
-	m_PainterPath.closeSubpath();
-}
-
-void CloudDiskStatusBarChildWidget::initPath()
-{
-	if (m_eRole == FolderRole::Root)
-		initRootPath();
-	else if (m_eRole == FolderRole::Other)
-		initOtherPath();
-
-	update();
-	//repaint();
 }
 
 void CloudDiskStatusBarChildWidget::adjustLabelWidth()
@@ -157,7 +121,36 @@ void CloudDiskStatusBarChildWidget::setStyleSheetFromFile(QString filename)
 
 void CloudDiskStatusBarChildWidget::resizeEvent(QResizeEvent * e)
 {
-	QPolygon polygon = m_PainterPath.toFillPolygon().toPolygon();//获得这个路径上的所有的点
+	QPainterPath painterPath;
+
+	if (m_eRole == FolderRole::Root)
+	{
+		painterPath.moveTo(0, 0);
+		painterPath.lineTo(m_iTextWidth, 0);
+		painterPath.lineTo(m_iTextWidth + m_iRriangleHight, 20);
+		painterPath.lineTo(m_iTextWidth, 40);
+		painterPath.lineTo(0, 40);
+		painterPath.lineTo(0, 0);
+		painterPath.closeSubpath();
+	}
+	else if (m_eRole == FolderRole::Other)
+	{
+		painterPath.moveTo(0, 0);
+		painterPath.lineTo(m_iRriangleHight + m_iTextWidth, 0);
+		painterPath.lineTo(m_iRriangleHight + m_iTextWidth + m_iRriangleHight, 20);
+		painterPath.lineTo(m_iRriangleHight + m_iTextWidth, 40);
+		painterPath.lineTo(0, 40);
+		painterPath.lineTo(m_iRriangleHight, 20);
+		painterPath.lineTo(0, 0);
+		painterPath.closeSubpath();
+	}
+	else
+	{
+		QFrame::resizeEvent(e);
+		return;
+	}
+
+	QPolygon polygon = painterPath.toFillPolygon().toPolygon();//获得这个路径上的所有的点
 	QRegion region(polygon);//根据这个点构造这个区域 
 	setMask(region);
 
@@ -167,8 +160,38 @@ void CloudDiskStatusBarChildWidget::resizeEvent(QResizeEvent * e)
 void CloudDiskStatusBarChildWidget::paintEvent(QPaintEvent * e)
 {
 	QPainter painter(this);
+
+	QPainterPath painterPath;
+
+	if (m_eRole == FolderRole::Root)
+	{
+		painterPath.moveTo(0, 0);
+		painterPath.lineTo(m_iTextWidth, 0);
+		painterPath.lineTo(m_iTextWidth + m_iRriangleHight, 20);
+		painterPath.lineTo(m_iTextWidth, 40);
+		painterPath.lineTo(0, 40);
+		painterPath.lineTo(0, 0);
+		painterPath.closeSubpath();
+	}
+	else if (m_eRole == FolderRole::Other)
+	{
+		painterPath.moveTo(0, 0);
+		painterPath.lineTo(m_iRriangleHight + m_iTextWidth, 0);
+		painterPath.lineTo(m_iRriangleHight + m_iTextWidth + m_iRriangleHight, 20);
+		painterPath.lineTo(m_iRriangleHight + m_iTextWidth, 40);
+		painterPath.lineTo(0, 40);
+		painterPath.lineTo(m_iRriangleHight, 20);
+		painterPath.lineTo(0, 0);
+		painterPath.closeSubpath();
+	}
+	else
+	{
+		QFrame::paintEvent(e);
+		return;
+	}
+
 	painter.setPen(QPen(QColor(150, 150, 150, 128)));
-	painter.drawPath(m_PainterPath);
+	painter.drawPath(painterPath);
 
 	QFrame::paintEvent(e);
 }

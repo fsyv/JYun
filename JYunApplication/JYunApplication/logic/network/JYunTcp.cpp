@@ -4,6 +4,7 @@
 #include "logic/JYunStringBuffer.h"
 #include "logic/JYunConfig.h"
 #include "logic/JYunTools.h"
+#include "messagebox/JYunMessageBox.h"
 
 JYunTcp::JYunTcp(QObject *parent) :
 	QTcpSocket(parent),
@@ -172,7 +173,7 @@ int JYunTcp::recvModifypassMsg(ModifypassMsg * gmsg)
 
 QByteArray JYunTcp::sendGetFileListsMsg(const QString & path)
 {
-	//å…³å¼‚æ­¥
+	//¹ØÒì²½
 	disconnect(this, SIGNAL(readyRead()), this, SLOT(readMessage()));
 
 	QString path_upper = path.toUpper();
@@ -192,7 +193,7 @@ QByteArray JYunTcp::sendGetFileListsMsg(const QString & path)
 	{
 		int recvRet = read(p_aRecvBuf, SEND_BUF_MAX_SIZE);
 
-		//è¯»æ•°æ®é”™è¯¯
+		//¶ÁÊı¾İ´íÎó
 		if (recvRet < 0)
 		{
 			close();
@@ -203,17 +204,17 @@ QByteArray JYunTcp::sendGetFileListsMsg(const QString & path)
 
 		if (m_iMsgLen > 2 * RECV_BUF_MAX_SIZE)
 		{
-			//æ¶ˆæ¯é•¿åº¦å¤§äºç¼“å­˜é•¿åº¦
+			//ÏûÏ¢³¤¶È´óÓÚ»º´æ³¤¶È
 			exit(-1);
 		}
 
-		//æ¥æ”¶åˆ°æ€»æ•°æ®å·²ç»å¤§äºäº†RECV_BUF_MAX_SIZE
-		//ä¸ºäº†å®‰å…¨åšä¸€å®šå¤„ç†
+		//½ÓÊÕµ½×ÜÊı¾İÒÑ¾­´óÓÚÁËRECV_BUF_MAX_SIZE
+		//ÎªÁË°²È«×öÒ»¶¨´¦Àí
 		if (m_iMsgLen > RECV_BUF_MAX_SIZE)
 		{
 			unsigned char crc[5];
 			memset(crc, 0xAF, 4);
-			//åœ¨æ”¶åˆ°å¾—bufä¸­æŸ¥æ‰¾0xAFAFAFAFæ ‡å¿—ä½
+			//ÔÚÊÕµ½µÃbufÖĞ²éÕÒ0xAFAFAFAF±êÖ¾Î»
 			void *findMove = JYunTools::memstr(p_cHeadBuf, quint64(m_iMsgLen), (void *)crc);
 
 			if (findMove)
@@ -228,55 +229,55 @@ QByteArray JYunTcp::sendGetFileListsMsg(const QString & path)
 				return QByteArray();
 		}
 
-		//å¦‚æœæ”¶åˆ°åŒ…é•¿åº¦å°äºç»“æ„ä½“é•¿åº¦ï¼Œæš‚å®šä¸ºä¸¢å¼ƒ
-		//å®é™…å¯èƒ½ä¼šå‡ºç°æ‹†åŒ…æƒ…å†µï¼Œæ”¶åˆ°å°äºåŒ…é•¿åº¦å¾—
-		//æ•°æ®åŒ…
+		//Èç¹ûÊÕµ½°ü³¤¶ÈĞ¡ÓÚ½á¹¹Ìå³¤¶È£¬Ôİ¶¨Îª¶ªÆú
+		//Êµ¼Ê¿ÉÄÜ»á³öÏÖ²ğ°üÇé¿ö£¬ÊÕµ½Ğ¡ÓÚ°ü³¤¶ÈµÃ
+		//Êı¾İ°ü
 		if (m_iMsgLen < sizeof(Msg))
 		{
-			//æŒ‡æ­£ç§»åˆ°ç¼“å­˜å
+			//Ö¸ÕıÒÆµ½»º´æºó
 			p_cRearBuf += m_iMsgLen;
 			return QByteArray();
 		}
 
 		p_aRecvBuf[m_iMsgLen] = '\0';
 
-		//æš‚æ—¶æ²¡æœ‰æƒ³åˆ°å¥½çš„è§£å†³æ–¹æ³•
-		//å½“ä¸”ä»…å½“å‘ç”ŸTCPç²˜åŒ…æ—¶ä¼šæ‰§è¡Œè¿™ä¸ªloop
-		//å…¶å®ƒæƒ…å†µéƒ½æ— è§†è¿™ä¸ªloop
+		//ÔİÊ±Ã»ÓĞÏëµ½ºÃµÄ½â¾ö·½·¨
+		//µ±ÇÒ½öµ±·¢ÉúTCPÕ³°üÊ±»áÖ´ĞĞÕâ¸öloop
+		//ÆäËüÇé¿ö¶¼ÎŞÊÓÕâ¸öloop
 	stickyPackageLoop:
 
-		//ç¿»è¯‘buf
+		//·­Òëbuf
 		Msg * msg = (Msg *)p_cHeadBuf;
 
-		//æ ¡éªŒä½æ˜¯å¦æ­£ç¡®ï¼Œå¦‚æœæ­£ç¡®åˆ™æ‰§è¡Œä¸‹ä¸€æ­¥
+		//Ğ£ÑéÎ»ÊÇ·ñÕıÈ·£¬Èç¹ûÕıÈ·ÔòÖ´ĞĞÏÂÒ»²½
 		if (msg->m_MsgHead.m_uiBeginFlag != (unsigned int)0xAFAFAFAF)
 		{
-			//çŸ«æ­£
-			//å°½é‡æ ¡æ­£ï¼Œæ ¡æ­£æˆåŠŸåˆ™ç»§ç»­
-			//å¦åˆ™continueï¼Œç›´åˆ°è¿™ä¸ªæ•°æ®åŒ…è¢«æ”¾å¼ƒ
+			//½ÃÕı
+			//¾¡Á¿Ğ£Õı£¬Ğ£Õı³É¹¦Ôò¼ÌĞø
+			//·ñÔòcontinue£¬Ö±µ½Õâ¸öÊı¾İ°ü±»·ÅÆú
 			unsigned char crc[5];
 			memset(crc, 0xAF, 4);
-			//åœ¨æ”¶åˆ°å¾—bufä¸­æŸ¥æ‰¾0xAFAFAFAFæ ‡å¿—ä½
+			//ÔÚÊÕµ½µÃbufÖĞ²éÕÒ0xAFAFAFAF±êÖ¾Î»
 			void *findMove = JYunTools::memstr(p_cHeadBuf, quint64(m_iMsgLen), (void *)crc);
 
 			if (findMove)
 			{
-				//æ‰¾åˆ°æ ‡å¿—ä½
+				//ÕÒµ½±êÖ¾Î»
 				p_cHeadBuf = (char *)findMove;
 				m_iMsgLen -= (p_cRearBuf - p_cHeadBuf);
 
-				//é‡æ–°ç¿»è¯‘buf
+				//ÖØĞÂ·­Òëbuf
 				msg = (Msg *)p_cHeadBuf;
 			}
 			else
 			{
-				//æ²¡æœ‰æ‰¾åˆ°æ ‡å¿—ä½
+				//Ã»ÓĞÕÒµ½±êÖ¾Î»
 				return QByteArray();
 			}
 
 		}
 
-		//ä¸€ä¸ªé”™è¯¯å¾—åŒ…
+		//Ò»¸ö´íÎóµÃ°ü
 		if (msg->m_MsgHead.m_iMsgLen > RECV_BUF_MAX_SIZE || msg->m_MsgHead.m_iMsgLen < 0)
 		{
 			return QByteArray();
@@ -284,7 +285,7 @@ QByteArray JYunTcp::sendGetFileListsMsg(const QString & path)
 
 		if (m_iMsgLen < sizeof(Msg) + msg->m_MsgHead.m_iMsgLen)
 		{
-			//æ‹†åŒ…
+			//²ğ°ü
 			p_cRearBuf += m_iMsgLen;
 			return QByteArray();
 		}
@@ -293,7 +294,7 @@ QByteArray JYunTcp::sendGetFileListsMsg(const QString & path)
 			byteArray.append(msg->m_aMsgData, msg->m_MsgHead.m_iMsgLen);
 		else
 		{
-			//æŠ•é€’æ•°æ®åŒ…
+			//Í¶µİÊı¾İ°ü
 			recvMsg(msg);
 		}
 		
@@ -301,17 +302,17 @@ QByteArray JYunTcp::sendGetFileListsMsg(const QString & path)
 
 		if (m_iMsgLen > 0)
 		{
-			//é»åŒ…
+			//ğ¤°ü
 			p_cHeadBuf = p_cHeadBuf + sizeof(Msg) + msg->m_MsgHead.m_iMsgLen;
 			goto stickyPackageLoop;
 		}
 
-		//ä¸€è½®ç»“æŸpRearBufå’ŒpHeadBufæŒ‡é’ˆé‡æ–°æŒ‡å‘recvBuf
+		//Ò»ÂÖ½áÊøpRearBufºÍpHeadBufÖ¸ÕëÖØĞÂÖ¸ÏòrecvBuf
 		p_cRearBuf = p_aRecvBuf;
 		p_cHeadBuf = p_aRecvBuf;
 	}
 
-	//å¼€å¼‚æ­¥
+	//¿ªÒì²½
 	connect(this, SIGNAL(readyRead()), this, SLOT(readMessage()));
 
 	return byteArray;
@@ -319,22 +320,79 @@ QByteArray JYunTcp::sendGetFileListsMsg(const QString & path)
 
 int JYunTcp::sendPutFileListMsg(const QString & path, const QString & json)
 {
-	QString path_upper = path.toUpper();
+	QString md5 = JYunTools::stringMD5(path);
 
-	QString md5 = JYunTools::stringMD5(path_upper);
-
-	PutFileListsMsg *pMsg = (PutFileListsMsg *)new char[sizeof(PutFileListsMsg) + json.size() + 1];
+	//ÎÄ¼şÁĞ±íÖĞ¿ÉÄÜ»áÓĞÖĞÎÄ¡£
+	int filesLength = strlen(json.toUtf8().data());
+	
+	PutFileListsMsg *pMsg = (PutFileListsMsg *)new char[sizeof(PutFileListsMsg) + filesLength + 1];
+	memset(pMsg, 0, sizeof(PutFileListsMsg) + filesLength + 1);
 	strncpy(pMsg->m_aPath, md5.toUtf8().data(), sizeof(pMsg->m_aPath) - 1);
-	strncpy(pMsg->m_aData, json.toUtf8().data(), json.length());
+	strncpy(pMsg->m_aData, json.toUtf8().data(), filesLength);
 
-	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(PutFileListsMsg) + json.size() + 1];
-	memset(msg, 0, sizeof(Msg) + sizeof(PutFileListsMsg) + json.size() + 1);
+	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(PutFileListsMsg) + filesLength + 2];
+	memset(msg, 0, sizeof(Msg) + sizeof(PutFileListsMsg) + filesLength + 2);
 
-	msg->m_MsgHead.m_iMsgLen = sizeof(PutFileListsMsg) + json.size();
+	msg->m_MsgHead.m_iMsgLen = sizeof(PutFileListsMsg) + filesLength + 1;
 	msg->m_MsgHead.m_eMsgType = Put_FileLists;
-	memcpy(msg->m_aMsgData, &pMsg, msg->m_MsgHead.m_iMsgLen);
+	memcpy(msg->m_aMsgData, pMsg, msg->m_MsgHead.m_iMsgLen);
 
 	delete pMsg;
+
+	return sendMsg(msg);
+}
+
+int JYunTcp::sendNewFolderMsg(const QString & path)
+{
+	QString md5 = JYunTools::stringMD5(path);
+
+	NewFolderMsg nMsg;
+	memset(&nMsg, 0, sizeof(NewFolderMsg));
+	strncpy(nMsg.m_aPath, md5.toUtf8().data(), sizeof(nMsg.m_aPath) - 1);
+
+	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(NewFolderMsg) + 1];
+	memset(msg, 0, sizeof(Msg) + sizeof(NewFolderMsg) + 1);
+
+	msg->m_MsgHead.m_iMsgLen = sizeof(NewFolderMsg);
+	msg->m_MsgHead.m_eMsgType = Put_NewFolder;
+	memcpy(msg->m_aMsgData, &nMsg, msg->m_MsgHead.m_iMsgLen);
+
+	return sendMsg(msg);
+}
+
+int JYunTcp::sendDeleteFolderMsg(const QString & path)
+{
+	QString md5 = JYunTools::stringMD5(path);
+
+	DeleteFolderMsg dMsg;
+	memset(&dMsg, 0, sizeof(DeleteFolderMsg));
+	strncpy(dMsg.m_aPath, md5.toUtf8().data(), sizeof(dMsg.m_aPath) - 1);
+
+	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(DeleteFolderMsg) + 1];
+	memset(msg, 0, sizeof(Msg) + sizeof(DeleteFolderMsg) + 1);
+
+	msg->m_MsgHead.m_iMsgLen = sizeof(DeleteFolderMsg);
+	msg->m_MsgHead.m_eMsgType = Put_DeleteFolder;
+	memcpy(msg->m_aMsgData, &dMsg, msg->m_MsgHead.m_iMsgLen);
+
+	return sendMsg(msg);
+}
+
+int JYunTcp::sendRenameFolderMsg(const QString & oldName, const QString & newName)
+{
+	RenameFolderMsg rMsg;
+	memset(&rMsg, 0, sizeof(RenameFolderMsg));
+	QString md5 = JYunTools::stringMD5(oldName);
+	strncpy(rMsg.m_aOldName, md5.toUtf8().data(), sizeof(rMsg.m_aOldName) - 1);
+	md5 = JYunTools::stringMD5(newName);
+	strncpy(rMsg.m_aNewName, md5.toUtf8().data(), sizeof(rMsg.m_aNewName) - 1);
+
+	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(RenameFolderMsg) + 1];
+	memset(msg, 0, sizeof(Msg) + sizeof(RenameFolderMsg) + 1);
+
+	msg->m_MsgHead.m_iMsgLen = sizeof(RenameFolderMsg);
+	msg->m_MsgHead.m_eMsgType = Put_RenameFolder;
+	memcpy(msg->m_aMsgData, &rMsg, msg->m_MsgHead.m_iMsgLen);
 
 	return sendMsg(msg);
 }
@@ -352,7 +410,7 @@ int JYunTcp::sendMsg(Msg * msg)
 		connectToServer();
 
 	int ret = write((char *)msg, sizeof(Msg) + msg->m_MsgHead.m_iMsgLen);
-
+	delete msg;
 	return ret;
 }
 
@@ -389,7 +447,7 @@ void JYunTcp::readMessage()
 {
 	int recvRet = read(p_aRecvBuf, SEND_BUF_MAX_SIZE);
 
-	//è¯»æ•°æ®é”™è¯¯
+	//¶ÁÊı¾İ´íÎó
 	if (recvRet < 0)
 	{
 		close();
@@ -400,17 +458,17 @@ void JYunTcp::readMessage()
 
 	if (m_iMsgLen > 2 * RECV_BUF_MAX_SIZE)
 	{
-		//æ¶ˆæ¯é•¿åº¦å¤§äºç¼“å­˜é•¿åº¦
+		//ÏûÏ¢³¤¶È´óÓÚ»º´æ³¤¶È
 		exit(-1);
 	}
 
-	//æ¥æ”¶åˆ°æ€»æ•°æ®å·²ç»å¤§äºäº†RECV_BUF_MAX_SIZE
-	//ä¸ºäº†å®‰å…¨åšä¸€å®šå¤„ç†
+	//½ÓÊÕµ½×ÜÊı¾İÒÑ¾­´óÓÚÁËRECV_BUF_MAX_SIZE
+	//ÎªÁË°²È«×öÒ»¶¨´¦Àí
 	if (m_iMsgLen > RECV_BUF_MAX_SIZE)
 	{
 		unsigned char crc[5];
 		memset(crc, 0xAF, 4);
-		//åœ¨æ”¶åˆ°å¾—bufä¸­æŸ¥æ‰¾0xAFAFAFAFæ ‡å¿—ä½
+		//ÔÚÊÕµ½µÃbufÖĞ²éÕÒ0xAFAFAFAF±êÖ¾Î»
 		void *findMove = JYunTools::memstr(p_cHeadBuf, quint64(m_iMsgLen), (void *)crc);
 
 		if (findMove)
@@ -425,55 +483,55 @@ void JYunTcp::readMessage()
 			return;
 	}
 
-	//å¦‚æœæ”¶åˆ°åŒ…é•¿åº¦å°äºç»“æ„ä½“é•¿åº¦ï¼Œæš‚å®šä¸ºä¸¢å¼ƒ
-	//å®é™…å¯èƒ½ä¼šå‡ºç°æ‹†åŒ…æƒ…å†µï¼Œæ”¶åˆ°å°äºåŒ…é•¿åº¦å¾—
-	//æ•°æ®åŒ…
+	//Èç¹ûÊÕµ½°ü³¤¶ÈĞ¡ÓÚ½á¹¹Ìå³¤¶È£¬Ôİ¶¨Îª¶ªÆú
+	//Êµ¼Ê¿ÉÄÜ»á³öÏÖ²ğ°üÇé¿ö£¬ÊÕµ½Ğ¡ÓÚ°ü³¤¶ÈµÃ
+	//Êı¾İ°ü
 	if (m_iMsgLen < sizeof(Msg))
 	{
-		//æŒ‡æ­£ç§»åˆ°ç¼“å­˜å
+		//Ö¸ÕıÒÆµ½»º´æºó
 		p_cRearBuf += m_iMsgLen;
 		return;
 	}
 
 	p_aRecvBuf[m_iMsgLen] = '\0';
 
-	//æš‚æ—¶æ²¡æœ‰æƒ³åˆ°å¥½çš„è§£å†³æ–¹æ³•
-	//å½“ä¸”ä»…å½“å‘ç”ŸTCPç²˜åŒ…æ—¶ä¼šæ‰§è¡Œè¿™ä¸ªloop
-	//å…¶å®ƒæƒ…å†µéƒ½æ— è§†è¿™ä¸ªloop
+	//ÔİÊ±Ã»ÓĞÏëµ½ºÃµÄ½â¾ö·½·¨
+	//µ±ÇÒ½öµ±·¢ÉúTCPÕ³°üÊ±»áÖ´ĞĞÕâ¸öloop
+	//ÆäËüÇé¿ö¶¼ÎŞÊÓÕâ¸öloop
 stickyPackageLoop:
 
-	//ç¿»è¯‘buf
+	//·­Òëbuf
 	Msg * msg = (Msg *)p_cHeadBuf;
 
-	//æ ¡éªŒä½æ˜¯å¦æ­£ç¡®ï¼Œå¦‚æœæ­£ç¡®åˆ™æ‰§è¡Œä¸‹ä¸€æ­¥
+	//Ğ£ÑéÎ»ÊÇ·ñÕıÈ·£¬Èç¹ûÕıÈ·ÔòÖ´ĞĞÏÂÒ»²½
 	if (msg->m_MsgHead.m_uiBeginFlag != (unsigned int)0xAFAFAFAF)
 	{
-		//çŸ«æ­£
-		//å°½é‡æ ¡æ­£ï¼Œæ ¡æ­£æˆåŠŸåˆ™ç»§ç»­
-		//å¦åˆ™continueï¼Œç›´åˆ°è¿™ä¸ªæ•°æ®åŒ…è¢«æ”¾å¼ƒ
+		//½ÃÕı
+		//¾¡Á¿Ğ£Õı£¬Ğ£Õı³É¹¦Ôò¼ÌĞø
+		//·ñÔòcontinue£¬Ö±µ½Õâ¸öÊı¾İ°ü±»·ÅÆú
 		unsigned char crc[5];
 		memset(crc, 0xAF, 4);
-		//åœ¨æ”¶åˆ°å¾—bufä¸­æŸ¥æ‰¾0xAFAFAFAFæ ‡å¿—ä½
+		//ÔÚÊÕµ½µÃbufÖĞ²éÕÒ0xAFAFAFAF±êÖ¾Î»
 		void *findMove = JYunTools::memstr(p_cHeadBuf, quint64(m_iMsgLen), (void *)crc);
 
 		if (findMove)
 		{
-			//æ‰¾åˆ°æ ‡å¿—ä½
+			//ÕÒµ½±êÖ¾Î»
 			p_cHeadBuf = (char *)findMove;
 			m_iMsgLen -= (p_cRearBuf - p_cHeadBuf);
 
-			//é‡æ–°ç¿»è¯‘buf
+			//ÖØĞÂ·­Òëbuf
 			msg = (Msg *)p_cHeadBuf;
 		}
 		else
 		{
-			//æ²¡æœ‰æ‰¾åˆ°æ ‡å¿—ä½
+			//Ã»ÓĞÕÒµ½±êÖ¾Î»
 			return;
 		}
 
 	}
 
-	//ä¸€ä¸ªé”™è¯¯å¾—åŒ…
+	//Ò»¸ö´íÎóµÃ°ü
 	if (msg->m_MsgHead.m_iMsgLen > RECV_BUF_MAX_SIZE || msg->m_MsgHead.m_iMsgLen < 0)
 	{
 		return;
@@ -481,23 +539,23 @@ stickyPackageLoop:
 
 	if (m_iMsgLen < sizeof(Msg) + msg->m_MsgHead.m_iMsgLen)
 	{
-		//æ‹†åŒ…
+		//²ğ°ü
 		p_cRearBuf += m_iMsgLen;
 		return;
 	}
 
-	//æŠ•é€’æ•°æ®åŒ…
+	//Í¶µİÊı¾İ°ü
 	recvMsg(msg);
 	m_iMsgLen -= sizeof(Msg) + msg->m_MsgHead.m_iMsgLen;
 
 	if (m_iMsgLen > 0)
 	{
-		//é»åŒ…
+		//ğ¤°ü
 		p_cHeadBuf = p_cHeadBuf + sizeof(Msg) + msg->m_MsgHead.m_iMsgLen;
 		goto stickyPackageLoop;
 	}
 
-	//ä¸€è½®ç»“æŸpRearBufå’ŒpHeadBufæŒ‡é’ˆé‡æ–°æŒ‡å‘recvBuf
+	//Ò»ÂÖ½áÊøpRearBufºÍpHeadBufÖ¸ÕëÖØĞÂÖ¸ÏòrecvBuf
 	p_cRearBuf = p_aRecvBuf;
 	p_cHeadBuf = p_aRecvBuf;
 }
@@ -509,5 +567,5 @@ void JYunTcp::displayState(QAbstractSocket::SocketState)
 
 void JYunTcp::displayError(QAbstractSocket::SocketError)
 {
-	qDebug() << errorString();
+	JYunMessageBox::prompt(errorString());
 }

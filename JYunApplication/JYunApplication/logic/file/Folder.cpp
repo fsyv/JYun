@@ -5,9 +5,10 @@
 
 #include "logic\network\JYunTcp.h"
 #include "logic\file\File.h"
+#include "logic/User.h"
 
-Folder::Folder():
-	FileObject(FileType::Folder),
+Folder::Folder(Folder *parent):
+	FileObject(FileType::Folder, parent),
 	m_pFileLists(nullptr)
 {
 	init();
@@ -17,7 +18,7 @@ Folder::Folder(const Folder & folder):
 	FileObject(folder),
 	m_pFileLists(nullptr)
 {
-	setAbsolutePath(folder.absolutePath());
+	setAbsolutePath();
 
 	refresh();
 }
@@ -29,23 +30,11 @@ Folder::~Folder()
 	m_pFileLists = nullptr;
 }
 
-void Folder::setAbsolutePath(const Folder & folder)
-{
-	m_stAbsolutePath.append(folder.fileName() + "/");
-}
-
-void Folder::setAbsolutePath(const QString & absolutePath)
-{
-	m_stAbsolutePath = absolutePath;
-}
-
 void Folder::addFile(FileObject * file)
 {
 	QList<FileObject *> *files = fileList();
 
 	files->append(file);
-
-	((Folder *)file)->setParentFolder(this);
 }
 
 QList<FileObject*> *Folder::fileList()
@@ -86,7 +75,7 @@ QList<FileObject *> Folder::dumpFileLists(const QByteArray & byte)
 			}
 
 			QString name = jsonObject.value("name").toString();
-			QDateTime date = jsonObject.value("date").toVariant().toDateTime();
+			QDateTime date = QDateTime::fromTime_t(jsonObject.value("date").toVariant().toUInt());
 
 			file->setFileName(name);
 			file->setDateTime(date);
@@ -100,19 +89,58 @@ QList<FileObject *> Folder::dumpFileLists(const QByteArray & byte)
 
 QByteArray Folder::filesToJson()
 {
-	return QByteArray();
+	QList<FileObject*> *files = fileList();
+
+	QJsonArray jsonArray;
+
+	for (const FileObject *file : *files)
+	{
+		QJsonObject jsonObject;
+		jsonObject.insert("name", file->fileName());
+		jsonObject.insert("type", (int)(file->fileType()));
+		jsonObject.insert("date", (qint64)(file->dateTime().toTime_t()));
+
+		if (file->fileType() != FileType::Folder)
+		{
+			jsonObject.insert("size", (qint64)((File *)file)->fileSize());
+			jsonObject.insert("md5", ((File *)file)->md5());
+		}
+
+		jsonArray.append(jsonObject);
+	}
+	QJsonDocument document(jsonArray);
+
+	return document.toJson(QJsonDocument::Compact);
+}
+
+void Folder::setFileName(const QString & name)
+{
+	FileObject::setFileName(name);
+
+	setAbsolutePath();
+}
+
+void Folder::setAbsolutePath()
+{
+	if (m_pParentFolder)
+		m_strAbsolutePath = m_pParentFolder->absolutePath() + "/" + fileName();
+	else
+	{
+		User *user = GlobalParameter::getInstance()->getUser();
+		m_strAbsolutePath = user->getUsername().toUpper() +":";
+	}
 }
 
 QString Folder::absolutePath() const
 {
-	return m_stAbsolutePath;
+	return m_strAbsolutePath;
 }
 
 Folder * Folder::getRootFolder()
 {
 	Folder *parent = this;
 
-	while (parent != parent->parentFolder())
+	while (parent->parentFolder())
 		parent = parent->parentFolder();
 
 	return parent;
@@ -152,13 +180,15 @@ bool Folder::download()
 
 bool Folder::upload()
 {
-	//文件夹的下载方法
-	//上传文件夹内所有文件
-	//不过好像这个方法没什么用 - -.
+	//文件夹上传表示新增文件夹
 
-	for (FileObject *file : *m_pFileLists)
-		file->upload();
+	QString path = absolutePath();
 
+	//新建目录
+	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+	tcp->sendNewFolderMsg(path);
+
+	emit fileStatusChange(this);
 	return true;
 }
 
@@ -170,24 +200,35 @@ bool Folder::deleted()
 	for (FileObject *file : *m_pFileLists)
 		file->deleted();
 
+	QString path = absolutePath();
+
+	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+	tcp->sendDeleteFolderMsg(path);
+
+	emit fileStatusChange(this);
 	return true;
 }
 
-bool Folder::delect(FileObject * file)
+bool Folder::rename(QString name)
+{
+	QString oldName = absolutePath();
+	setFileName(name);
+	QString newName = absolutePath();
+
+	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+	tcp->sendRenameFolderMsg(oldName, newName);
+
+	emit fileStatusChange(this);
+	return true;
+}
+
+bool Folder::delecteFile(FileObject * file)
 {
 	file->deleted();
 
 	QList<FileObject*> *files = fileList();
 
 	files->removeOne(file);
-
-	return true;
-}
-
-bool Folder::rename(QString name)
-{
-	setFileName(name);
-	uploadFils();
 	return true;
 }
 
@@ -204,8 +245,7 @@ bool Folder::uploadFils()
 Folder * Folder::createRootFolder(const QString &username)
 {
 	Folder *folder = new Folder;
-	folder->setParentFolder(folder);
-	folder->setAbsolutePath(username + ":/");
+	folder->setAbsolutePath();
 	folder->setFileName("根目录");
 	return folder;
 }
@@ -265,7 +305,7 @@ QList<FileObject *> Folder::getFilesFromLocal()
 	if (isLocalCacheValid())
 	{
 		Database db;
-		QByteArray json = db.getFilesFromLocal(m_stAbsolutePath);
+		QByteArray json = db.getFilesFromLocal(m_strAbsolutePath);
 		files = dumpFileLists(json); 
 	}
 	else
@@ -278,20 +318,20 @@ void Folder::cacheFilesToLocal()
 {
 	//保存到本地
 	Database db;
-	db.saveFilesToLocal(m_stAbsolutePath, *m_pFileLists);
+	db.saveFilesToLocal(m_strAbsolutePath, *m_pFileLists);
 }
 
 void Folder::cacheFilesToLocal(const QByteArray & byte)
 {
 	//保存到本地
 	Database db;
-	db.saveFilesToLocal(m_stAbsolutePath, byte);
+	db.saveFilesToLocal(m_strAbsolutePath, byte);
 }
 
 bool Folder::isLocalCacheValid()
 {
 	Database db;
-	return db.isLocalCacheValid(m_stAbsolutePath);
+	return db.isLocalCacheValid(m_strAbsolutePath);
 }
 
 QList<FileObject *> Folder::getFilesFromServer()

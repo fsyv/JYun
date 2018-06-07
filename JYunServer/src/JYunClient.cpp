@@ -556,6 +556,98 @@ int JYunClient::recvGetFileListsMsg(GetFileListsMsg *gmsg)
     }
 }
 
+int JYunClient::recvPutFileListsMsg(PutFileListsMsg *pmsg)
+{
+    string dir_md5 = pmsg->m_aPath;
+    string files = pmsg->m_aData;
+    string tbname = "TABLE_" + m_strUsername + "_HOME";
+
+    cout << "dir_md5 : " << dir_md5 << " files : " << files << endl;
+
+    ostringstream sql;
+    sql << "UPDATE " << tbname
+        << " SET file_list = '" << files << "' WHERE directory_md5 = '" << dir_md5 << "'";
+    cout << sql.str() << endl;
+
+    try{
+        m_pMysql->execute(sql.str());
+    }
+    catch (const TC_Mysql_Exception &e){
+        printf("Mysql error: %s", e.what());
+        return 0;
+    }
+
+    return 0;
+}
+
+
+int JYunClient::recvNewFolderMsg(NewFolderMsg *nmsg)
+{
+    string dir_msg = nmsg->m_aPath;
+    cout << m_strUsername << " : " << dir_msg << endl;
+
+    string tbname = "TABLE_" + m_strUsername + "_HOME";
+
+    try{
+        TC_Mysql::RECORD_DATA data;
+        data["directory_md5"] = pair<TC_Mysql::FT, string>(TC_Mysql::DB_STR, dir_msg);
+        data["file_list"] = pair<TC_Mysql::FT, string>(TC_Mysql::DB_STR, "[]");
+        m_pMysql->insertRecord(tbname, data);
+    }
+    catch (const TC_Mysql_Exception &e){
+        printf("Mysql error: %s", e.what());
+        return 0;
+    }
+
+    return 0;
+}
+
+int JYunClient::recvDeleteFolderMsg(DeleteFolderMsg *dmsg)
+{
+    string dir_msg = dmsg->m_aPath;
+    cout << m_strUsername << " : " << dir_msg << endl;
+
+    string tbname = "TABLE_" + m_strUsername + "_HOME";
+
+    ostringstream conditon;
+    conditon << "WHERE directory_md5 = '" << dir_msg << "'";
+
+    try{
+        m_pMysql->deleteRecord(tbname, conditon.str());
+    }
+    catch (const TC_Mysql_Exception &e){
+        printf("Mysql error: %s", e.what());
+        return 0;
+    }
+
+    return 0;
+}
+
+int JYunClient::recvRenameFolderMsg(RenameFolderMsg *rmsg)
+{
+    string oldName = rmsg->m_aOldName;
+    string newName = rmsg->m_aNewName;
+    cout << "oldName : " << oldName << endl;
+    cout << "newName : " << newName << endl;
+
+    string tbname = "TABLE_" + m_strUsername + "_HOME";
+
+    ostringstream sql;
+    sql << "UPDATE " << tbname
+        << " SET directory_md5 = '" << newName << "' WHERE directory_md5 = '" << oldName << "'";
+    cout << sql.str() << endl;
+
+    try{
+        m_pMysql->execute(sql.str());
+    }
+    catch (const TC_Mysql_Exception &e){
+        printf("Mysql error: %s", e.what());
+        return 0;
+    }
+
+    return 0;
+}
+
 int JYunClient::sendMsg(Msg *msg)
 {
     msg->m_MsgHead.m_uiBeginFlag = 0xAFAFAFAF;
@@ -587,10 +679,20 @@ int JYunClient::readMsg(Msg *msg) {
         case Get_FileLists:
             ret = recvGetFileListsMsg((GetFileListsMsg *)msg->m_aMsgData);
             break;
+        case Put_NewFolder:
+            ret = recvNewFolderMsg((NewFolderMsg *)msg->m_aMsgData);
+            break;
+        case Put_DeleteFolder:
+            ret = recvDeleteFolderMsg((DeleteFolderMsg *)msg->m_aMsgData);
+            break;
+        case Put_RenameFolder:
+            ret = recvRenameFolderMsg((RenameFolderMsg *)msg->m_aMsgData);
+            break;
+        case Put_FileLists:
+            ret = recvPutFileListsMsg((PutFileListsMsg *)msg->m_aMsgData);;
+            break;
     }
 
     return ret;
 }
-
-
 

@@ -50,6 +50,10 @@ public:
 
 	int sendPutFileListMsg(const QString &path, const QString &json);
 
+	int sendNewFolderMsg(const QString &path);
+	int sendDeleteFolderMsg(const QString &path);
+	int sendRenameFolderMsg(const QString &oldName, const QString &newName);
+
 	QUrl url() const;
 
 signals:

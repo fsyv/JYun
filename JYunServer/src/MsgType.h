@@ -33,7 +33,13 @@ enum MsgType {
     Put_Registered,         //注册
     Put_Modifypass,         //修改密码
     Put_UploadHead,         //上传头像
-	Put_UploadFile			//上传
+	Put_UploadFile,			//上传
+	Put_FileLists,			//上传文件列表
+	Put_NewFolder,			//新建文件夹
+	Put_DeleteFolder,		//删除文件夹
+	Put_RenameFolder,		//重命名文件夹
+	Put_DeleteFile,			//删除文件
+	Put_RenameFile			//重命名文件
 };
 
 //连接校验
@@ -98,4 +104,23 @@ struct ModifypassMsg {
 struct GetFileListsMsg {
 	char m_aData[0];
 };
+
+struct PutFileListsMsg {
+	char m_aPath[128];
+	char m_aData[0];
+};
+
+struct NewFolderMsg {
+	char m_aPath[128];
+};
+
+struct DeleteFolderMsg {
+	char m_aPath[128];
+};
+
+struct RenameFolderMsg {
+	char m_aOldName[128];
+	char m_aNewName[128];
+};
+
 #endif //MSGTYPE_H_

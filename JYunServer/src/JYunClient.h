@@ -78,6 +78,12 @@ protected:
 	int sendGetFileListsMsg(const string &path);
 	int recvGetFileListsMsg(GetFileListsMsg *gmsg);
 
+	int recvPutFileListsMsg(PutFileListsMsg *pmsg);
+
+	int recvNewFolderMsg(NewFolderMsg *nmsg);
+	int recvDeleteFolderMsg(DeleteFolderMsg *dmsg);
+	int recvRenameFolderMsg(RenameFolderMsg *rmsg);
+
     int sendMsg(Msg *msg);
     int readMsg(Msg *msg);
 

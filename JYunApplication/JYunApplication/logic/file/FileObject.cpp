@@ -8,9 +8,9 @@
 #include "OtherFile.h"
 #include "Folder.h"
 
-FileObject::FileObject(const FileType &type):
+FileObject::FileObject(const FileType &type, Folder *parent):
 	m_eFileType(type),
-	m_pParentFolder(nullptr)
+	m_pParentFolder(parent)
 {
 	
 }
@@ -19,7 +19,7 @@ FileObject::FileObject(const FileObject & file):
 	FileObject(file.fileType())
 {
 	setFileName(file.fileName());
-	m_pParentFolder = file.parentFolder();
+	setParentFolder(file.parentFolder());
 }
 
 FileObject::~FileObject()

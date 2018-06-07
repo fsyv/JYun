@@ -21,12 +21,9 @@ class Folder : public FileObject
 {
 	Q_OBJECT
 public:
-	explicit Folder();
+	explicit Folder(Folder *parent = nullptr);
 	explicit Folder(const Folder &folder);
 	~Folder();
-
-	void setAbsolutePath(const Folder &folder);
-	void setAbsolutePath(const QString &absolutePath);
 
 	//添加文件
 	void addFile(FileObject *file);
@@ -34,6 +31,8 @@ public:
 	QList<FileObject *> *fileList();
 	QList<FileObject *> dumpFileLists(const QByteArray &byte);
 	QByteArray filesToJson();
+	void setFileName(const QString &name);
+	void setAbsolutePath();
 	QString absolutePath() const;
 	//获取根目录
 	Folder *getRootFolder();
@@ -45,11 +44,14 @@ public:
 	QString filePath() final;
 
 	bool download() final;
+	//增
 	bool upload() final;
-	//删除方法
+	//删
 	bool deleted() final;
-	bool delect(FileObject *file);
+	//改
 	bool rename(QString name) final;
+	//从文件夹中删除对象
+	bool delecteFile(FileObject *file);
 	bool uploadFils();
 
 	//创建根目录
@@ -87,7 +89,7 @@ private:
 	QDateTime m_RefreshDateTime;
 	//文件夹的绝对路径
 	//"username:path"形式
-	QString m_stAbsolutePath;
+	QString m_strAbsolutePath;
 };
 
 Q_DECLARE_METATYPE(Folder)

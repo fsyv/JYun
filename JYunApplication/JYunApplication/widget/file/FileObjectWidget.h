@@ -77,9 +77,9 @@ protected:
 	void init();
 
 	void destroyWidget();
-	//密码输入栏得到焦点
+	//重命名输入栏得到焦点
 	void nameInputFocusIn();
-	//密码输入栏失去焦点
+	//重命名输入栏失去焦点
 	void nameInputFocusOut();
 
 	void enterEvent(QEvent *e) override;

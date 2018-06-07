@@ -310,12 +310,30 @@ void CloudDiskFileWidget::fileDoubleClick(FileObject * file)
 
 void CloudDiskFileWidget::newFolder()
 {
-	Folder *folder = new Folder();
-	folder->setFileName("新建文件夹");
+	QList<FileObject *> *fileList = m_pCurrentFolder->fileList();
+
+	QString folderName = QString("新建文件夹");
+	int folderNameCount = 0;
+
+	for (int i = 0; i < fileList->count(); ++i)
+	{
+		if (fileList->at(i)->fileName() == folderName)
+		{
+			folderName = QString("新建文件夹%1").arg(++folderNameCount);
+			i = 0;
+		}
+	}
+
+	Folder *folder = new Folder(m_pCurrentFolder);
+	connect(folder, &FileObject::fileStatusChange, this, [this](FileObject * file) {
+		file->parentFolder()->uploadFils();
+	});
+	folder->setFileName(folderName);
 	m_pCurrentFolder->addFile(folder);
+	folder->setAbsolutePath();
+	folder->upload();
 
 	FileObjectWidget *widget = newFileWidget(folder);
-
 	widget->rename();
 }
 
