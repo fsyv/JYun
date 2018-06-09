@@ -15,8 +15,8 @@
 
 using namespace std;
 
-File::File(const FileType &type):
-	FileObject(type)
+File::File(const FileType &type, Folder *parent):
+	FileObject(type, parent)
 {
 	m_pManager = new QNetworkAccessManager(this);
 }
@@ -194,12 +194,15 @@ bool File::upload()
 		emit loadProgress(c, t);
 	});
 
+
+	parentFolder()->uploadFils();
 	return true;
 }
 
 bool File::deleted()
 {
-	return false;
+	parentFolder()->uploadFils();
+	return true;
 }
 
 bool File::rename(QString name)
@@ -241,7 +244,7 @@ bool File::preview()
 	return false;
 }
 
-File *File::createFile(const QString & filename)
+File *File::createFile(const QString & filename, Folder *parent)
 {
 	File *file = nullptr;
 	QFileInfo fileInfo(filename);
@@ -249,15 +252,15 @@ File *File::createFile(const QString & filename)
 	QString fileSuffix = fileInfo.suffix();
 
 	if (DocumentFile::isDocumentFile(fileSuffix))
-		file = new DocumentFile;
+		file = new DocumentFile(parent);
 	else if (ImageFile::isImageFile(fileSuffix))
-		file = new ImageFile;
+		file = new ImageFile(parent);
 	else if (MusicFile::isMusicFile(fileSuffix))
-		file = new MusicFile;
+		file = new MusicFile(parent);
 	else if (VideoFile::isVideoFile(fileSuffix))
-		file = new VideoFile;
+		file = new VideoFile(parent);
 	else
-		file = new OtherFile;
+		file = new OtherFile(parent);
 
 	file->setFileSize(fileInfo.size());
 

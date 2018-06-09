@@ -70,7 +70,7 @@ void ImageFileWidget::initMenu()
 
 	QAction *delectAct = new QAction("É¾³ý", this);
 	connect(delectAct, &QAction::triggered, this, [this]() {
-		delect();
+		deleted();
 	});
 	m_pMenu->addAction(delectAct);
 }

@@ -20,7 +20,7 @@
 class OtherFile : public File
 {
 public:
-	OtherFile();
+	OtherFile(Folder *parent = nullptr);
 	~OtherFile();
 
 	bool preview() override;

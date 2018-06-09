@@ -20,7 +20,7 @@
 class ImageFile : public File
 {
 public:
-	ImageFile();
+	ImageFile(Folder *parent = nullptr);
 	~ImageFile();
 
 	bool preview() override;

@@ -2,8 +2,8 @@
 #include "logic\file\ImageFile.h"
 
 
-ImageFile::ImageFile() :
-	File(FileType::Image)
+ImageFile::ImageFile(Folder *parent) :
+	File(FileType::Image, parent)
 {
 	
 }

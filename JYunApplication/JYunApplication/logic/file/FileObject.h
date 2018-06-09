@@ -59,7 +59,7 @@ public:
 	//改名方法
 	virtual bool rename(QString name) = 0;
 
-	static FileObject *createFile(const FileType &type);
+	static FileObject *createFile(const FileType &type, Folder *parent = nullptr);
 
 signals:
 	void fileStatusChange(FileObject *);

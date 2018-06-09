@@ -20,7 +20,7 @@
 class MusicFile : public File
 {
 public:
-	MusicFile();
+	MusicFile(Folder *parent = nullptr);
 	~MusicFile();
 
 	bool preview() override;

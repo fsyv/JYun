@@ -2,8 +2,8 @@
 #include "DocumentFile.h"
 
 
-DocumentFile::DocumentFile():
-	File(FileType::Document)
+DocumentFile::DocumentFile(Folder *parent):
+	File(FileType::Document, parent)
 {
 	
 }

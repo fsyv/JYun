@@ -20,7 +20,7 @@
 class VideoFile : public File
 {
 public:
-	VideoFile();
+	VideoFile(Folder *parent = nullptr);
 	~VideoFile();
 
 	bool preview() override;

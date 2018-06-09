@@ -2,8 +2,8 @@
 #include "MusicFile.h"
 
 
-MusicFile::MusicFile() :
-	File(FileType::Music)
+MusicFile::MusicFile(Folder *parent) :
+	File(FileType::Music, parent)
 {
 	
 }

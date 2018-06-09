@@ -72,29 +72,29 @@ Folder * FileObject::parentFolder() const
 	return m_pParentFolder;
 }
 
-FileObject * FileObject::createFile(const FileType & type)
+FileObject * FileObject::createFile(const FileType & type, Folder *parent)
 {
 	FileObject *object;
 
 	switch (type)
 	{
 	case FileType::Folder:
-		object = new Folder;
+		object = new Folder(parent);
 		break;
 	case FileType::Document:
-		object = new DocumentFile;
+		object = new DocumentFile(parent);
 		break;
 	case FileType::Image:
-		object = new ImageFile;
+		object = new ImageFile(parent);
 		break;
 	case FileType::Music:
-		object = new MusicFile;
+		object = new MusicFile(parent);
 		break;
 	case FileType::Video:
-		object = new VideoFile;
+		object = new VideoFile(parent);
 		break;
 	default:
-		object = new OtherFile;
+		object = new OtherFile(parent);
 		break;
 	}
 		

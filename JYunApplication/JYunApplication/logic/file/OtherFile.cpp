@@ -2,8 +2,8 @@
 #include "OtherFile.h"
 
 
-OtherFile::OtherFile() :
-	File(FileType::Other)
+OtherFile::OtherFile(Folder *parent) :
+	File(FileType::Other, parent)
 {
 	
 }

@@ -198,7 +198,7 @@ void Database::saveFilesToLocal(const QString & path, const QList<FileObject*>& 
 
 void Database::saveFilesToLocal(const QString & path, const QByteArray & bytearray)
 {
-	if (!bytearray.isEmpty())
+	if (bytearray.isEmpty())
 		return;
 
 	QString file_path_md5 = JYunTools::stringMD5(path);

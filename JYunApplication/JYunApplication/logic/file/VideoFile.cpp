@@ -2,8 +2,8 @@
 #include "VideoFile.h"
 
 
-VideoFile::VideoFile():
-	File(FileType::Video)
+VideoFile::VideoFile(Folder *parent):
+	File(FileType::Video, parent)
 {
 	
 }

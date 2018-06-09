@@ -20,7 +20,7 @@
 class DocumentFile : public File
 {
 public:
-	explicit DocumentFile();
+	explicit DocumentFile(Folder *parent = nullptr);
 	~DocumentFile();
 
     bool preview() override;

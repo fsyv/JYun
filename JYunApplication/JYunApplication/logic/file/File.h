@@ -28,7 +28,7 @@ public:
 		Upload
 	};
 
-	explicit File(const FileType &type = FileType::Other);
+	explicit File(const FileType &type = FileType::Other, Folder *parent = nullptr);
 	explicit File(const File &file);
 	~File();
 
@@ -68,7 +68,7 @@ public:
 	//文件的预览方法
 	virtual bool preview();
 
-	static File *createFile(const QString &filename);
+	static File *createFile(const QString &filename, Folder *parent = nullptr);
 
 protected:
 	static QString fromConfigFileGetSupportSuffix(const QString &ksy);

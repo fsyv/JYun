@@ -63,7 +63,7 @@ QList<FileObject *> Folder::dumpFileLists(const QByteArray & byte)
 
 			int type = jsonObject.value("type").toInt();
 
-			FileObject *file = FileObject::createFile((FileType)type);
+			FileObject *file = FileObject::createFile((FileType)type, this);
 
 			if (file->fileType() != FileType::Folder)
 			{
@@ -224,11 +224,9 @@ bool Folder::rename(QString name)
 
 bool Folder::delecteFile(FileObject * file)
 {
-	file->deleted();
-
 	QList<FileObject*> *files = fileList();
-
 	files->removeOne(file);
+	file->deleted();
 	return true;
 }
 
@@ -239,6 +237,7 @@ bool Folder::uploadFils()
 	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
 	tcp->sendPutFileListMsg(absolutePath(), json);
 
+	cacheFilesToLocal(json);
 	return true;
 }
 
@@ -305,7 +304,7 @@ QList<FileObject *> Folder::getFilesFromLocal()
 	if (isLocalCacheValid())
 	{
 		Database db;
-		QByteArray json = db.getFilesFromLocal(m_strAbsolutePath);
+		QByteArray json = db.getFilesFromLocal(absolutePath());
 		files = dumpFileLists(json); 
 	}
 	else
@@ -318,20 +317,20 @@ void Folder::cacheFilesToLocal()
 {
 	//保存到本地
 	Database db;
-	db.saveFilesToLocal(m_strAbsolutePath, *m_pFileLists);
+	db.saveFilesToLocal(absolutePath(), *m_pFileLists);
 }
 
 void Folder::cacheFilesToLocal(const QByteArray & byte)
 {
 	//保存到本地
 	Database db;
-	db.saveFilesToLocal(m_strAbsolutePath, byte);
+	db.saveFilesToLocal(absolutePath(), byte);
 }
 
 bool Folder::isLocalCacheValid()
 {
 	Database db;
-	return db.isLocalCacheValid(m_strAbsolutePath);
+	return db.isLocalCacheValid(absolutePath());
 }
 
 QList<FileObject *> Folder::getFilesFromServer()
@@ -341,12 +340,11 @@ QList<FileObject *> Folder::getFilesFromServer()
 
 	JYunTcp *network = GlobalParameter::getInstance()->getTcpNetwork();
 	QByteArray byteArray = network->sendGetFileListsMsg(absolutePath());
+	//缓存到本地
+	cacheFilesToLocal(byteArray);
 	QList<FileObject *> files = dumpFileLists(byteArray);
 
 	sortFiles(files);
-
-	//缓存到本地
-	cacheFilesToLocal(byteArray);
 	return files;
 }
 

@@ -112,17 +112,17 @@ void CloudDiskFileWidget::update()
 
 	for (FileObject *object : *fileList)
 	{
+		connect(object, &FileObject::fileStatusChange, this, [this](FileObject * file) {
+			file->parentFolder()->uploadFils();
+		});
+
 		if (m_iEcho)
 		{
 			if ((m_iEcho | (int)(FileType::Folder)) & (int)object->fileType())
-			{
 				newFileWidget(object);
-			}
 		}
 		else
-		{
 			newFileWidget(object);
-		}
 
 		if (object->fileType() == FileType::Folder)
 		{
@@ -174,12 +174,8 @@ void CloudDiskFileWidget::uploadFile(File *file)
 {
 	//当前文件夹添加子文件
 	m_pCurrentFolder->addFile(file);
-
-	//视图层做处理
-	QListWidgetItem *item = new QListWidgetItem(this);
-	item->setSizeHint(QSize(125, 125));
-	setItemWidget(item, FileObjectWidget::createWidget(file));
-
+	file->setParentFolder(m_pCurrentFolder);
+	newFileWidget(file);
 	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
 	QUrl url = tcp->url();
 	file->setRemoteUrl(url.host(), 21, QString("/") + file->md5());
@@ -350,7 +346,7 @@ void CloudDiskFileWidget::upload()
 
 	for (const auto &filepath : filepaths)
 	{
-		File *file = File::createFile(filepath);
+		File *file = File::createFile(filepath, m_pCurrentFolder);
 		file->setLocalUrl(filepath);
 		file->setDateTime();
 
