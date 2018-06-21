@@ -54,6 +54,13 @@ public:
 	int sendDeleteFolderMsg(const QString &path);
 	int sendRenameFolderMsg(const QString &oldName, const QString &newName);
 
+	int sendUploadFileMsg(const QString &md5);
+	int sendDownloadFileMsg(const QString &md5);
+	int sendDeleteFileMsg(const QString &md5);
+
+	void recvUploadFileMsg(UploadFileMsg *uMsg);
+	void recvDownloadFileMsg(DownloadFileMsg *dMsg);
+
 	QUrl url() const;
 
 signals:
@@ -62,6 +69,8 @@ signals:
 	void getUserHeadMd5Msg(GetUserHeadMd5 *msg);
 	void modifypassMsg(ModifypassMsg *gmsg);
 	void getFileListsMsg(QByteArray &bytearray);
+	void uploadFileMsg(QString filename, UploadFileMsg::QueryType type, quint16 port = 0);
+	void downloadFileMsg(QString filename, quint16 port, QString filepath);
 
 protected:
 

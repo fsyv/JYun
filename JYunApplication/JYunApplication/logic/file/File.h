@@ -23,7 +23,8 @@ class File : public FileObject
 {
 	Q_OBJECT
 public:
-	enum TaskType{
+	enum class ProcessType{
+		NotProcess = 0,
 		Download,
 		Upload
 	};
@@ -50,6 +51,10 @@ public:
 	QUrl localUrl();
 	//移除本地文件
 	bool remove();
+	ProcessType processType() const;
+	void setProcessType(const ProcessType &type);
+	void setDownloadProcess();
+	void setUploadProcess();
 
 	//文件路径
 	virtual QString filePath() final;
@@ -98,7 +103,7 @@ private:
 	QNetworkReply *m_pReply;
 	QNetworkAccessManager * m_pManager;
 	QFile *m_pFile;
-	TaskType m_eTaskType;
+	ProcessType m_eCurrentProcess;
 };
 
 Q_DECLARE_METATYPE(File)

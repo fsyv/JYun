@@ -3,6 +3,7 @@
 
 #include "JYunStringBuffer.h"
 #include "tc_md5.h"
+#include "FileProcessManager.h"
 
 using namespace std;
 using namespace chrono;
@@ -18,7 +19,6 @@ JYunClient::JYunClient(bufferevent *bev):
 
     m_pStringBuffer = new JYunStringBuffer();
 
-    m_strUsername = "FSYV";
     initDB();
 }
 
@@ -254,6 +254,13 @@ void JYunClient::run()
     m_StringBufferMutex.unlock();
 }
 
+unsigned short JYunClient::getIdlePort(const string username, const string filename)
+{
+    FileProcessManager *manager = GlobalParameter::getInstance()->getProcessManager();
+
+    return manager->addFileProcess(username, filename);
+}
+
 void JYunClient::registered(string username, string userpass)
 {
     //插入TABLE_USER_PASS表
@@ -270,7 +277,7 @@ void JYunClient::registered(string username, string userpass)
 
         string tbname = "TABLE_" + username + "_HOME";
 
-        stringstream sql;
+        ostringstream sql;
         sql << "CREATE TABLE " << tbname << "("
             << "directory_md5 VARCHAR(32) PRIMARY KEY NOT NULL,"
             << "file_list TEXT"
@@ -295,7 +302,7 @@ void JYunClient::checkUsername(string username)
     transform(username.begin(), username.end(), username.begin(), ::toupper);
 
     try{
-        stringstream sql;
+        ostringstream sql;
         sql << "SELECT username FROM TABLE_USER_PASS WHERE username = '" << username << "';";
 
         TC_Mysql::MysqlData data = m_pMysql->queryRecord(sql.str());
@@ -307,6 +314,37 @@ void JYunClient::checkUsername(string username)
     }
     catch (const TC_Mysql_Exception &e){
         printf("Mysql error: %s", e.what());
+    }
+}
+
+int JYunClient::uploadFileExist(const string &filename, const string &count)
+{
+    try{
+        ostringstream sql;
+        sql << "UPDATE TABLE_FILE_COUNT SET file_count=file_count+1 WHERE file_md5 = '" << filename << "';";
+        m_pMysql->execute(sql.str());
+
+        return sendUploadFileMsg(filename, UploadFileMsg::Exist);
+    }
+    catch (const TC_Mysql_Exception &e){
+        cout << e.what() << endl;
+        return 0;
+    }
+}
+
+int JYunClient::uploadFileNotExist(const string &filename)
+{
+    try{
+        ostringstream sql;
+        sql << "INSERT INTO TABLE_FILE_COUNT(file_md5, file_count) VALUES("<< filename <<", 0);";
+        m_pMysql->execute(sql.str());
+        unsigned short port = getIdlePort(m_strUsername, filename);
+
+        return sendUploadFileMsg(filename, UploadFileMsg::NotExist, port);
+    }
+    catch (const TC_Mysql_Exception &e){
+        cout << e.what() << endl;
+        return 0;
     }
 }
 
@@ -372,7 +410,7 @@ int JYunClient::recvLoginMsg(LoginMsg *msg)
     m_strUsername = username;
 
     try{
-        stringstream sql;
+        ostringstream sql;
         sql << "SELECT userpass FROM TABLE_USER_PASS WHERE username = '" << username << "';";
 
         vector<map<string, string> > data = m_pMysql->queryRecord(sql.str()).data();
@@ -453,7 +491,7 @@ int JYunClient::recvGetUserHeadMd5Msg(GetUserHeadMd5 *gmsg)
     fprintf(stderr, "recvGetUserHeadMd5Msg username: %s\n", gmsg->m_aUsername);
 
     try{
-        stringstream sql;
+        ostringstream sql;
         sql << "SELECT head_md5 FROM TABLE_USER_HEAD WHERE username = '" << username << "';";
 
         vector<map<string, string> > data = m_pMysql->queryRecord(sql.str()).data();
@@ -495,11 +533,11 @@ int JYunClient::recvModifypassMsg(ModifypassMsg *mmsg)
     string md5 = mmsg->m_aMd5;
 
     try{
-        stringstream sql;
+        ostringstream sql;
         sql << "UPDATE TABLE_USER_PASS SET userpass = '" << userpass << "' WHERE username = '" << username << "';";
         m_pMysql->execute(sql.str());
 
-        sql = stringstream("");
+        sql = ostringstream("");
         sql << "UPDATE TABLE_USER_HEAD SET head_md5 = '" << md5 << "' WHERE username = '" << username << "';";
 
         cout << sql.str() << endl;
@@ -514,19 +552,22 @@ int JYunClient::recvModifypassMsg(ModifypassMsg *mmsg)
     }
 }
 
-int JYunClient::sendGetFileListsMsg(const string &path)
+int JYunClient::sendGetFileListsMsg(const string &path, const string &data)
 {
-    cout << "path = " << path;
+    cout << "path = " << path << " data = " << data << endl;
 
-    GetFileListsMsg *gMsg = (GetFileListsMsg *)new char[path.length() + 1];
-    strncpy(gMsg->m_aData, path.c_str(), path.length());
+    GetFileListsMsg *gMsg = (GetFileListsMsg *)new char[sizeof(GetFileListsMsg) + data.length() + 1];
+    memset(gMsg, 0, sizeof(GetFileListsMsg) + data.length() + 1);
+    strncpy(gMsg->m_aPath, path.c_str(), sizeof(gMsg->m_aPath) - 1);
+    gMsg->m_iLen = data.length();
+    memcpy(gMsg->m_aData, data.c_str(), gMsg->m_iLen);
 
-    Msg *msg = (Msg *)new char[sizeof(Msg) + path.length() + 1];
-    memset(msg, 0, sizeof(Msg) + path.length() + 1);
+    Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(GetFileListsMsg) + gMsg->m_iLen + 1];
+    memset(msg, 0, sizeof(Msg) + sizeof(GetFileListsMsg) + gMsg->m_iLen + 1);
 
-    msg->m_MsgHead.m_iMsgLen = path.length();
+    msg->m_MsgHead.m_iMsgLen = sizeof(GetFileListsMsg) + gMsg->m_iLen;
     msg->m_MsgHead.m_eMsgType = Get_FileLists;
-    memcpy(msg->m_aMsgData, gMsg, path.length());
+    memcpy(msg->m_aMsgData, gMsg, msg->m_MsgHead.m_iMsgLen);
 
     delete gMsg;
 
@@ -535,24 +576,24 @@ int JYunClient::sendGetFileListsMsg(const string &path)
 
 int JYunClient::recvGetFileListsMsg(GetFileListsMsg *gmsg)
 {
-    string dir_md5 = gmsg->m_aData;
+    string dir_md5 = gmsg->m_aPath;
     cout << "dir_md5 = " <<dir_md5 << endl;
     string tbname = "TABLE_" + m_strUsername + "_HOME";
 
     try{
-        stringstream sql;
+        ostringstream sql;
         sql << "SELECT file_list FROM "<< tbname <<" WHERE directory_md5 = '" << dir_md5 << "';";
 
         TC_Mysql::MysqlData data = m_pMysql->queryRecord(sql.str());
 
         if(data.size() > 0)
-            return sendGetFileListsMsg(data[0]["file_list"]);
+            return sendGetFileListsMsg(dir_md5, data[0]["file_list"]);
         else
-            return sendGetFileListsMsg("[]");
+            return sendGetFileListsMsg(dir_md5, "[]");
     }
     catch (const TC_Mysql_Exception &e){
         printf("Mysql error: %s", e.what());
-        return sendGetFileListsMsg("[]");
+        return sendGetFileListsMsg(dir_md5, "[]");
     }
 }
 
@@ -648,6 +689,105 @@ int JYunClient::recvRenameFolderMsg(RenameFolderMsg *rmsg)
     return 0;
 }
 
+int JYunClient::recvUploadFileMsg(UploadFileMsg *umsg)
+{
+    string filename = umsg->m_aFileName;
+
+    cout << "MsgType = UploadFile" << endl;
+    cout << "filenmae = " << filename << endl;
+
+    try{
+        ostringstream sql;
+        sql << "SELECT file_md5,file_count FROM TABLE_FILE_COUNT WHERE file_md5 = '" << filename << "';";
+        TC_Mysql::MysqlData data = m_pMysql->queryRecord(sql.str());
+
+        if (data.size() >0 )
+            return uploadFileExist(filename, data[0][filename]);
+        else
+            return uploadFileNotExist(filename);
+    }
+    catch (const TC_Mysql_Exception &e){
+        cout << e.what() << endl;
+        return 0;
+    }
+
+    return 0;
+}
+
+int JYunClient::recvDownloadFileMsg(DownloadFileMsg *dmsg)
+{
+    string filename = dmsg->m_aFileName;
+
+    cout << "MsgType = DownloadFile" << endl;
+    cout << "filename = " << filename << endl;
+
+    try{
+        unsigned short port = getIdlePort(m_strUsername, filename);
+        string path = "/file/" + filename;
+
+        return sendDownloadFileMsg(filename, port, path);
+    }
+    catch (const TC_Mysql_Exception &e){
+        cout << e.what() << endl;
+        return 0;
+    }
+    return 0;
+}
+
+int JYunClient::recvDeleteFileMsg(DeleteFileMsg *dmsg)
+{
+    string filename = dmsg->m_aFileName;
+
+    cout << "MsgType = DeleteFile" << endl;
+    cout << "filenmae = " << filename << endl;
+
+    try{
+        ostringstream sql;
+        sql << "UPDATE TABLE_FILE_COUNT SET file_count=file_count-1 WHERE file_md5 = '" << filename << "';";
+        m_pMysql->execute(sql.str());
+    }
+    catch (const TC_Mysql_Exception &e){
+        cout << e.what() << endl;
+        return 0;
+    }
+    return 0;
+}
+
+int JYunClient::sendUploadFileMsg(string filename, UploadFileMsg::QueryType type, const unsigned short &port)
+{
+    UploadFileMsg uMsg;
+    memset(&uMsg, 0, sizeof(UploadFileMsg));
+    strncpy(uMsg.m_aFileName, filename.c_str(), sizeof(uMsg.m_aFileName) - 1);
+    uMsg.m_eFileQueryResult = type;
+    uMsg.m_usPort = port;
+
+    Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(UploadFileMsg) + 1];
+    memset(msg, 0, sizeof(Msg) + sizeof(UploadFileMsg) + 1);
+
+    msg->m_MsgHead.m_iMsgLen = sizeof(UploadFileMsg);
+    msg->m_MsgHead.m_eMsgType = Put_UploadFile;
+    memcpy(msg->m_aMsgData, &uMsg, sizeof(UploadFileMsg));
+
+    return sendMsg(msg);
+}
+
+int JYunClient::sendDownloadFileMsg(string filename, unsigned short port, const string &path)
+{
+    DownloadFileMsg dMsg;
+    strncpy(dMsg.m_aFileName, filename.c_str(), sizeof(dMsg.m_aFileName) - 1);
+    strncpy(dMsg.m_aPath, path.c_str(), sizeof(dMsg.m_aPath) - 1);
+    dMsg.m_usPort = port;
+
+    Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(DownloadFileMsg) + 1];
+    memset(msg, 0, sizeof(Msg) + sizeof(DownloadFileMsg) + 1);
+
+    msg->m_MsgHead.m_iMsgLen = sizeof(DownloadFileMsg);
+    msg->m_MsgHead.m_eMsgType = Get_DownloadFile;
+    memcpy(msg->m_aMsgData, &dMsg, sizeof(DownloadFileMsg));
+
+    return sendMsg(msg);
+}
+
 int JYunClient::sendMsg(Msg *msg)
 {
     msg->m_MsgHead.m_uiBeginFlag = 0xAFAFAFAF;
@@ -689,7 +829,16 @@ int JYunClient::readMsg(Msg *msg) {
             ret = recvRenameFolderMsg((RenameFolderMsg *)msg->m_aMsgData);
             break;
         case Put_FileLists:
-            ret = recvPutFileListsMsg((PutFileListsMsg *)msg->m_aMsgData);;
+            ret = recvPutFileListsMsg((PutFileListsMsg *)msg->m_aMsgData);
+            break;
+        case Put_UploadFile:
+            ret = recvUploadFileMsg((UploadFileMsg *)msg->m_aMsgData);
+            break;
+        case Get_DownloadFile:
+            ret = recvDownloadFileMsg((DownloadFileMsg *)msg->m_aMsgData);
+            break;
+        case Put_DeleteFile:
+            ret = recvDeleteFileMsg((DeleteFileMsg *)msg->m_aMsgData);
             break;
     }
 

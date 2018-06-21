@@ -85,7 +85,7 @@ public slots:
 
 signals:
 	void enterFolder(Folder *folder);
-	void task(FileObject *, bool);
+	void task(FileObject *);
 
 private:
 	QMenu *m_pMenu;

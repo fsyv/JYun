@@ -56,8 +56,13 @@ public:
     void run();
 
 protected:
+    unsigned short getIdlePort(const string username, const string filename);
+
     void registered(string username, string userpass);
     void checkUsername(string username);
+
+    int uploadFileExist(const string &filename, const string &count);
+    int uploadFileNotExist(const string &filename);
 
 protected:
     int sendConfirmMsg();
@@ -75,7 +80,7 @@ protected:
     int sendModifypassMsg(string username, ModifypassMsg::ModifyResult result);
     int recvModifypassMsg(ModifypassMsg *mmsg);
 
-	int sendGetFileListsMsg(const string &path);
+	int sendGetFileListsMsg(const string &path, const string &data);
 	int recvGetFileListsMsg(GetFileListsMsg *gmsg);
 
 	int recvPutFileListsMsg(PutFileListsMsg *pmsg);
@@ -83,6 +88,12 @@ protected:
 	int recvNewFolderMsg(NewFolderMsg *nmsg);
 	int recvDeleteFolderMsg(DeleteFolderMsg *dmsg);
 	int recvRenameFolderMsg(RenameFolderMsg *rmsg);
+
+	int recvUploadFileMsg(UploadFileMsg *umsg);
+	int recvDownloadFileMsg(DownloadFileMsg *dmsg);
+	int recvDeleteFileMsg(DeleteFileMsg *dmsg);
+	int sendUploadFileMsg(string filename, UploadFileMsg::QueryType type, const unsigned short &port = 0);
+	int sendDownloadFileMsg(string filename, unsigned short port, const string &path);
 
     int sendMsg(Msg *msg);
     int readMsg(Msg *msg);

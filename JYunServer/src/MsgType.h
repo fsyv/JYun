@@ -39,7 +39,8 @@ enum MsgType {
 	Put_DeleteFolder,		//删除文件夹
 	Put_RenameFolder,		//重命名文件夹
 	Put_DeleteFile,			//删除文件
-	Put_RenameFile			//重命名文件
+	Put_RenameFile,			//重命名文件
+	Put_FileProcess			//文件上传下载进程
 };
 
 //连接校验
@@ -102,6 +103,8 @@ struct ModifypassMsg {
 };
 
 struct GetFileListsMsg {
+    char m_aPath[128];
+    int m_iLen;
 	char m_aData[0];
 };
 
@@ -121,6 +124,40 @@ struct DeleteFolderMsg {
 struct RenameFolderMsg {
 	char m_aOldName[128];
 	char m_aNewName[128];
+};
+
+struct FileProcessMsg{
+    unsigned int m_uiBeginFlag;     //开始校验位 0xBFBFBFBF
+    enum FileProcessType{
+        Download = 0,
+        Upload
+    } m_eTaskType;
+
+    char m_aFileName[128];				//文件名字
+    unsigned int m_uiTimestamp;			//时间戳
+    unsigned long long m_ullOffset;		//文件偏移量
+    int m_iSize;						//本次数据长度
+    char m_aData[];						//发送的数据
+};
+
+struct UploadFileMsg {
+    char m_aFileName[128];
+    enum QueryType{
+        Query = 0,	//查询
+        NotExist,	//不存在
+        Exist		//存在
+    }m_eFileQueryResult;
+    unsigned short m_usPort;	//端口
+};
+
+struct DownloadFileMsg {
+    char m_aFileName[128];
+    unsigned short m_usPort;	//端口
+    char m_aPath[128];			//路径
+};
+
+struct DeleteFileMsg {
+    char m_aFileName[128];
 };
 
 #endif //MSGTYPE_H_

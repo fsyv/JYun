@@ -12,19 +12,22 @@
 
 #include "logic/JYunConfig.h"
 #include "logic/network/JYunTcp.h"
+#include "logic/User.h"
 
 using namespace std;
 
 File::File(const FileType &type, Folder *parent):
-	FileObject(type, parent)
+	FileObject(type, parent),
+	m_eCurrentProcess(ProcessType::NotProcess)
 {
 	m_pManager = new QNetworkAccessManager(this);
 }
 
-File::File(const File & file):
+File::File(const File &file):
 	FileObject(file)
 {
 	setParentFolder(file.parentFolder());
+	setProcessType(file.processType());
 }
 
 File::~File()
@@ -118,6 +121,26 @@ bool File::remove()
 	return file.remove();
 }
 
+File::ProcessType File::processType() const
+{
+	return m_eCurrentProcess;
+}
+
+void File::setProcessType(const ProcessType & type)
+{
+	m_eCurrentProcess = type;
+}
+
+void File::setDownloadProcess()
+{
+	setProcessType(ProcessType::Download);
+}
+
+void File::setUploadProcess()
+{
+	setProcessType(ProcessType::Upload);
+}
+
 QString File::filePath()
 {
 	if (m_pParentFolder)
@@ -137,7 +160,8 @@ bool File::download()
 
 	//});
 
-	m_eTaskType = Download;
+	User *user = GlobalParameter::getInstance()->getUser();
+	m_urlLocal = user->getDownloadPath() + "/" + fileName();
 	m_pFile = new QFile(m_urlLocal.path());
 	m_pFile->open(QIODevice::WriteOnly);
 
@@ -162,6 +186,9 @@ bool File::download()
 	});
 
 	return true;
+
+	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+	tcp->sendDownloadFileMsg(md5());
 }
 
 bool File::upload()
@@ -171,7 +198,6 @@ bool File::upload()
 	//若存在取文件的前1024kb数据与服务器的进行比对
 	//若不存在直接上传
 
-	m_eTaskType = Upload;
 	m_pFile = new QFile(m_urlLocal.path());
 	m_pFile->open(QIODevice::ReadOnly);
 	QByteArray byte_file = m_pFile->readAll();
@@ -197,12 +223,18 @@ bool File::upload()
 
 	parentFolder()->uploadFils();
 	return true;
+
+	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+	tcp->sendUploadFileMsg(md5());
 }
 
 bool File::deleted()
 {
 	parentFolder()->uploadFils();
 	return true;
+
+	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+	tcp->sendDeleteFileMsg(md5());
 }
 
 bool File::rename(QString name)
@@ -233,7 +265,7 @@ void File::pause()
 
 void File::restart()
 {
-	if (m_eTaskType == Download)
+	if (m_eCurrentProcess == ProcessType::Download)
 		download();
 	else
 		upload();

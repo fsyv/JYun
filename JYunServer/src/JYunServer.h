@@ -15,9 +15,6 @@
 **/
 
 #define SERVER_PORT 65530
-// 数据传输端口使用范围
-#define TRANSPORT_PORT_BEGIN 50000
-#define TRANSPORT_PORT_END 65520
 
 #define MAX_LISTEN 102400
 

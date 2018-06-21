@@ -407,6 +407,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_TaskListChild.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="logic\FileProcess.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FileProcess.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FileProcess.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exception\Exception.h">
@@ -567,6 +576,9 @@
     </CustomBuild>
     <CustomBuild Include="widget\clouddisk\tasklist\TaskListChild.h">
       <Filter>widget\clouddisk\tasklist</Filter>
+    </CustomBuild>
+    <CustomBuild Include="logic\FileProcess.h">
+      <Filter>logic</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

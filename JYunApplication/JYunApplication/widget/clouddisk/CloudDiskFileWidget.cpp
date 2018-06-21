@@ -126,8 +126,8 @@ void CloudDiskFileWidget::update()
 
 		if (object->fileType() == FileType::Folder)
 		{
-			connect((Folder *)object, &Folder::task, this, [this](FileObject *o, bool b) {
-				emit task(o, b);
+			connect((Folder *)object, &Folder::task, this, [this](FileObject *file) {
+				emit task(file);
 			});
 		}
 	}
@@ -179,8 +179,9 @@ void CloudDiskFileWidget::uploadFile(File *file)
 	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
 	QUrl url = tcp->url();
 	file->setRemoteUrl(url.host(), 21, QString("/") + file->md5());
+	file->setUploadProcess();
 
-	emit task(file, true);
+	emit task(file);
 }
 
 void CloudDiskFileWidget::backward()
@@ -211,7 +212,11 @@ void CloudDiskFileWidget::downloadFile()
 	if (!lists.empty())
 	{
 		for (auto file : lists)
-			emit task(file, false);
+		{
+			if(file->fileType() != FileType::Folder)
+				((File *)file)->setDownloadProcess();
+			emit task(file);
+		}
 	}
 	else
 	{
@@ -226,7 +231,8 @@ void CloudDiskFileWidget::downloadFile()
 			file->setRemoteUrl(url.host(), 21, file->md5());
 			file->setLocalUrl(QDir::currentPath() + "/" + file->md5());
 			
-			emit task(file, false);
+			file->setDownloadProcess();
+			emit task(file);
 		}
 	}
 }

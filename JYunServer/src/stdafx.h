@@ -28,6 +28,7 @@
 #include <iostream>
 #include <list>
 #include <algorithm>
+#include <fstream>
 
 //linux
 #include <arpa/inet.h>
@@ -41,4 +42,8 @@
 
 //maria
 #include <mysql.h>
+
+//JYunServer
+#include "GlobalParameter.h"
+
 #endif 

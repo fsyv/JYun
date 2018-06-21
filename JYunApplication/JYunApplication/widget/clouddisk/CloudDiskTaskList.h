@@ -17,7 +17,9 @@
 
 #include <QListWidget>
 
+class File;
 class FileObject;
+class TaskListChild;
 
 class CloudDiskTaskList : public QListWidget
 {
@@ -26,10 +28,22 @@ public:
 	explicit CloudDiskTaskList(QWidget *parent = nullptr);
 	~CloudDiskTaskList();
 
+protected:
+	void initWidget();
+	void conn();
+	void initData();
+	void init();
+
+	TaskListChild *getTaskChildByName(const QString &filename);
+
+	void newTaskChild(File *file);
+
 public slots:
-	void addTask(FileObject *file, bool status);
+	void addTask(FileObject *file);
+	void uploadFile(QString filename, UploadFileMsg::QueryType type, quint16 port = 0);
+	void downloadFile(QString filename, quint16 port, QString filepath);
 
 private:
-	QList<FileObject *> m_tasks;
+	QList<File *> m_tasks;
 };
 

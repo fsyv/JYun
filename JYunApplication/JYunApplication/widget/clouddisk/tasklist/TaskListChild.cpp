@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "TaskListChild.h"
 
+#include "logic/FileProcess.h"
+
 TaskListChild::TaskListChild(QWidget *parent): 
 	QWidget(parent, Qt::FramelessWindowHint), 
 	currentValue(0),
@@ -17,7 +19,7 @@ TaskListChild::~TaskListChild()
 	delete m_pName;
 }
 
-void TaskListChild::init()
+void TaskListChild::initWidget()
 {
 	resize(120, 120);
 	setAutoFillBackground(false);
@@ -41,6 +43,24 @@ void TaskListChild::init()
 	setStyleSheetFromFile(":/resource/qss/progressbar.qss");
 }
 
+void TaskListChild::conn()
+{
+}
+
+void TaskListChild::initData()
+{
+	m_pFileProcess = new FileProcess;
+}
+
+void TaskListChild::init()
+{
+	initWidget();
+
+	conn();
+
+	initData();
+}
+
 void TaskListChild::setLabelName(QString name)
 {
 	m_pName->setText(name);
@@ -55,10 +75,41 @@ void TaskListChild::setStyleSheetFromFile(QString filename)
 	file.close();
 }
 
-void TaskListChild::loadProgress(qint64 current, qint64 total)
+void TaskListChild::setFile(File * file)
 {
-    currentValue = current * 100 / total;
-    update();
+	m_pFile = file;
+}
+
+void TaskListChild::setPort(quint16 port)
+{
+	m_pFileProcess->setPort(port);
+}
+
+void TaskListChild::start()
+{
+	m_pFileProcess->connect();
+
+	m_iTimer = startTimer(1);
+}
+
+void TaskListChild::pause()
+{
+}
+
+void TaskListChild::stop()
+{
+	killTimer(m_iTimer);
+	m_iTimer = 0;
+
+	m_pFileProcess->disconnect();
+}
+
+void TaskListChild::finished()
+{
+}
+
+void TaskListChild::setFilePath(QString path)
+{
 }
 
 void TaskListChild::paintEvent(QPaintEvent *event)
@@ -98,5 +149,26 @@ void TaskListChild::paintEvent(QPaintEvent *event)
     painter.setPen(Qt::NoPen);
     painter.setBrush(QColor(249, 249, 249));
     painter.drawEllipse(QRectF((width()/2 - 25), (height()/2 - 25), 50, 50));
+}
+
+void TaskListChild::timerEvent(QTimerEvent * event)
+{
+	int id = event->timerId();
+
+	if (id == m_iTimer)
+		fileProcess();
+	else
+		QWidget::timerEvent(event);
+}
+
+void TaskListChild::fileProcess()
+{
+	m_pFileProcess->request();
+}
+
+void TaskListChild::loadProgress(qint64 current, qint64 total)
+{
+	currentValue = current * 100 / total;
+	update();
 }
 

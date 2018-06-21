@@ -3,6 +3,7 @@
 
 #include "logic/file/File.h"
 #include "widget/clouddisk/tasklist/TaskListChild.h"
+#include "logic/network/JYunTcp.h"
 
 CloudDiskTaskList::CloudDiskTaskList(QWidget *parent) :
 	QListWidget(parent)
@@ -17,30 +18,83 @@ CloudDiskTaskList::~CloudDiskTaskList()
 {
 }
 
-void CloudDiskTaskList::addTask(FileObject * file, bool status)
+void CloudDiskTaskList::initWidget()
 {
-	if (m_tasks.contains(file))
-		return;
+}
 
+void CloudDiskTaskList::conn()
+{
+	JYunTcp *tcp = GlobalParameter::getInstance()->getTcpNetwork();
+	connect(tcp, &JYunTcp::uploadFileMsg, this, &CloudDiskTaskList::uploadFile);
+	connect(tcp, &JYunTcp::downloadFileMsg, this, &CloudDiskTaskList::downloadFile);
+}
+
+void CloudDiskTaskList::initData()
+{
+}
+
+void CloudDiskTaskList::init()
+{
+	initWidget();
+	conn();
+	initData();
+}
+
+TaskListChild * CloudDiskTaskList::getTaskChildByName(const QString & filename)
+{
+	return nullptr;
+}
+
+void CloudDiskTaskList::newTaskChild(File * file)
+{
+	QListWidgetItem *item = new QListWidgetItem(this);
+	item->setSizeHint(QSize(120, 120));
+	TaskListChild *child = new TaskListChild(this);
+	child->setLabelName(file->fileName());
+
+	connect((File *)file, &File::loadProgress, child, &TaskListChild::loadProgress);
+	connect(child, &TaskListChild::clicked, (File *)file, &File::taskStatus);
+
+	setItemWidget(item, child);
+}
+
+void CloudDiskTaskList::uploadFile(QString filename, UploadFileMsg::QueryType type, quint16 port)
+{
+	TaskListChild *child = getTaskChildByName(filename);
+
+	if (type == UploadFileMsg::Exist)
+		child->finished();
+	else if (type == UploadFileMsg::NotExist)
+	{
+		child->setPort(port);
+		child->start();
+	}
+}
+
+void CloudDiskTaskList::downloadFile(QString filename, quint16 port, QString filepath)
+{
+	TaskListChild *child = getTaskChildByName(filename);
+	child->setFilePath(filepath);
+	child->setPort(port);
+	child->start();
+}
+
+void CloudDiskTaskList::addTask(FileObject * file)
+{
 	if (file->fileType() != FileType::Folder)
 	{
-		m_tasks.push_back(file);
+		if (m_tasks.contains((File *)file))
+			return;
 
-		QListWidgetItem *item = new QListWidgetItem(this);
-		item->setSizeHint(QSize(120, 120));
-		TaskListChild *child = new TaskListChild(this);
-		child->setLabelName(file->fileName());
+		m_tasks.push_back((File *)file);
 
-		connect((File *)file, &File::loadProgress, child, &TaskListChild::loadProgress);
-		connect(child, &TaskListChild::clicked, (File *)file, &File::taskStatus);
+		newTaskChild((File *)file);
 
-		setItemWidget(item, child);
+		if (((File *)file)->processType() == File::ProcessType::Upload)
+			file->upload();
+		else
+			file->download();
 	}
-
-	if (status)
-		file->upload();
 	else
 		file->download();
-
-
 }

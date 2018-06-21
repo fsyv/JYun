@@ -180,10 +180,14 @@ QByteArray JYunTcp::sendGetFileListsMsg(const QString & path)
 
 	QString md5 = JYunTools::stringMD5(path_upper);
 
-	Msg *msg = (Msg *)new char[sizeof(Msg) + md5.size() + 1];
-	memset(msg, 0, sizeof(Msg) + md5.size() + 1);
+	GetFileListsMsg gMsg;
+	memset(&gMsg, 0, sizeof(GetFileListsMsg));
+	strncpy(gMsg.m_aPath, md5.toUtf8().data(), sizeof(gMsg.m_aPath) - 1);
+	
+	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(GetFileListsMsg) + 1];
+	memset(msg, 0, sizeof(Msg) + sizeof(GetFileListsMsg) + 1);
 
-	msg->m_MsgHead.m_iMsgLen = md5.size();
+	msg->m_MsgHead.m_iMsgLen = sizeof(GetFileListsMsg);
 	msg->m_MsgHead.m_eMsgType = Get_FileLists;
 	memcpy(msg->m_aMsgData, md5.toUtf8().data(), msg->m_MsgHead.m_iMsgLen);
 
@@ -291,7 +295,10 @@ QByteArray JYunTcp::sendGetFileListsMsg(const QString & path)
 		}
 
 		if (msg->m_MsgHead.m_eMsgType == Get_FileLists)
-			byteArray.append(msg->m_aMsgData, msg->m_MsgHead.m_iMsgLen);
+		{
+			GetFileListsMsg *gmsg = (GetFileListsMsg *)msg->m_aMsgData;
+			byteArray.append(gmsg->m_aData, gmsg->m_iLen);
+		}
 		else
 		{
 			//投递数据包
@@ -395,6 +402,72 @@ int JYunTcp::sendRenameFolderMsg(const QString & oldName, const QString & newNam
 	memcpy(msg->m_aMsgData, &rMsg, msg->m_MsgHead.m_iMsgLen);
 
 	return sendMsg(msg);
+}
+
+int JYunTcp::sendUploadFileMsg(const QString & md5)
+{
+	UploadFileMsg uMsg;
+	memset(&uMsg, 0, sizeof(UploadFileMsg));
+	strncpy(uMsg.m_aFileName, md5.toUtf8().data(), sizeof(uMsg.m_aFileName) - 1);
+	uMsg.m_eFileQueryResult = UploadFileMsg::Query;
+
+	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(UploadFileMsg) + 1];
+	memset(msg, 0, sizeof(Msg) + sizeof(UploadFileMsg) + 1);
+
+	msg->m_MsgHead.m_iMsgLen = sizeof(UploadFileMsg);
+	msg->m_MsgHead.m_eMsgType = Put_UploadFile;
+	memcpy(msg->m_aMsgData, &uMsg, sizeof(UploadFileMsg));
+
+	return sendMsg(msg);
+}
+
+int JYunTcp::sendDownloadFileMsg(const QString & md5)
+{
+	DownloadFileMsg dMsg;
+	memset(&dMsg, 0, sizeof(DownloadFileMsg));
+	strncpy(dMsg.m_aFileName, md5.toUtf8().data(), sizeof(dMsg.m_aFileName) - 1);
+
+	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(DownloadFileMsg) + 1];
+	memset(msg, 0, sizeof(Msg) + sizeof(DownloadFileMsg) + 1);
+
+	msg->m_MsgHead.m_iMsgLen = sizeof(DownloadFileMsg);
+	msg->m_MsgHead.m_eMsgType = Get_DownloadFile;
+	memcpy(msg->m_aMsgData, &dMsg, sizeof(DownloadFileMsg));
+
+	return sendMsg(msg);
+}
+
+int JYunTcp::sendDeleteFileMsg(const QString & md5)
+{
+	DeleteFileMsg dMsg;
+	memset(&dMsg, 0, sizeof(DeleteFileMsg));
+	strncpy(dMsg.m_aFileName, md5.toUtf8().data(), sizeof(dMsg.m_aFileName) - 1);
+
+	Msg *msg = (Msg *)new char[sizeof(Msg) + sizeof(DeleteFileMsg) + 1];
+	memset(msg, 0, sizeof(Msg) + sizeof(DeleteFileMsg) + 1);
+
+	msg->m_MsgHead.m_iMsgLen = sizeof(DeleteFileMsg);
+	msg->m_MsgHead.m_eMsgType = Put_DeleteFile;
+	memcpy(msg->m_aMsgData, &dMsg, sizeof(DeleteFileMsg));
+
+	return sendMsg(msg);
+}
+
+void JYunTcp::recvUploadFileMsg(UploadFileMsg * uMsg)
+{
+	QString filename = uMsg->m_aFileName;
+	quint16 port = uMsg->m_usPort;
+
+	emit uploadFileMsg(filename, uMsg->m_eFileQueryResult, port);
+}
+
+void JYunTcp::recvDownloadFileMsg(DownloadFileMsg * dMsg)
+{
+	QString filename = dMsg->m_aFileName;
+	quint16 port = dMsg->m_usPort;
+	QString filepath = dMsg->m_aPath;
+
+	emit downloadFileMsg(filename, port, filepath);
 }
 
 QUrl JYunTcp::url() const
